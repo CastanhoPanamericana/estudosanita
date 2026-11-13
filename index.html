@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Game Completo: Ciências Humanas - Refugiados (5º Ano)</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary: #0284c7;
+            --accent: #f59e0b;
+            --bg: #eef2ff;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --correct: #10b981;
+            --wrong: #ef4444;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 960px;
+            width: 100%;
+        }
+
+        /* Header & HUD */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
+            margin-bottom: 15px;
+        }
+
+        .header h1 { margin: 0 0 5px 0; font-size: 1.65rem; }
+        .header p { margin: 0; color: #e0e7ff; font-size: 0.95rem; }
+
+        .hud {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid #c7d2fe;
+        }
+
+        @media (max-width: 600px) {
+            .hud { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .hud-item span { display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: bold; }
+        .hud-item strong { font-size: 1.2rem; color: var(--primary); }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            color: #475569;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1 1 auto;
+            text-align: center;
+        }
+
+        .tab-btn:hover { background: #f1f5f9; }
+        .tab-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 3px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .game-panel {
+            display: none;
+            background: white;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .game-panel.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2.panel-title {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+            font-size: 1.25rem;
+        }
+
+        /* 1. Flashcards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .flashcard {
+            height: 175px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 12px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            color: white;
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        .card-front small { font-size: 0.72rem; color: #c7d2fe; margin-top: 6px; font-weight: normal; }
+
+        .card-back {
+            background: #eef2ff;
+            color: #1e1b4b;
+            transform: rotateY(180deg);
+            border: 2px solid #a5b4fc;
+            font-size: 0.83rem;
+            line-height: 1.35;
+        }
+
+        /* 2. Quiz & 5. True/False */
+        .question-box { font-size: 1.12rem; font-weight: bold; margin-bottom: 16px; color: #0f172a; line-height: 1.4; }
+        .options-list { display: grid; gap: 10px; }
+        .opt-btn {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 12px 15px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.96rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .opt-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .opt-btn.correct { background: var(--correct) !important; color: white !important; border-color: var(--correct) !important; }
+        .opt-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: var(--wrong) !important; }
+
+        /* 3. Memory Match Game */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 600px) { .memory-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        .mem-card {
+            height: 100px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 0.82rem;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+        }
+        .mem-card.hidden-text { background: #0284c7; font-size: 1.5rem; }
+        .mem-card.revealed { background: #e0f2fe; color: #0369a1; border: 2px solid #0284c7; }
+        .mem-card.matched { background: var(--correct); color: white; border: 2px solid #059669; cursor: default; }
+
+        /* 4. Word Scramble */
+        .scramble-word {
+            font-size: 1.7rem;
+            letter-spacing: 4px;
+            font-weight: bold;
+            color: var(--primary);
+            background: #eef2ff;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 12px 0;
+            border: 2px dashed #a5b4fc;
+        }
+        .input-group { display: flex; gap: 10px; margin-top: 10px; }
+        .text-input {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+        }
+        .text-input:focus { border-color: var(--primary); }
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .action-btn:hover { background: var(--primary-dark); }
+
+        /* 6. Sorting / Categories Game */
+        .sort-item-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.12rem;
+            font-weight: bold;
+            color: #92400e;
+            margin-bottom: 16px;
+        }
+        .buckets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (max-width: 600px) { .buckets-grid { grid-template-columns: 1fr; } }
+        .bucket-btn {
+            background: #f8fafc;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .bucket-btn:hover { background: var(--primary); color: white; }
+
+        /* Feedback & Badges */
+        .feedback {
+            margin-top: 14px;
+            font-weight: bold;
+            text-align: center;
+            min-height: 24px;
+            font-size: 1rem;
+        }
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .badge-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            opacity: 0.45;
+            background: #f8fafc;
+            transition: 0.3s;
+        }
+        .badge-card.unlocked {
+            opacity: 1;
+            border-color: var(--accent);
+            background: #fffbeb;
+            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.2);
+        }
+        .badge-icon { font-size: 2.2rem; margin-bottom: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🌍 Ciências Humanas: Um Olhar para os Refugiados 🇧🇷</h1>
+        <p>Escola Projeto Vida • 5º Ano — Edição Completa (Fichas 1 a 5 + Regras no Brasil)</p>
+    </div>
+
+    <!-- HUD Gamificado -->
+    <div class="hud">
+        <div class="hud-item"><span>⭐ Pontos XP</span><strong id="xpDisplay">0</strong></div>
+        <div class="hud-item"><span>🔥 Sequência</span><strong id="streakDisplay">0</strong></div>
+        <div class="hud-item"><span>🎖️ Nível</span><strong id="levelDisplay">1 - Aprendiz</strong></div>
+        <div class="hud-item"><span>🏆 Medalhas</span><strong id="medalCountDisplay">0 / 6</strong></div>
+    </div>
+
+    <!-- Navegação -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('tab-cards', this)">🃏 1. Flashcards (16)</button>
+        <button class="tab-btn" onclick="openTab('tab-quiz', this)">❓ 2. Super Quiz (15)</button>
+        <button class="tab-btn" onclick="openTab('tab-memory', this)">🧠 3. Jogo da Memória</button>
+        <button class="tab-btn" onclick="openTab('tab-scramble', this)">🔤 4. Palavra Secreta</button>
+        <button class="tab-btn" onclick="openTab('tab-tf', this)">⚡ 5. Verdadeiro ou Falso</button>
+        <button class="tab-btn" onclick="openTab('tab-sort', this)">🗂️ 6. Classifique o Tema</button>
+        <button class="tab-btn" onclick="openTab('tab-badges', this)">🏆 Conquistas</button>
+    </div>
+
+    <!-- JOGO 1: FLASHCARDS -->
+    <div id="tab-cards" class="game-panel active">
+        <h2 class="panel-title">🃏 1. Flashcards de Revisão Completa (Clique para virar e ganhar +2 XP)</h2>
+        <div class="cards-grid" id="flashcardsContainer"></div>
+    </div>
+
+    <!-- JOGO 2: QUIZ -->
+    <div id="tab-quiz" class="game-panel">
+        <h2 class="panel-title">❓ 2. Super Quiz — Mundo, Américas e Brasil (15 Questões)</h2>
+        <div class="question-box" id="quizQuestion"></div>
+        <div class="options-list" id="quizOptions"></div>
+        <div class="feedback" id="quizFeedback"></div>
+    </div>
+
+    <!-- JOGO 3: MEMORY MATCH -->
+    <div id="tab-memory" class="game-panel">
+        <h2 class="panel-title">🧠 3. Jogo da Memória (Órgãos, Regras e Conceitos)</h2>
+        <p style="font-size:0.9rem; color:#475569; margin-top:0;">Encontre os pares corretos entre siglas, países e regras de acolhimento!</p>
+        <div class="memory-grid" id="memoryGrid"></div>
+        <div class="feedback" id="memoryFeedback"></div>
+        <div style="text-align:center; margin-top:12px;">
+            <button class="action-btn" onclick="initMemoryGame()">🔄 Reiniciar Jogo da Memória</button>
+        </div>
+    </div>
+
+    <!-- JOGO 4: WORD SCRAMBLE -->
+    <div id="tab-scramble" class="game-panel">
+        <h2 class="panel-title">🔤 4. Descubra a Palavra-Chave (Sem acentos)</h2>
+        <p id="scrambleHint" style="font-size:1rem; font-weight:600; color:#334155;"></p>
+        <div class="scramble-word" id="scrambledDisplay"></div>
+        <div class="input-group">
+            <input type="text" id="scrambleInput" class="text-input" placeholder="Digite a palavra correta..." onkeypress="if(event.key==='Enter') checkScramble()">
+            <button class="action-btn" onclick="checkScramble()">Verificar</button>
+        </div>
+        <div class="feedback" id="scrambleFeedback"></div>
+    </div>
+
+    <!-- JOGO 5: TRUE OR FALSE -->
+    <div id="tab-tf" class="game-panel">
+        <h2 class="panel-title">⚡ 5. Desafio Rápido: Verdadeiro ou Falso?</h2>
+        <div class="question-box" id="tfStatement"></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+            <button class="opt-btn" style="text-align:center; font-weight:bold; font-size:1.1rem;" onclick="checkTF(true)">✅ VERDADEIRO</button>
+            <button class="opt-btn" style="text-align:center; font-weight:bold; font-size:1.1rem;" onclick="checkTF(false)">❌ FALSO</button>
+        </div>
+        <div class="feedback" id="tfFeedback"></div>
+    </div>
+
+    <!-- JOGO 6: SORTING BUCKETS -->
+    <div id="tab-sort" class="game-panel">
+        <h2 class="panel-title">🗂️ 6. Separe nas Categorias Certas!</h2>
+        <p style="font-size:0.9rem; color:#475569; margin-top:0;">A qual tema da prova pertence a regra, dado ou conceito abaixo?</p>
+        <div class="sort-item-box" id="sortPrompt"></div>
+        <div class="buckets-grid">
+            <button class="bucket-btn" onclick="checkSort('conceitos')">🧳 Conceitos, Tipos e Preconceitos</button>
+            <button class="bucket-btn" onclick="checkSort('mundo')">🌍 Dados Mundiais e Américas (Fichas 3 e 4)</button>
+            <button class="bucket-btn" onclick="checkSort('brasil_dados')">📊 Números do Refúgio no Brasil</button>
+            <button class="bucket-btn" onclick="checkSort('regras')">🇧🇷 Leis, Órgãos e Regras por Nacionalidade</button>
+        </div>
+        <div class="feedback" id="sortFeedback"></div>
+    </div>
+
+    <!-- CONQUISTAS -->
+    <div id="tab-badges" class="game-panel">
+        <h2 class="panel-title">🏆 Sala de Troféus & Conquistas</h2>
+        <div class="badges-grid" id="badgesContainer"></div>
+    </div>
+</div>
+
+<script>
+    // --- AUDIO FX ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(freq, type, duration) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+    function soundSuccess() { playTone(523.25, 'sine', 0.12); setTimeout(() => playTone(659.25, 'sine', 0.2), 100); }
+    function soundError() { playTone(200, 'sawtooth', 0.25); }
+
+    // --- GAMIFICATION STATE ---
+    let xp = 0;
+    let streak = 0;
+    let cardsFlipped = new Set();
+    let stats = { quizCorrect: 0, memoryWins: 0, scrambleWins: 0, tfWins: 0, sortWins: 0 };
+
+    const badges = [
+        { id: 'b1', icon: '🃏', title: 'Explorador de Fichas', desc: 'Virou 8 flashcards', check: () => cardsFlipped.size >= 8 },
+        { id: 'b2', icon: '🧠', title: 'Memória Afiada', desc: 'Venceu o Jogo da Memória', check: () => stats.memoryWins >= 1 },
+        { id: 'b3', icon: '🔤', title: 'Decifrador', desc: 'Acertou 4 palavras secretas', check: () => stats.scrambleWins >= 4 },
+        { id: 'b4', icon: '⚡', title: 'Olhar Crítico', desc: 'Acertou 5 no Verdadeiro/Falso', check: () => stats.tfWins >= 5 },
+        { id: 'b5', icon: '🔥', title: 'Em Chamas!', desc: 'Alcançou 6 acertos seguidos', check: () => streak >= 6 },
+        { id: 'b6', icon: '🇧🇷', title: 'Especialista Brasil & Mundo', desc: 'Alcançou 200 pontos XP!', check: () => xp >= 200 }
+    ];
+
+    function addXP(points, isSuccess = true) {
+        if (isSuccess) {
+            xp += points;
+            streak++;
+            soundSuccess();
+        } else {
+            streak = 0;
+            soundError();
+        }
+        document.getElementById('xpDisplay').innerText = xp;
+        document.getElementById('streakDisplay').innerText = streak;
+
+        let level = "1 - Aprendiz";
+        if (xp >= 250) level = "4 - Embaixador da Paz 🏆";
+        else if (xp >= 150) level = "3 - Cidadão Global 🌍";
+        else if (xp >= 60) level = "2 - Pesquisador 📚";
+        document.getElementById('levelDisplay').innerText = level;
+
+        renderBadges();
+    }
+
+    function renderBadges() {
+        const container = document.getElementById('badgesContainer');
+        container.innerHTML = '';
+        let unlockedCount = 0;
+        badges.forEach(b => {
+            const isUnlocked = b.check();
+            if (isUnlocked) unlockedCount++;
+            container.innerHTML += `
+                <div class="badge-card ${isUnlocked ? 'unlocked' : ''}">
+                    <div class="badge-icon">${b.icon}</div>
+                    <strong>${b.title}</strong>
+                    <p style="font-size:0.8rem; margin:4px 0 0 0; color:#475569;">${b.desc}</p>
+                </div>`;
+        });
+        document.getElementById('medalCountDisplay').innerText = `${unlockedCount} / ${badges.length}`;
+    }
+
+    function openTab(tabId, btn) {
+        document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // --- 1. FLASHCARDS (16 Cartões - Fichas 1 a 5 completas) ---
+    const flashcardsData = [
+        { front: "Quem são os Refugiados?", back: "Pessoas forçadas a sair de seu país por <strong>necessidade extrema</strong> (guerras, perseguições ou graves violações de direitos humanos)." },
+        { front: "Refugiado x Migrante", back: "<strong>Migrante:</strong> sai por opção (trabalho, estudo, família).<br><strong>Refugiado:</strong> sai por obrigação/risco e precisa de proteção internacional." },
+        { front: "Refugiados de Guerra, Políticos e Climáticos", back: "<strong>Guerra:</strong> conflitos armados.<br><strong>Políticos:</strong> ditaduras/repressão.<br><strong>Climáticos:</strong> eventos naturais extremos." },
+        { front: "Xenofobia, Racismo e Intolerância", back: "<strong>Xenofobia:</strong> aversão a estrangeiros.<br><strong>Racismo:</strong> preconceito pela cor/raça.<br><strong>Intolerância:</strong> desrespeito a outra religião." },
+        { front: "ACNUR e UNRWA", back: "<strong>ACNUR:</strong> Agência da ONU para Refugiados.<br><strong>UNRWA:</strong> Agência da ONU para refugiados palestinos." },
+        { front: "Deslocados Internos (IDPs)", back: "Pessoas forçadas a deixar suas casas por conflitos ou violência, mas que permanecem <strong>dentro de seu próprio país</strong> (68,7 milhões em 2025)." },
+        { front: "Dados Globais (2025)", back: "<strong>117,8 milhões</strong> de deslocados no mundo (1 em cada 70 pessoas). 7 em cada 10 vêm de: Afeganistão, Sudão do Sul, Sudão, Síria, Ucrânia e Venezuela." },
+        { front: "Queda Global (2024 → 2025)", back: "Houve queda de <strong>3%</strong> nos refugiados globais devido ao retorno significativo de pessoas para <strong>Afeganistão, Síria e Sudão</strong>." },
+        { front: "Américas e Venezuela", back: "<strong>Américas</strong> lideram deslocamentos (22,8 milhões). <strong>97%</strong> dos venezuelanos foram acolhidos na América Latina e Caribe (9% planejam voltar em 1 ano)." },
+        { front: "CONARE", back: "<strong>Comitê Nacional para os Refugiados:</strong> órgão do governo brasileiro que analisa os pedidos de refúgio (não há prazo fixo para decisão)." },
+        { front: "Números no Brasil (2010–2025)", back: "Brasil recebeu <strong>551.072</strong> solicitações (recorde em <strong>2019</strong> com 82.552). Em 2024 foram 68.159 (+16,3% que 2023). Venezuelanos = 50,3% em 2023." },
+        { front: "GGVDH (6 Países no Brasil)", back: "Brasil reconhece <strong>Grave e Generalizada Violação de Direitos Humanos</strong> em 6 países: Mali, Burkina Faso, Iraque, Venezuela, Síria e Afeganistão." },
+        { front: "Haiti (Acolhida Humanitária)", back: "A Lei de Refúgio <strong>não abrange desastres naturais</strong>. Haitianos pedem visto temporário na origem e registram residência humanitária na <strong>Polícia Federal</strong>." },
+        { front: "Venezuela (Duas Opções)", back: "Venezuelanos podem optar pela <strong>via do refúgio</strong> ou pela <strong>autorização de residência</strong> (análise documental direto na Polícia Federal)." },
+        { front: "Síria (Visto Humanitário)", back: "Afetados pelo conflito na Síria podem obter visto humanitário, têm até <strong>90 dias</strong> para registro na Polícia Federal e ganham residência temporária por <strong>2 anos</strong>." },
+        { front: "Afeganistão (Acolhida)", back: "Afegãos e apátridas afetados por instabilidade podem pedir visto humanitário e registrar residência na <strong>Polícia Federal</strong> sem precisar entrar na fila de refúgio." }
+    ];
+
+    const fcContainer = document.getElementById('flashcardsContainer');
+    flashcardsData.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'flashcard';
+        div.innerHTML = `<div class="flashcard-inner">
+            <div class="card-front">${item.front}<small>Clique para virar</small></div>
+            <div class="card-back">${item.back}</div>
+        </div>`;
+        div.onclick = () => {
+            div.classList.toggle('flipped');
+            if (!cardsFlipped.has(i)) {
+                cardsFlipped.add(i);
+                addXP(2, true);
+            }
+        };
+        fcContainer.appendChild(div);
+    });
+
+    // --- 2. SUPER QUIZ (15 Questões completas) ---
+    const quizData = [
+        { q: "Qual é a principal diferença entre a motivação de um refugiado e a de um migrante?", opts: ["O refugiado sai por obrigação/perseguição e precisa de proteção internacional; o migrante sai por opção (trabalho, estudo, família)", "O migrante foge de guerras e o refugiado viaja a turismo", "Não há diferença legal entre os dois termos", "O refugiado nunca precisa de documentos"], ans: 0 },
+        { q: "O que significa a sigla CONARE no Brasil?", opts: ["Conselho Nacional de Estrangeiros", "Comitê Nacional para os Refugiados", "Comissão das Nações Unidas para o Comércio", "Centro de Apoio aos Migrantes"], ans: 1 },
+        { q: "Por que os haitianos, em geral, não são reconhecidos pela Lei de Refúgio brasileira?", opts: ["Porque o Haiti fica na Europa", "Porque a Lei de Refúgio não abrange situações decorrentes de desastres naturais (eles usam visto de acolhida humanitária)", "Porque eles não precisam de documentos", "Porque o Brasil não aceita pedidos do Haiti"], ans: 1 },
+        { q: "Qual foi o ano em que o Brasil registrou o maior número de solicitações de refúgio de toda a série histórica (82.552 pedidos)?", opts: ["2010", "2019", "2022", "2024"], ans: 1 },
+        { q: "Em qual órgão os imigrantes com visto humanitário (como sírios, haitianos e afegãos) devem se registrar ao chegar ao Brasil?", opts: ["Receita Federal", "Polícia Federal", "Ministério da Educação", "Banco Central"], ans: 1 },
+        { q: "Qual é o prazo que pessoas vindas da Síria com visto humanitário têm para se registrar na Polícia Federal ao chegar ao Brasil?", opts: ["Até 10 dias", "Até 30 dias", "Até 90 dias (garantindo residência temporária por 2 anos)", "Até 5 anos"], ans: 2 },
+        { q: "Quais são os 6 países em que o Brasil reconhece Grave e Generalizada Violação de Direitos Humanos (GGVDH)?", opts: ["Mali, Burkina Faso, Iraque, Venezuela, Síria e Afeganistão", "Argentina, Chile, Peru, Colômbia, Uruguai e Paraguai", "Portugal, Espanha, França, Itália, Alemanha e Grécia", "Japão, China, Índia, Coreia do Sul, Tailândia e Vietnã"], ans: 0 },
+        { q: "De acordo com a Ficha 3, quantas pessoas foram forçadas a deixar suas casas no mundo até o final de 2025?", opts: ["41,6 milhões", "68,7 milhões", "117,8 milhões", "9 milhões"], ans: 2 },
+        { q: "Por que o número global de refugiados caiu 3% entre 2024 e 2025?", opts: ["Porque acabaram todas as guerras no planeta", "Devido ao aumento significativo no retorno de refugiados, principalmente para Afeganistão, Síria e Sudão", "Porque os países fecharam todas as fronteiras", "Porque ninguém mais quis se mudar"], ans: 1 },
+        { q: "O que são 'Deslocados Internos' (IDPs), que somavam 68,7 milhões de pessoas em 2025?", opts: ["Pessoas que fugiram para outro continente", "Pessoas forçadas a deixar suas casas por conflitos ou violência, mas que continuam dentro de seu próprio país", "Turistas que perderam o voo de volta", "Solicitantes de asilo aprovados na Europa"], ans: 1 },
+        { q: "Qual é o nome do preconceito contra pessoas por serem de outro país ou cultura?", opts: ["Racismo", "Xenofobia", "Intolerância religiosa", "Solidariedade"], ans: 1 },
+        { q: "Qual região do mundo apresentava o maior volume de deslocamento forçado em 2025 (22,8 milhões de pessoas)?", opts: ["Américas", "Europa Ocidental", "Oriente Médio e Norte da África", "África Oriental e Austral"], ans: 0 },
+        { q: "Em 2023, qual porcentagem das solicitações de refúgio no Brasil veio de nacionais da Venezuela?", opts: ["9%", "16,3%", "50,3%", "97%"], ans: 2 },
+        { q: "Existe um prazo fixo para o CONARE decidir sobre um pedido de refúgio no Brasil?", opts: ["Sim, sempre exatos 30 dias", "Não, o tempo depende da complexidade de cada caso e das informações sobre o país de origem", "Sim, sempre 1 semana", "Não, porque o CONARE não analisa pedidos"], ans: 1 },
+        { q: "Por que o fluxo de solicitações de refúgio no Brasil diminuiu entre 2020 e 2021 antes de voltar a crescer?", opts: ["Por causa das restrições à mobilidade humana internacional impostas durante a pandemia de COVID-19", "Porque não havia mais conflitos no mundo", "Porque o Brasil proibiu viagens de avião para sempre", "Porque todos os refugiados voltaram para casa"], ans: 0 }
+    ];
+    let qIdx = 0, qLocked = false;
+    function loadQuiz() {
+        qLocked = false;
+        document.getElementById('quizFeedback').innerText = '';
+        if (qIdx >= quizData.length) {
+            document.getElementById('quizQuestion').innerText = "🎉 Parabéns! Você concluiu todas as 15 perguntas do Super Quiz!";
+            document.getElementById('quizOptions').innerHTML = `<button class="action-btn" onclick="qIdx=0; loadQuiz()">Jogar Novamente</button>`;
+            return;
+        }
+        const curr = quizData[qIdx];
+        document.getElementById('quizQuestion').innerText = `${qIdx + 1}/${quizData.length}. ${curr.q}`;
+        const optsDiv = document.getElementById('quizOptions');
+        optsDiv.innerHTML = '';
+        curr.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (qLocked) return;
+                qLocked = true;
+                if (i === curr.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('quizFeedback').innerText = "✅ Resposta Certa! +10 XP";
+                    document.getElementById('quizFeedback').style.color = "var(--correct)";
+                    stats.quizCorrect++;
+                    addXP(10, true);
+                } else {
+                    b.classList.add('wrong');
+                    optsDiv.children[curr.ans].classList.add('correct');
+                    document.getElementById('quizFeedback').innerText = "❌ Ops! Veja a resposta correta destacada em verde.";
+                    document.getElementById('quizFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                setTimeout(() => { qIdx++; loadQuiz(); }, 1800);
+            };
+            optsDiv.appendChild(b);
+        });
+    }
+
+    // --- 3. MEMORY MATCH GAME ---
+    const memoryPairs = [
+        { id: 1, text: "CONARE" }, { id: 1, text: "Comitê que analisa refúgio no Brasil" },
+        { id: 2, text: "Polícia Federal" }, { id: 2, text: "Registra residência e vistos no Brasil" },
+        { id: 3, text: "Haiti" }, { id: 3, text: "Visto humanitário por desastre natural" },
+        { id: 4, text: "Síria" }, { id: 4, text: "90 dias para registro / residência 2 anos" },
+        { id: 5, text: "Xenofobia" }, { id: 5, text: "Preconceito contra estrangeiros" },
+        { id: 6, text: "Deslocados Internos" }, { id: 6, text: "Fogem sem sair do próprio país" }
+    ];
+    let flippedMem = [], matchedCount = 0;
+
+    function initMemoryGame() {
+        const grid = document.getElementById('memoryGrid');
+        grid.innerHTML = '';
+        document.getElementById('memoryFeedback').innerText = '';
+        flippedMem = [];
+        matchedCount = 0;
+        const shuffled = [...memoryPairs].sort(() => Math.random() - 0.5);
+        shuffled.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'mem-card hidden-text';
+            card.innerText = '?';
+            card.dataset.id = item.id;
+            card.dataset.text = item.text;
+            card.onclick = () => {
+                if (card.classList.contains('revealed') || card.classList.contains('matched') || flippedMem.length === 2) return;
+                card.classList.remove('hidden-text');
+                card.classList.add('revealed');
+                card.innerText = item.text;
+                flippedMem.push(card);
+
+                if (flippedMem.length === 2) {
+                    const [c1, c2] = flippedMem;
+                    if (c1.dataset.id === c2.dataset.id) {
+                        c1.classList.replace('revealed', 'matched');
+                        c2.classList.replace('revealed', 'matched');
+                        flippedMem = [];
+                        matchedCount++;
+                        addXP(8, true);
+                        if (matchedCount === memoryPairs.length / 2) {
+                            stats.memoryWins++;
+                            document.getElementById('memoryFeedback').innerText = "🎉 Parabéns! Todos os pares combinados! +20 XP Bônus!";
+                            document.getElementById('memoryFeedback').style.color = "var(--correct)";
+                            addXP(20, true);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            c1.classList.replace('revealed', 'hidden-text'); c1.innerText = '?';
+                            c2.classList.replace('revealed', 'hidden-text'); c2.innerText = '?';
+                            flippedMem = [];
+                        }, 950);
+                    }
+                }
+            };
+            grid.appendChild(card);
+        });
+    }
+
+    // --- 4. WORD SCRAMBLE ---
+    const scrambleWords = [
+        { word: "CONARE", hint: "Dica: Sigla do Comitê Nacional para os Refugiados no Brasil." },
+        { word: "XENOFOBIA", hint: "Dica: Preconceito contra pessoas que vêm de outro país." },
+        { word: "HAITI", hint: "Dica: País caribenho cujos cidadãos recebem acolhida humanitária por desastres naturais." },
+        { word: "ACNUR", hint: "Dica: Agência da ONU para Refugiados." },
+        { word: "VENEZUELA", hint: "Dica: País vizinho que representou 50,3% dos pedidos de refúgio no Brasil em 2023." },
+        { word: "SIRIA", hint: "Dica: País afetado por conflito armado cujos cidadãos têm até 90 dias para registro na PF." },
+        { word: "ASILO", hint: "Dica: Direito humano fundamental de buscar proteção em outro país." }
+    ];
+    let scIdx = 0;
+    function loadScramble() {
+        document.getElementById('scrambleFeedback').innerText = '';
+        document.getElementById('scrambleInput').value = '';
+        const item = scrambleWords[scIdx % scrambleWords.length];
+        document.getElementById('scrambleHint').innerText = item.hint;
+        let scrambled = item.word.split('').sort(() => Math.random() - 0.5).join('');
+        if (scrambled === item.word) scrambled = item.word.split('').reverse().join('');
+        document.getElementById('scrambledDisplay').innerText = scrambled;
+    }
+    function checkScramble() {
+        const userVal = document.getElementById('scrambleInput').value.trim().toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+        const correctWord = scrambleWords[scIdx % scrambleWords.length].word;
+        const fb = document.getElementById('scrambleFeedback');
+        if (userVal === correctWord) {
+            fb.innerText = `🎉 Muito bem! A palavra é ${correctWord}! +12 XP`;
+            fb.style.color = "var(--correct)";
+            stats.scrambleWins++;
+            addXP(12, true);
+            scIdx++;
+            setTimeout(loadScramble, 1400);
+        } else {
+            fb.innerText = "❌ Tente novamente! Observe as letras embaralhadas.";
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+    }
+
+    // --- 5. TRUE OR FALSE ---
+    const tfData = [
+        { stmt: "Os solicitantes de asilo são pessoas que já tiveram a decisão final aprovada sobre seus pedidos.", ans: false, exp: "Falso! Conforme a Ficha 3, solicitantes de asilo ainda estão aguardando uma decisão sobre seus pedidos." },
+        { stmt: "No Brasil, os venezuelanos podem optar tanto pela via do refúgio quanto pela autorização de residência na Polícia Federal.", ans: true, exp: "Verdadeiro! Conforme a Ficha 5, eles têm essas duas opções." },
+        { stmt: "A Lei de Refúgio no Brasil abrange situações causadas por desastres naturais, como no caso do Haiti.", ans: false, exp: "Falso! A Lei de Refúgio não abrange desastres naturais; por isso os haitianos usam o visto temporário de acolhida humanitária." },
+        { stmt: "Atualmente, 1 em cada 70 pessoas no mundo (1,4% da população global) está em situação de deslocamento forçado.", ans: true, exp: "Verdadeiro! Dado exato da Ficha 3." },
+        { stmt: "Os retornos de refugiados para seus países de origem sempre ocorrem em excelentes condições de segurança.", ans: false, exp: "Falso! Muitos retornos ocorrem em circunstâncias adversas e condições desafiadoras." },
+        { stmt: "Em 2019, o Brasil registrou o maior número de solicitações de refúgio de sua série histórica (82.552 pedidos).", ans: true, exp: "Verdadeiro! Seguido por 2018 (79.831) e 2025 (75.599)." }
+    ];
+    let tfIdx = 0, tfLocked = false;
+    function loadTF() {
+        tfLocked = false;
+        document.getElementById('tfFeedback').innerText = '';
+        const item = tfData[tfIdx % tfData.length];
+        document.getElementById('tfStatement').innerText = `"${item.stmt}"`;
+    }
+    function checkTF(choice) {
+        if (tfLocked) return;
+        tfLocked = true;
+        const item = tfData[tfIdx % tfData.length];
+        const fb = document.getElementById('tfFeedback');
+        if (choice === item.ans) {
+            fb.innerText = `✅ Correto! ${item.exp} (+10 XP)`;
+            fb.style.color = "var(--correct)";
+            stats.tfWins++;
+            addXP(10, true);
+        } else {
+            fb.innerText = `❌ Incorreto! ${item.exp}`;
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+        tfIdx++;
+        setTimeout(loadTF, 2500);
+    }
+
+    // --- 6. SORTING BUCKETS ---
+    const sortItems = [
+        { text: "Xenofobia, racismo e intolerância religiosa", cat: "conceitos" },
+        { text: "117,8 milhões de deslocados no mundo até o final de 2025", cat: "mundo" },
+        { text: "551.072 solicitações de refúgio registradas entre 2010 e 2025", cat: "brasil_dados" },
+        { text: "Registro na Polícia Federal em até 90 dias para visto humanitário da Síria", cat: "regras" },
+        { text: "Diferença entre sair por obrigação (refugiado) ou por escolha (migrante)", cat: "conceitos" },
+        { text: "Américas liderando o deslocamento forçado com 22,8 milhões de pessoas", cat: "mundo" },
+        { text: "Recorde de 82.552 novas solicitações de refúgio no ano de 2019", cat: "brasil_dados" },
+        { text: "CONARE analisando pedidos e reconhecimento de GGVDH em 6 países", cat: "regras" }
+    ];
+    let sortIdx = 0;
+    function loadSort() {
+        document.getElementById('sortFeedback').innerText = '';
+        const item = sortItems[sortIdx % sortItems.length];
+        document.getElementById('sortPrompt').innerText = item.text;
+    }
+    function checkSort(selectedCat) {
+        const item = sortItems[sortIdx % sortItems.length];
+        const fb = document.getElementById('sortFeedback');
+        if (selectedCat === item.cat) {
+            fb.innerText = "🎯 Exato! Categoria correta! +10 XP";
+            fb.style.color = "var(--correct)";
+            stats.sortWins++;
+            addXP(10, true);
+            sortIdx++;
+            setTimeout(loadSort, 1100);
+        } else {
+            fb.innerText = "❌ Ops! Esse item pertence a outra categoria.";
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+    }
+
+    // Init
+    loadQuiz();
+    initMemoryGame();
+    loadScramble();
+    loadTF();
+    loadSort();
+    renderBadges();
+</script>
+</body>
+</html>
