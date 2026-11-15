@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aventura Matemática: Racionais, Medidas & Geometria (5º Ano)</title>
+    <title>Plataforma Completa de Matemática: 5º Ano (100% Edital)</title>
     <style>
         :root {
             --paper-bg: #fffdf7;
@@ -15,6 +15,7 @@
             --primary-dark: #c2410c;
             --secondary: #0284c7;
             --accent: #eab308;
+            --purple: #7c3aed;
             --text: #1e293b;
             --correct: #16a34a;
             --wrong: #dc2626;
@@ -36,33 +37,33 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1050px;
             width: 100%;
         }
 
-        /* Estilo Caderno Escolar */
+        /* Cabeçalho Caderno */
         .notebook-header {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #0284c7 100%);
             color: white;
-            padding: 20px 25px;
+            padding: 22px 25px;
             border-radius: 18px;
             border: 4px solid #fff;
             box-shadow: 0 8px 20px rgba(234, 88, 12, 0.25);
             text-align: center;
             margin-bottom: 16px;
-            position: relative;
         }
 
         .notebook-header h1 {
             margin: 0 0 6px 0;
             font-size: 1.75rem;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.15);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
         }
 
         .notebook-header p {
             margin: 0;
-            font-size: 0.98rem;
-            color: #ffedd5;
+            font-size: 0.95rem;
+            color: #fef08a;
+            font-weight: bold;
         }
 
         /* HUD Gamificado */
@@ -83,14 +84,14 @@
             .hud { grid-template-columns: repeat(2, 1fr); }
         }
 
-        .hud-item span { display: block; font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: bold; }
-        .hud-item strong { font-size: 1.2rem; color: var(--primary-dark); }
+        .hud-item span { display: block; font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: bold; }
+        .hud-item strong { font-size: 1.15rem; color: var(--primary-dark); }
 
         /* Abas de Navegação */
         .tabs {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 7px;
             margin-bottom: 18px;
             justify-content: center;
         }
@@ -99,10 +100,10 @@
             background: #ffffff;
             border: 2px solid #cbd5e1;
             color: #334155;
-            padding: 10px 13px;
+            padding: 9px 12px;
             border-radius: 12px;
             font-weight: bold;
-            font-size: 0.86rem;
+            font-size: 0.84rem;
             cursor: pointer;
             transition: all 0.2s;
             flex: 1 1 auto;
@@ -119,13 +120,13 @@
             transform: translateY(-2px);
         }
 
-        /* Painel Folha de Caderno Pautada */
+        /* Folha Pautada */
         .panel {
             display: none;
             background-color: var(--paper-bg);
             background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
             background-size: 100% 32px;
-            padding: 25px 25px 25px 42px;
+            padding: 25px 25px 25px 40px;
             border-radius: 16px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.08);
             border: 2px solid #e2e8f0;
@@ -147,90 +148,102 @@
             padding: 8px 14px;
             border-radius: 10px;
             border: 2px dashed #f97316;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             display: inline-block;
         }
 
-        /* HISTÓRIAS EM QUADRINHOS (HQ) */
-        .comic-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-        .comic-tab {
-            background: #fef3c7;
-            border: 2px solid #f59e0b;
-            color: #92400e;
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .comic-tab.active {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .comic-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
+        /* HISTÓRIA EM QUADRINHOS INTERATIVA */
+        .hq-stage {
+            background: white;
+            border: 4px solid #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 6px 6px 0px #1e293b;
             margin-top: 10px;
         }
 
-        .comic-panel {
-            background: white;
-            border: 3px solid #1e293b;
-            border-radius: 12px;
-            padding: 14px;
-            box-shadow: 4px 4px 0px #1e293b;
+        .hq-header-bar {
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
-        }
-
-        .comic-caption {
+            align-items: center;
             background: #fef08a;
             border: 2px solid #1e293b;
-            padding: 6px 10px;
-            font-size: 0.85rem;
+            padding: 8px 14px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             font-weight: bold;
-            margin-bottom: 10px;
-            border-radius: 6px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hq-scene-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 700px) {
+            .hq-scene-layout { grid-template-columns: 1fr; }
+        }
+
+        .hq-illustration {
+            background: #f0f9ff;
+            border: 3px solid #1e293b;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            min-height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .speech-bubble {
-            position: relative;
             background: #ffffff;
-            border: 2.5px solid #1e293b;
-            border-radius: 16px;
-            padding: 10px 12px;
-            font-size: 0.9rem;
-            line-height: 1.35;
-            margin-bottom: 10px;
+            border: 3px solid #1e293b;
+            border-radius: 18px;
+            padding: 14px 16px;
+            font-size: 0.98rem;
+            line-height: 1.4;
+            margin-bottom: 14px;
+            position: relative;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
         }
 
-        .speech-bubble.thought {
-            border-style: dashed;
-            background: #f0f9ff;
+        .hq-choices {
+            display: grid;
+            gap: 10px;
         }
 
-        .comic-art {
-            text-align: center;
-            margin-top: 6px;
+        .hq-choice-btn {
+            background: #eff6ff;
+            border: 2.5px solid #0284c7;
+            color: #0369a1;
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            transition: 0.2s;
         }
 
-        /* LOUSA VERDE (EXEMPLOS VISUAIS) */
+        .hq-choice-btn:hover { background: #0284c7; color: white; }
+        .hq-choice-btn.correct { background: var(--correct) !important; color: white !important; border-color: #15803d !important; }
+        .hq-choice-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: #b91c1c !important; }
+
+        /* LOUSA VERDE */
         .chalkboard {
             background-color: var(--chalkboard);
             border: 8px solid var(--chalkboard-border);
             border-radius: 14px;
             color: #f8fafc;
             padding: 18px;
-            margin-bottom: 20px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.4), 0 4px 10px rgba(0,0,0,0.15);
+            margin-bottom: 18px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
         }
 
         .chalkboard h3 {
@@ -242,8 +255,8 @@
 
         .visual-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 14px;
             margin-top: 12px;
         }
 
@@ -255,7 +268,6 @@
             text-align: center;
         }
 
-        /* Tabela Valor Posicional */
         .pos-table {
             width: 100%;
             border-collapse: collapse;
@@ -264,22 +276,20 @@
             border-radius: 8px;
             overflow: hidden;
             margin-top: 10px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
         }
         .pos-table th { background: #0284c7; color: white; padding: 8px; border: 1px solid #cbd5e1; }
         .pos-table td { padding: 8px; text-align: center; border: 1px solid #cbd5e1; font-weight: bold; }
-        .comma-cell { background: #fef08a; color: #b45309; font-size: 1.2rem; }
 
-        /* JOGOS INTERATIVOS */
+        /* JOGOS & QUIZ */
         .question-box {
             background: white;
             border: 2px solid #cbd5e1;
             padding: 16px;
             border-radius: 12px;
-            font-size: 1.1rem;
+            font-size: 1.08rem;
             font-weight: bold;
             margin-bottom: 14px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
 
         .options-list { display: grid; gap: 10px; }
@@ -289,7 +299,7 @@
             padding: 12px 15px;
             border-radius: 10px;
             text-align: left;
-            font-size: 0.98rem;
+            font-size: 0.96rem;
             cursor: pointer;
             font-weight: bold;
             font-family: inherit;
@@ -299,43 +309,27 @@
         .opt-btn.correct { background: var(--correct) !important; color: white !important; border-color: #15803d !important; }
         .opt-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: #b91c1c !important; }
 
-        /* Jogo da Reta Numérica */
-        .number-line-box {
-            background: var(--chalkboard);
-            border: 6px solid var(--chalkboard-border);
-            border-radius: 12px;
-            padding: 20px 10px;
-            margin: 15px 0;
+        /* PIZZA & FRAÇÕES INTERATIVAS */
+        .pizza-board {
+            background: white;
+            border: 3px solid #f59e0b;
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        /* GRÁFICOS DE LINHA INTERATIVOS */
+        .chart-box {
+            background: white;
+            border: 3px solid #0284c7;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
             text-align: center;
         }
 
-        /* Jogo da Memória */
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-        @media (max-width: 600px) { .memory-grid { grid-template-columns: repeat(3, 1fr); } }
-        .mem-card {
-            height: 90px;
-            background: var(--secondary);
-            color: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 8px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-        }
-        .mem-card.hidden-text { font-size: 1.6rem; }
-        .mem-card.revealed { background: #e0f2fe; color: #0369a1; border: 2px solid #0284c7; }
-        .mem-card.matched { background: var(--correct); color: white; border: 2px solid #15803d; }
-
-        /* Jogo Construtor de Horta (Área e Perímetro) */
+        /* CONSTRUTOR DE HORTA */
         .grid-builder {
             display: inline-grid;
             grid-template-columns: repeat(10, 28px);
@@ -351,14 +345,38 @@
             height: 28px;
             background: #ffffff;
             cursor: pointer;
-            transition: 0.15s;
         }
         .grid-cell.painted {
             background: #22c55e;
             box-shadow: inset 0 0 4px #15803d;
         }
 
-        /* Exercícios Práticos com Input */
+        /* MEMÓRIA */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 600px) { .memory-grid { grid-template-columns: repeat(3, 1fr); } }
+        .mem-card {
+            height: 85px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 0.92rem;
+            cursor: pointer;
+        }
+        .mem-card.hidden-text { font-size: 1.5rem; }
+        .mem-card.revealed { background: #e0f2fe; color: #0369a1; border: 2px solid #0284c7; }
+        .mem-card.matched { background: var(--correct); color: white; border: 2px solid #15803d; }
+
+        /* CADERNO DE EXERCÍCIOS */
         .exercise-card {
             background: white;
             border: 2px solid #e2e8f0;
@@ -367,13 +385,23 @@
             padding: 15px;
             margin-bottom: 14px;
         }
+        .badge-topic {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
         .input-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
         .math-input {
             padding: 10px 12px;
             font-size: 1rem;
             border: 2px solid #cbd5e1;
             border-radius: 8px;
-            width: 150px;
+            width: 155px;
             font-family: inherit;
             font-weight: bold;
         }
@@ -393,7 +421,7 @@
         .feedback {
             margin-top: 10px;
             font-weight: bold;
-            font-size: 0.98rem;
+            font-size: 0.96rem;
             min-height: 22px;
         }
     </style>
@@ -402,8 +430,8 @@
 
 <div class="container">
     <div class="notebook-header">
-        <h1>📐 Matemática em Quadrinhos & Jogos — 5º Ano ✏️</h1>
-        <p>Escola Projeto Vida • Prova Trimestral (Números Racionais, Porcentagem, Medidas, Gráficos e Geometria)</p>
+        <h1>📐 Super Plataforma de Matemática — 5º Ano (100% Edital) ✏️</h1>
+        <p>Escola Projeto Vida • Racionais (Decimais, Frações, %), Medidas & Tempo, Gráficos de Linha e Geometria</p>
     </div>
 
     <!-- HUD Gamificado -->
@@ -411,202 +439,68 @@
         <div class="hud-item"><span>⭐ Pontos XP</span><strong id="xpDisplay">0</strong></div>
         <div class="hud-item"><span>🔥 Sequência</span><strong id="streakDisplay">0</strong></div>
         <div class="hud-item"><span>🎖️ Patente</span><strong id="levelDisplay">1 - Aprendiz</strong></div>
-        <div class="hud-item"><span>🎯 Desafios</span><strong id="doneCountDisplay">0</strong></div>
+        <div class="hud-item"><span>✅ Acertos</span><strong id="doneCountDisplay">0</strong></div>
     </div>
 
-    <!-- Menu de Abas -->
+    <!-- Abas -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('tab-hq', this)">💬 1. Histórias em Quadrinhos</button>
-        <button class="tab-btn" onclick="openTab('tab-visual', this)">🧑‍🏫 2. Lousa & Exemplos Visuais</button>
-        <button class="tab-btn" onclick="openTab('tab-quiz', this)">❓ 3. Super Quiz (12)</button>
-        <button class="tab-btn" onclick="openTab('tab-reta', this)">📏 4. Desafio da Reta Numérica</button>
-        <button class="tab-btn" onclick="openTab('tab-horta', this)">🌱 5. Construtor da Horta (Área/Perímetro)</button>
-        <button class="tab-btn" onclick="openTab('tab-memory', this)">🧠 6. Memória (Fração = Decimal = %)</button>
-        <button class="tab-btn" onclick="openTab('tab-exercicios', this)">✍️ 7. Caderno de Exercícios</button>
+        <button class="tab-btn active" onclick="openTab('tab-hq', this)">🎬 1. HQ Interativa (Aventura)</button>
+        <button class="tab-btn" onclick="openTab('tab-visual', this)">🧑‍🏫 2. Lousa & Esquemas</button>
+        <button class="tab-btn" onclick="openTab('tab-fracoes', this)">🍕 3. Jogo das Frações</button>
+        <button class="tab-btn" onclick="openTab('tab-graficos', this)">📈 4. Gráficos de Linha</button>
+        <button class="tab-btn" onclick="openTab('tab-reta', this)">📏 5. Reta Numérica</button>
+        <button class="tab-btn" onclick="openTab('tab-horta', this)">🌱 6. Horta (Área/Perímetro)</button>
+        <button class="tab-btn" onclick="openTab('tab-quiz', this)">❓ 7. Super Quiz (15)</button>
+        <button class="tab-btn" onclick="openTab('tab-memory', this)">🧠 8. Memória</button>
+        <button class="tab-btn" onclick="openTab('tab-exercicios', this)">✍️ 9. Caderno (10 Problemas)</button>
     </div>
 
-    <!-- 1. HISTÓRIAS EM QUADRINHOS -->
+    <!-- 1. HISTÓRIA EM QUADRINHOS INTERATIVA (ESCOLHA O CAMINHO E AJUDE OS PERSONAGENS!) -->
     <div id="tab-hq" class="panel active">
-        <h2 class="panel-title">💬 Histórias em Quadrinhos da Turma</h2>
-        <p style="font-weight:bold; color:#475569;">Escolha uma história inspirada nas aulas dos professores Felipe, Clotilde, Isabel, Gelsa e André:</p>
-        
-        <div class="comic-selector">
-            <button class="comic-tab active" onclick="showComic(1, this)">🎂 HQ 1: O Aniversário da Roberta (Decimais)</button>
-            <button class="comic-tab" onclick="showComic(2, this)">🩺 HQ 2: Jonas e a Porcentagem (25% e 50%)</button>
-            <button class="comic-tab" onclick="showComic(3, this)">🔷 HQ 3: Jonas e os Quadriláteros</button>
-            <button class="comic-tab" onclick="showComic(4, this)">📏 HQ 4: Larissa, Maurício e as Medidas</button>
-        </div>
+        <h2 class="panel-title">🎬 História em Quadrinhos Interativa: "A Missão da Gincana & Horta"</h2>
+        <p style="font-weight:bold; color:#475569;">Ajude a Roberta, o Jonas, a Larissa e o Pedro a resolverem os desafios matemáticos em cada episódio!</p>
 
-        <!-- HQ 1 -->
-        <div id="comic-1" class="comic-grid">
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 1: Roberta escrevendo em seu diário...</div>
-                <div class="speech-bubble thought">"Ontem fiz aniversário! Estou com <strong>1,35 m</strong> de altura, pesando <strong>56,5 kg</strong> e já guardei <strong>R$ 285,75</strong> do presente do vovô João!"</div>
-                <div class="comic-art">
-                    <svg width="130" height="110" viewBox="0 0 130 110">
-                        <circle cx="65" cy="45" r="24" fill="#fcd34d" stroke="#1e293b" stroke-width="2.5"/>
-                        <circle cx="40" cy="40" r="10" fill="#fde047" stroke="#1e293b" stroke-width="2"/>
-                        <circle cx="90" cy="40" r="10" fill="#fde047" stroke="#1e293b" stroke-width="2"/>
-                        <circle cx="57" cy="42" r="2.5" fill="#1e293b"/><circle cx="73" cy="42" r="2.5" fill="#1e293b"/>
-                        <path d="M57 52 Q65 60 73 52" stroke="#1e293b" stroke-width="2.5" fill="none"/>
-                        <rect x="42" y="70" width="46" height="32" rx="8" fill="#c084fc" stroke="#1e293b" stroke-width="2.5"/>
-                        <rect x="30" y="92" width="70" height="14" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
-                    </svg>
-                </div>
+        <div class="hq-stage">
+            <div class="hq-header-bar">
+                <span id="hqChapterBadge">Episódio 1 de 6: O Lanche da Roberta</span>
+                <span id="hqProgressText">Progresso da História: 1/6</span>
             </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 2: A festa com o bolo da vovó Maria!</div>
-                <div class="speech-bubble">"Comi quase metade (<strong>0,5</strong>) do bolo de chocolate e meu irmão Rafael tomou quase sozinho um refrigerante de <strong>2,5 L</strong>! Mamãe deu uma bronca!"</div>
-                <div class="comic-art">
-                    <svg width="150" height="110" viewBox="0 0 150 110">
-                        <rect x="25" y="55" width="45" height="30" fill="#78350f" stroke="#1e293b" stroke-width="2.5"/>
-                        <rect x="25" y="67" width="45" height="6" fill="#fef08a"/>
-                        <rect x="95" y="35" width="22" height="50" rx="5" fill="#991b1b" stroke="#1e293b" stroke-width="2.5"/>
-                        <rect x="95" y="50" width="22" height="14" fill="#38bdf8"/>
-                        <text x="88" y="102" font-size="11" font-weight="bold" fill="#1e293b">Bolo & 2,5 L</text>
-                    </svg>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 3: Na sala de aula com o Professor Felipe...</div>
-                <div class="speech-bubble">"Turma, números com vírgula como <strong>1,3 kg</strong>, <strong>1,35 m</strong> e <strong>2,5 L</strong> não são números naturais. São <strong>Números Racionais</strong> na forma decimal!"</div>
-                <div class="comic-art">
-                    <svg width="130" height="110" viewBox="0 0 130 110">
-                        <rect x="15" y="10" width="100" height="65" rx="6" fill="#14532d" stroke="#92400e" stroke-width="3"/>
-                        <text x="28" y="38" fill="#fde047" font-size="13" font-weight="bold">1,35 m</text>
-                        <text x="28" y="58" fill="#ffffff" font-size="12">2,5 L | 56,5 kg</text>
-                        <circle cx="65" cy="92" r="14" fill="#fdba74" stroke="#1e293b" stroke-width="2"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
 
-        <!-- HQ 2 -->
-        <div id="comic-2" class="comic-grid" style="display:none;">
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 1: Jonas lê uma notícia sobre Ubatuba...</div>
-                <div class="speech-bubble">"Professora Gelsa! A notícia diz que de <strong>2.500 acidentes</strong> marinhos, metade foi por ouriços-do-mar e <strong>25%</strong> por águas-vivas. Então <strong>25%</strong> é a quarta parte?"</div>
-                <div class="comic-art">
-                    <svg width="130" height="100" viewBox="0 0 130 100">
-                        <circle cx="65" cy="45" r="22" fill="#a16207" stroke="#1e293b" stroke-width="2.5"/>
-                        <path d="M45 35 Q65 15 85 35" fill="#1e293b"/>
-                        <circle cx="58" cy="44" r="2.5" fill="#fff"/><circle cx="72" cy="44" r="2.5" fill="#fff"/>
-                        <path d="M58 53 Q65 59 72 53" stroke="#fff" stroke-width="2" fill="none"/>
-                        <rect x="42" y="70" width="46" height="25" rx="6" fill="#f8fafc" stroke="#1e293b" stroke-width="2"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 2: A Professora Gelsa confirma!</div>
-                <div class="speech-bubble">"Isso mesmo, Jonas! <strong>25%</strong> é 1/4. E se metade dos 2.500 acidentes (<strong>1.250</strong>) foi por ouriços, como escrevemos metade em porcentagem?"</div>
-                <div class="comic-art">
-                    <svg width="130" height="100" viewBox="0 0 130 100">
-                        <circle cx="65" cy="42" r="22" fill="#fed7aa" stroke="#1e293b" stroke-width="2.5"/>
-                        <rect x="52" y="36" width="10" height="8" fill="none" stroke="#1e293b" stroke-width="2"/>
-                        <rect x="68" y="36" width="10" height="8" fill="none" stroke="#1e293b" stroke-width="2"/>
-                        <rect x="40" y="66" width="50" height="30" rx="8" fill="#ffffff" stroke="#1e293b" stroke-width="2.5"/>
-                        <rect x="55" y="66" width="20" height="30" fill="#fde047"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 3: O segredo dos 10% na lousa!</div>
-                <div class="speech-bubble">"Metade é <strong>50%</strong>! E para calcular <strong>10%</strong>, basta dividir por 10! Depois: <strong>20%</strong> = 2 × 10%, <strong>5%</strong> = metade de 10% e <strong>15%</strong> = 20% - 5%!"</div>
-                <div class="comic-art">
-                    <svg width="140" height="100" viewBox="0 0 140 100">
-                        <rect x="10" y="10" width="120" height="80" rx="8" fill="#14532d" stroke="#92400e" stroke-width="3"/>
-                        <text x="20" y="35" fill="#fde047" font-size="12" font-weight="bold">50% = Metade</text>
-                        <text x="20" y="55" fill="#ffffff" font-size="12">25% = Quarta parte</text>
-                        <text x="20" y="75" fill="#86efac" font-size="12">10% = Dividir por 10</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- HQ 3 -->
-        <div id="comic-3" class="comic-grid" style="display:none;">
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 1: Jonas analisa os quadriláteros...</div>
-                <div class="speech-bubble thought">"Hmm... O quadrado é um paralelogramo que tem os 4 ângulos retos (90°), então ele é um <strong>retângulo</strong>!"</div>
-                <div class="comic-art">
-                    <svg width="120" height="90" viewBox="0 0 120 90">
-                        <rect x="35" y="15" width="50" height="50" fill="#f43f5e" stroke="#1e293b" stroke-width="3"/>
-                        <text x="32" y="82" font-size="11" font-weight="bold">4 ângulos de 90°</text>
-                    </svg>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 2: Uma nova descoberta!</div>
-                <div class="speech-bubble thought">"Mas o quadrado também tem os 4 lados com a mesma medida (congruentes)! Então ele também é um <strong>losango</strong>!"</div>
-                <div class="comic-art">
-                    <svg width="120" height="90" viewBox="0 0 120 90">
-                        <polygon points="60,10 95,45 60,80 25,45" fill="#3b82f6" stroke="#1e293b" stroke-width="3"/>
-                        <text x="30" y="88" font-size="10" font-weight="bold">4 lados iguais!</text>
-                    </svg>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 3: A conclusão do Professor Felipe!</div>
-                <div class="speech-bubble">"Acertou, Jonas! Todo <strong>quadrado</strong> é ao mesmo tempo um <strong>retângulo</strong> e um <strong>losango</strong>! Já o <strong>trapézio</strong> tem apenas 1 par de lados paralelos!"</div>
-                <div class="comic-art">
-                    <svg width="140" height="90" viewBox="0 0 140 90">
-                        <polygon points="35,20 105,20 125,70 15,70" fill="#f59e0b" stroke="#1e293b" stroke-width="3"/>
-                        <text x="45" y="50" fill="#fff" font-size="12" font-weight="bold">Trapézio</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- HQ 4 -->
-        <div id="comic-4" class="comic-grid" style="display:none;">
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 1: Montando o cenário da peça de teatro...</div>
-                <div class="speech-bubble">"Larissa, medimos dois tecidos: <strong>45,3 m</strong> e <strong>32,6 m</strong>. Para somar, basta alinhar vírgula embaixo de vírgula: 45,3 + 32,6 = <strong>77,9 m</strong>!"</div>
-                <div class="comic-art">
-                    <svg width="130" height="95" viewBox="0 0 130 95">
-                        <circle cx="65" cy="40" r="22" fill="#fed7aa" stroke="#1e293b" stroke-width="2.5"/>
-                        <path d="M43 32 Q65 10 87 32" fill="#9a3412"/>
-                        <rect x="52" y="35" width="10" height="8" fill="none" stroke="#1e293b" stroke-width="2"/>
-                        <rect x="68" y="35" width="10" height="8" fill="none" stroke="#1e293b" stroke-width="2"/>
-                        <rect x="42" y="64" width="46" height="25" rx="6" fill="#3b82f6" stroke="#1e293b" stroke-width="2"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 2: E se o número não tiver vírgula?</div>
-                <div class="speech-bubble">"Como você fez <strong>4,9 + 8</strong>, Maurício? Eu coloquei <strong>8,0</strong> para igualar as casas decimais e deu <strong>12,9</strong>!"</div>
-                <div class="comic-art">
-                    <svg width="130" height="95" viewBox="0 0 130 95">
-                        <rect x="20" y="10" width="90" height="75" rx="8" fill="#14532d" stroke="#92400e" stroke-width="3"/>
-                        <text x="45" y="35" fill="#fff" font-size="14" font-weight="bold">  4,9</text>
-                        <text x="35" y="55" fill="#fde047" font-size="14" font-weight="bold">+ 8,0</text>
-                        <line x1="35" y1="60" x2="90" y2="60" stroke="#fff" stroke-width="2"/>
-                        <text x="40" y="77" fill="#86efac" font-size="14" font-weight="bold"> 12,9</text>
-                    </svg>
-                </div>
-            </div>
-            <div class="comic-panel">
-                <div class="comic-caption">Cena 3: O chão da sala da Professora Alice!</div>
-                <div class="speech-bubble">"Na sala de aula couberam <strong>8 folhas</strong> de 1 m² na frente e <strong>10 folhas</strong> na lateral. Área total = 8 × 10 = <strong>80 m²</strong>!"</div>
-                <div class="comic-art">
-                    <svg width="130" height="95" viewBox="0 0 130 95">
-                        <rect x="20" y="15" width="90" height="60" fill="#fde047" stroke="#1e293b" stroke-width="2.5"/>
-                        <text x="32" y="48" font-size="12" font-weight="bold">8 m × 10 m</text>
-                        <text x="42" y="65" font-size="12" font-weight="bold" fill="#b45309">= 80 m²</text>
-                    </svg>
+            <div class="hq-scene-layout">
+                <div class="hq-illustration" id="hqArtBox"></div>
+                <div>
+                    <div class="speech-bubble" id="hqSpeechBubble"></div>
+                    <div class="hq-choices" id="hqChoicesBox"></div>
+                    <div class="feedback" id="hqFeedback"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 2. LOUSA & EXEMPLOS VISUAIS -->
+    <!-- 2. LOUSA E ESQUEMAS VISUAIS -->
     <div id="tab-visual" class="panel">
-        <h2 class="panel-title">🧑‍🏫 Lousa de Revisão & Esquemas Visuais</h2>
+        <h2 class="panel-title">🧑‍🏫 Lousa Completa de Revisão (Todos os Assuntos da Prova)</h2>
 
-        <!-- Quadro Posicional -->
         <div class="chalkboard">
-            <h3>1. Valor Posicional dos Números Decimais (Quadro do Prof. Felipe)</h3>
-            <p style="font-size:0.9rem;">Para ler e comparar decimais, observe cada casa antes e depois da vírgula:</p>
+            <h3>1. Números Racionais: Frações, Decimais e Porcentagens</h3>
+            <div class="visual-grid">
+                <div class="visual-card" style="text-align:left;">
+                    <strong style="color:#fde047;">🍕 Operações com Frações & Fração de Quantidade:</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li><strong>Soma/Subtração de mesmo denominador:</strong> Conserva o denominador e soma/subtrai os numeradores.<br>Ex: <code>1/3 + 1/3 + 1/3 = 3/3 = 1 inteiro</code>.</li>
+                        <li><strong>Fração de Quantidade:</strong> Divide pelo de baixo e multiplica pelo de cima!<br>Ex: <code>3/4 de 120 indústrias</code> → 120 ÷ 4 = 30 → 30 × 3 = <strong>90 indústrias</strong> (sobram 30).</li>
+                    </ul>
+                </div>
+                <div class="visual-card" style="text-align:left;">
+                    <strong style="color:#fde047;">💯 Truque da Porcentagem (Prof. Gelsa):</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li><strong>100%</strong> = O todo | <strong>50%</strong> = Metade (÷ 2) | <strong>25%</strong> = Quarta parte (÷ 4)</li>
+                        <li><strong>10%</strong> = Décima parte (÷ 10) | <strong>1%</strong> = Centésima parte (÷ 100)</li>
+                        <li><strong>20%</strong> = 2 × 10% | <strong>5%</strong> = 10% ÷ 2 | <strong>15%</strong> = 10% + 5%</li>
+                    </ul>
+                </div>
+            </div>
+
             <table class="pos-table">
                 <thead>
                     <tr>
@@ -614,99 +508,72 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>-</td><td>8</td><td>5</td><td class="comma-cell">,</td><td>5</td><td>-</td><td>-</td></tr>
-                    <tr><td>-</td><td>3</td><td>0</td><td class="comma-cell">,</td><td>7</td><td>9</td><td>5</td></tr>
-                    <tr><td>6</td><td>8</td><td>9</td><td class="comma-cell">,</td><td>0</td><td>0</td><td>4</td></tr>
+                    <tr><td>-</td><td>8</td><td>5</td><td style="background:#fef08a;">,</td><td>5</td><td>-</td><td>-</td></tr>
+                    <tr><td>-</td><td>3</td><td>0</td><td style="background:#fef08a;">,</td><td>7</td><td>9</td><td>5</td></tr>
+                    <tr><td>6</td><td>8</td><td>9</td><td style="background:#fef08a;">,</td><td>0</td><td>0</td><td>4</td></tr>
                 </tbody>
             </table>
-            <p style="margin-top:10px; font-size:0.88rem; color:#fde047;">
-                💡 <strong>Atenção:</strong> Zeros à direita na parte decimal não mudam o valor! <strong>0,7 = 0,70 = 0,700</strong> (são equivalentes!).
-            </p>
         </div>
 
-        <!-- Representações Equivalentes -->
         <div class="chalkboard">
-            <h3>2. Fração ↔ Decimal ↔ Porcentagem (Horta do Seu Anderson)</h3>
-            <div class="visual-grid">
-                <div class="visual-card">
-                    <svg width="100" height="60" viewBox="0 0 100 60">
-                        <rect x="10" y="10" width="40" height="40" fill="#22c55e" stroke="#fff" stroke-width="2"/>
-                        <rect x="50" y="10" width="40" height="40" fill="none" stroke="#fff" stroke-width="2"/>
-                    </svg>
-                    <div><strong>1/2 = 50/100</strong></div>
-                    <div style="color:#fde047; font-size:1.1rem;"><strong>0,50 = 50%</strong> (Metade)</div>
-                </div>
-                <div class="visual-card">
-                    <svg width="100" height="60" viewBox="0 0 100 60">
-                        <rect x="10" y="10" width="20" height="40" fill="#38bdf8" stroke="#fff" stroke-width="2"/>
-                        <rect x="30" y="10" width="60" height="40" fill="none" stroke="#fff" stroke-width="2"/>
-                    </svg>
-                    <div><strong>1/4 = 25/100</strong></div>
-                    <div style="color:#fde047; font-size:1.1rem;"><strong>0,25 = 25%</strong> (Quarta parte)</div>
-                </div>
-                <div class="visual-card">
-                    <svg width="100" height="60" viewBox="0 0 100 60">
-                        <rect x="10" y="10" width="60" height="40" fill="#f59e0b" stroke="#fff" stroke-width="2"/>
-                        <rect x="70" y="10" width="20" height="40" fill="none" stroke="#fff" stroke-width="2"/>
-                    </svg>
-                    <div><strong>3/4 = 75/100</strong></div>
-                    <div style="color:#fde047; font-size:1.1rem;"><strong>0,75 = 75%</strong> (Três quartos)</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quadriláteros e Medidas -->
-        <div class="chalkboard">
-            <h3>3. Perímetro, Área e Classificação dos Quadriláteros</h3>
+            <h3>2. Grandezas, Medidas, Tempo, Gráficos e Geometria</h3>
             <div class="visual-grid">
                 <div class="visual-card" style="text-align:left;">
-                    <strong style="color:#fde047;">📏 Perímetro vs Área:</strong>
-                    <ul style="padding-left:18px; font-size:0.88rem; margin-top:6px;">
-                        <li><strong>Perímetro:</strong> Medida do <u>contorno</u> (soma de todos os lados). Ex: Terreno 20m × 10m → 20+10+20+10 = <strong>60 m</strong>.</li>
-                        <li><strong>Área:</strong> Medida da <u>superfície</u> (lado × lado). Ex: 20m × 10m = <strong>200 m²</strong>.</li>
-                        <li><strong>Círculo:</strong> O perímetro (circunferência) é um pouco maior que o <strong>triplo do diâmetro</strong> (≈ 3,14 × diâmetro).</li>
+                    <strong style="color:#fde047;">⏱️ Tempo & Medidas Decimais:</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li><strong>1 hora = 60 min</strong> | <strong>0,5 h (meia hora) = 30 min</strong> | <strong>1/4 h = 15 min</strong>.</li>
+                        <li><strong>1 km = 1.000 m</strong> | <strong>1 m = 100 cm</strong> | <strong>1 kg = 1.000 g</strong> | <strong>1 L = 1.000 mL</strong>.</li>
+                        <li><strong>Dividir por 10, 100, 1000:</strong> Desloca a vírgula 1, 2 ou 3 casas para a <u>esquerda</u>.</li>
                     </ul>
                 </div>
                 <div class="visual-card" style="text-align:left;">
-                    <strong style="color:#fde047;">🔷 Mapa Mental dos Quadriláteros:</strong>
-                    <ul style="padding-left:18px; font-size:0.88rem; margin-top:6px;">
-                        <li><strong>Paralelogramos (2 pares de lados paralelos):</strong><br>
-                            • <em>Retângulo:</em> 4 ângulos retos (90°).<br>
-                            • <em>Losango:</em> 4 lados iguais.<br>
-                            • <em>Quadrado:</em> 4 lados iguais E 4 ângulos retos!</li>
-                        <li><strong>Trapézios (apenas 1 par de lados paralelos):</strong> Isósceles, Retângulo e Escaleno.</li>
+                    <strong style="color:#fde047;">🔷 Quadriláteros & Gráficos de Linha:</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li><strong>Gráficos de Linha:</strong> Mostram a evolução ao longo do tempo (subidas, quedas e estabilidade).</li>
+                        <li><strong>Paralelogramos (2 pares paralelos):</strong> Quadrado, Retângulo, Losango e Romboide.</li>
+                        <li><strong>Trapézios (1 par paralelo):</strong> Isósceles, Retângulo e Escaleno.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 3. SUPER QUIZ -->
-    <div id="tab-quiz" class="panel">
-        <h2 class="panel-title">❓ Super Quiz de Matemática (12 Questões da Prova)</h2>
-        <div class="question-box" id="quizQuestion"></div>
-        <div class="options-list" id="quizOptions"></div>
-        <div class="feedback" id="quizFeedback"></div>
+    <!-- 3. JOGO DAS FRAÇÕES & PIZZA -->
+    <div id="tab-fracoes" class="panel">
+        <h2 class="panel-title">🍕 Jogo das Frações: Pizza do Pedro & Fração de Quantidade</h2>
+        <div class="pizza-board" id="fracVisualBox"></div>
+        <div class="question-box" id="fracQuestion"></div>
+        <div class="options-list" id="fracOptions"></div>
+        <div class="feedback" id="fracFeedback"></div>
     </div>
 
-    <!-- 4. JOGO DA RETA NUMÉRICA -->
+    <!-- 4. JOGO DOS GRÁFICOS DE LINHA -->
+    <div id="tab-graficos" class="panel">
+        <h2 class="panel-title">📈 Laboratório de Gráficos de Linha (Notas & Consumo de Água)</h2>
+        <p style="font-weight:bold; color:#475569;">Analise os pontos e segmentos de reta do gráfico abaixo para responder às perguntas da prova:</p>
+        <div class="chart-box" id="lineChartContainer"></div>
+        <div class="question-box" id="chartQuestion"></div>
+        <div class="options-list" id="chartOptions"></div>
+        <div class="feedback" id="chartFeedback"></div>
+    </div>
+
+    <!-- 5. RETA NUMÉRICA -->
     <div id="tab-reta" class="panel">
-        <h2 class="panel-title">📏 Desafio da Reta Numérica (Onde está a flecha?)</h2>
-        <p style="font-weight:bold;">Observe os intervalos da reta numérica na lousa e descubra qual número decimal a seta branca está apontando:</p>
-        <div class="number-line-box" id="svgNumberLineContainer"></div>
+        <h2 class="panel-title">📏 Desafio da Reta Numérica</h2>
+        <p style="font-weight:bold;">Qual número racional (decimal) está indicado pela seta azul?</p>
+        <div class="chalkboard" style="text-align:center;" id="svgNumberLineContainer"></div>
         <div class="options-list" id="retaOptions" style="grid-template-columns: repeat(2, 1fr);"></div>
         <div class="feedback" id="retaFeedback"></div>
     </div>
 
-    <!-- 5. CONSTRUTOR DA HORTA (ÁREA E PERÍMETRO) -->
+    <!-- 6. CONSTRUTOR DA HORTA -->
     <div id="tab-horta" class="panel">
-        <h2 class="panel-title">🌱 Construtor da Horta do Seu Anderson (Área e Perímetro)</h2>
+        <h2 class="panel-title">🌱 Construtor da Horta (Área e Perímetro)</h2>
         <p id="hortaMission" style="font-size:1.05rem; font-weight:bold; color:#0f766e; background:#f0fdfa; padding:10px; border-radius:8px; border:2px solid #5eead4;"></p>
-        <p style="font-size:0.88rem; color:#475569; margin:4px 0;">Clique nos quadradinhos (cada um vale 1 m × 1 m = 1 m²) para plantar ou desmarcar:</p>
         <div style="text-align:center;">
             <div class="grid-builder" id="hortaGrid"></div>
-            <div style="font-weight:bold; margin:8px 0; font-size:1rem;">
-                Quadrados plantados (Área): <span id="currentAreaSpan" style="color:var(--primary);">0</span> m²
+            <div style="font-weight:bold; margin:8px 0;">
+                Área plantada: <span id="currentAreaSpan" style="color:var(--primary);">0</span> m²
             </div>
             <button class="action-btn" onclick="checkHortaMission()">✅ Conferir Canteiro</button>
             <button class="action-btn" style="background:#64748b;" onclick="clearHortaGrid()">🗑️ Limpar</button>
@@ -714,10 +581,17 @@
         <div class="feedback" id="hortaFeedback"></div>
     </div>
 
-    <!-- 6. JOGO DA MEMÓRIA -->
+    <!-- 7. SUPER QUIZ (15 QUESTÕES COBRINDO TUDO) -->
+    <div id="tab-quiz" class="panel">
+        <h2 class="panel-title">❓ Super Quiz Completo (15 Questões — Todos os Temas)</h2>
+        <div class="question-box" id="quizQuestion"></div>
+        <div class="options-list" id="quizOptions"></div>
+        <div class="feedback" id="quizFeedback"></div>
+    </div>
+
+    <!-- 8. JOGO DA MEMÓRIA -->
     <div id="tab-memory" class="panel">
-        <h2 class="panel-title">🧠 Jogo da Memória: Fração ↔ Decimal ↔ Porcentagem</h2>
-        <p style="font-weight:bold; color:#475569;">Encontre os pares equivalentes (ex: 1/4 combina com 25% ou 0,25):</p>
+        <h2 class="panel-title">🧠 Jogo da Memória: Fração ↔ Decimal ↔ Porcentagem ↔ Tempo</h2>
         <div class="memory-grid" id="memoryGrid"></div>
         <div class="feedback" id="memoryFeedback"></div>
         <div style="text-align:center; margin-top:12px;">
@@ -725,64 +599,114 @@
         </div>
     </div>
 
-    <!-- 7. CADERNO DE EXERCÍCIOS -->
+    <!-- 9. CADERNO DE EXERCÍCIOS (10 PROBLEMAS COMPLETOS) -->
     <div id="tab-exercicios" class="panel">
-        <h2 class="panel-title">✍️ Caderno de Exercícios (Resolva e Confira)</h2>
+        <h2 class="panel-title">✍️ Caderno de Exercícios (10 Problemas Variados)</h2>
 
         <div class="exercise-card">
-            <strong>1. Divisão por 10, 100 e 1.000 (Sem calculadora!):</strong><br>
-            Quanto é <strong>34,89 ÷ 100</strong>? (Dica: desloque a vírgula 2 casas para a esquerda)
+            <span class="badge-topic">Fração de Quantidade</span><br>
+            <strong>1. Saco de Farinha:</strong> Um saco de farinha pesa <strong>10 kg</strong>. Se o padeiro utilizar <strong>3/5</strong> desse peso para fazer pães, quantos quilogramas vão <u>sobrar</u>?
             <div class="input-row">
-                <input type="text" id="ex1" class="math-input" placeholder="Ex: 0,1234">
-                <button class="action-btn" onclick="checkEx('ex1', ['0,3489', '0.3489'], 'fb1', 'Exato! Deslocamos a vírgula 2 ordens para a esquerda: 0,3489.')">Conferir</button>
+                <input type="text" id="ex1" class="math-input" placeholder="Ex: 4">
+                <button class="action-btn" onclick="checkEx('ex1', ['4', '4kg', '4 kg'], 'fb1', 'Exato! 3/5 de 10 kg = 6 kg usados. Sobram 10 - 6 = 4 kg!')">Conferir</button>
             </div>
             <div class="feedback" id="fb1"></div>
         </div>
 
         <div class="exercise-card">
-            <strong>2. Economia na Feira (Compras do Seu Carlos):</strong><br>
-            O quilo da banana-maçã custa <strong>R$ 7,20</strong>. Seu Carlos comprou <strong>1,5 kg</strong> (um quilo e meio) e pagou com uma nota de <strong>R$ 12,00</strong>. Quanto ele recebeu de troco?
+            <span class="badge-topic">Fração de Quantidade (Antipoluentes)</span><br>
+            <strong>2. Indústrias de Monte Azul:</strong> Na cidade de Monte Azul, <strong>120 indústrias</strong> ainda não tinham equipamentos antipoluentes. Após uma campanha, <strong>3/4</strong> delas instalaram os equipamentos. Quantas indústrias <u>ainda não possuem</u> equipamentos?
             <div class="input-row">
-                <input type="text" id="ex2" class="math-input" placeholder="Ex: 1,50">
-                <button class="action-btn" onclick="checkEx('ex2', ['1,20', '1.20', '1,2', '1.2', 'R$ 1,20'], 'fb2', 'Perfeito! 1,5 × 7,20 = R$ 10,80. Troco: 12,00 - 10,80 = R$ 1,20!')">Conferir</button>
+                <input type="text" id="ex2" class="math-input" placeholder="Ex: 30">
+                <button class="action-btn" onclick="checkEx('ex2', ['30', '30 indústrias'], 'fb2', 'Perfeito! 3/4 de 120 = 90 instalaram, então 120 - 90 = 30 indústrias ainda não têm!')">Conferir</button>
             </div>
             <div class="feedback" id="fb2"></div>
         </div>
 
         <div class="exercise-card">
-            <strong>3. Salário e Porcentagem (Problema da Angelina):</strong><br>
-            Angelina recebe <strong>R$ 7.890,00</strong> por mês e gasta <strong>10%</strong> com transporte e <strong>20%</strong> com alimentação. Quanto ela gasta <u>somente com alimentação (20%)</u>?
+            <span class="badge-topic">Medida de Tempo</span><br>
+            <strong>3. Passeio de Bicicleta:</strong> Juliana alugou uma bicicleta por <strong>2 horas e meia (2,5 horas)</strong>. Quantos <u>minutos</u> ela andou de bicicleta no total?
             <div class="input-row">
-                <input type="text" id="ex3" class="math-input" placeholder="Ex: 1500,00">
-                <button class="action-btn" onclick="checkEx('ex3', ['1578', '1578,00', '1.578,00', '1.578', 'R$ 1.578,00'], 'fb3', 'Isso mesmo! 10% = 789,00, logo 20% = 2 × 789 = R$ 1.578,00!')">Conferir</button>
+                <input type="text" id="ex3" class="math-input" placeholder="Ex: 150">
+                <button class="action-btn" onclick="checkEx('ex3', ['150', '150 min', '150 minutos'], 'fb3', 'Isso mesmo! 2 horas = 120 min + 30 min (meia hora) = 150 minutos!')">Conferir</button>
             </div>
             <div class="feedback" id="fb3"></div>
         </div>
 
         <div class="exercise-card">
-            <strong>4. Cercando o Terreno (Perímetro e Área):</strong><br>
-            Um terreno retangular mede <strong>20 m × 10 m</strong>. O metro do alambrado custa <strong>R$ 32,50</strong>. Quantos metros de alambrado são necessários para cercar todo o contorno (perímetro)?
+            <span class="badge-topic">Medida de Tempo & Dinheiro</span><br>
+            <strong>4. Aluguel da Bicicleta (Pág. 135):</strong> Para alugar a bicicleta, Juliana pagou uma taxa fixa de <strong>R$ 5,50</strong> mais <strong>R$ 2,25 por hora</strong>. Como ela alugou por <strong>2 horas</strong>, quanto ela gastou no total?
             <div class="input-row">
-                <input type="text" id="ex4" class="math-input" placeholder="Ex: 50">
-                <button class="action-btn" onclick="checkEx('ex4', ['60', '60m', '60 m'], 'fb4', 'Correto! Perímetro = 20 + 10 + 20 + 10 = 60 metros (que custarão R$ 1.950,00).')">Conferir</button>
+                <input type="text" id="ex4" class="math-input" placeholder="Ex: 10,00">
+                <button class="action-btn" onclick="checkEx('ex4', ['10', '10,00', '10.00', 'R$ 10,00'], 'fb4', 'Acertou! 5,50 + 2,25 + 2,25 = R$ 10,00!')">Conferir</button>
             </div>
             <div class="feedback" id="fb4"></div>
         </div>
 
         <div class="exercise-card">
-            <strong>5. Divisão da Conta no Restaurante:</strong><br>
-            Um grupo de <strong>16 amigos</strong> gastou <strong>R$ 716,00</strong> e dividiu a conta igualmente. Quanto cada amigo pagou?
+            <span class="badge-topic">Divisão por 10, 100 e 1000</span><br>
+            <strong>5. Cálculo Rápido:</strong> Sem usar calculadora, quanto é <strong>34,89 ÷ 100</strong>?
             <div class="input-row">
-                <input type="text" id="ex5" class="math-input" placeholder="Ex: 40,00">
-                <button class="action-btn" onclick="checkEx('ex5', ['44,75', '44.75', 'R$ 44,75'], 'fb5', 'Mandou bem! 716 ÷ 16 = R$ 44,75 para cada amigo!')">Conferir</button>
+                <input type="text" id="ex5" class="math-input" placeholder="Ex: 0,3489">
+                <button class="action-btn" onclick="checkEx('ex5', ['0,3489', '0.3489'], 'fb5', 'Correto! Deslocando a vírgula 2 casas para a esquerda: 0,3489.')">Conferir</button>
             </div>
             <div class="feedback" id="fb5"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Sistema Monetário & Decimais</span><br>
+            <strong>6. Compras do Seu Carlos:</strong> O kg da banana-maçã custa <strong>R$ 7,20</strong>. Seu Carlos levou <strong>1,5 kg</strong> e pagou com <strong>R$ 12,00</strong>. Quanto recebeu de troco?
+            <div class="input-row">
+                <input type="text" id="ex6" class="math-input" placeholder="Ex: 1,20">
+                <button class="action-btn" onclick="checkEx('ex6', ['1,20', '1.20', '1,2', 'R$ 1,20'], 'fb6', 'Muito bem! 1,5 kg custa R$ 10,80. Troco: 12,00 - 10,80 = R$ 1,20.')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb6"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Porcentagem</span><br>
+            <strong>7. Despesas da Angelina:</strong> Angelina ganha <strong>R$ 7.890,00</strong> e gasta <strong>20%</strong> com alimentação. Qual é o valor gasto com alimentação?
+            <div class="input-row">
+                <input type="text" id="ex7" class="math-input" placeholder="Ex: 1578,00">
+                <button class="action-btn" onclick="checkEx('ex7', ['1578', '1578,00', '1.578,00', 'R$ 1.578,00'], 'fb7', 'Exato! 10% = 789,00, logo 20% = R$ 1.578,00!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb7"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Porcentagem & Desconto</span><br>
+            <strong>8. Desconto à Vista (Terreno):</strong> O alambrado (R$ 1.950,00) e a grama (R$ 3.750,00) somam <strong>R$ 5.700,00</strong>. Com <strong>25% de desconto</strong> para pagamento à vista, quanto será pago no final?
+            <div class="input-row">
+                <input type="text" id="ex8" class="math-input" placeholder="Ex: 4275,00">
+                <button class="action-btn" onclick="checkEx('ex8', ['4275', '4275,00', '4.275,00', 'R$ 4.275,00'], 'fb8', 'Sensacional! 25% de 5.700 = 1.425 de desconto. 5.700 - 1.425 = R$ 4.275,00!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb8"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Divisão & Medidas</span><br>
+            <strong>9. Laços de Cetim:</strong> Uma costureira tem <strong>15 metros</strong> de fita e cortou em <strong>6 partes iguais</strong>. Quantos metros tem cada laço?
+            <div class="input-row">
+                <input type="text" id="ex9" class="math-input" placeholder="Ex: 2,5">
+                <button class="action-btn" onclick="checkEx('ex9', ['2,5', '2.5', '2,5m', '2,5 m'], 'fb9', 'Perfeito! 15 ÷ 6 = 2,5 metros por laço!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb9"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Perímetro & Área</span><br>
+            <strong>10. Jardim Retangular:</strong> Um jardim mede <strong>8 m de comprimento por 5 m de largura</strong>. Qual é o seu <u>perímetro</u> (em metros)?
+            <div class="input-row">
+                <input type="text" id="ex10" class="math-input" placeholder="Ex: 26">
+                <button class="action-btn" onclick="checkEx('ex10', ['26', '26m', '26 m'], 'fb10', 'Isso mesmo! Perímetro = 8 + 5 + 8 + 5 = 26 metros (e a área é 8 × 5 = 40 m²).')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb10"></div>
         </div>
     </div>
 </div>
 
 <script>
-    // --- EFEITOS SONOROS ---
+    // --- SOM ---
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playTone(freq, type, duration) {
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -800,26 +724,19 @@
     function soundWin() { playTone(523.25, 'sine', 0.12); setTimeout(() => playTone(659.25, 'sine', 0.2), 100); }
     function soundFail() { playTone(190, 'sawtooth', 0.25); }
 
-    // --- ESTADO GAMIFICADO ---
+    // --- HUD ---
     let xp = 0, streak = 0, doneCount = 0;
-    function addXP(pts, success = true) {
-        if (success) {
-            xp += pts;
-            streak++;
-            doneCount++;
-            soundWin();
-        } else {
-            streak = 0;
-            soundFail();
-        }
+    function addXP(pts, ok = true) {
+        if (ok) { xp += pts; streak++; doneCount++; soundWin(); }
+        else { streak = 0; soundFail(); }
         document.getElementById('xpDisplay').innerText = xp;
         document.getElementById('streakDisplay').innerText = streak;
         document.getElementById('doneCountDisplay').innerText = doneCount;
 
         let rank = "1 - Aprendiz";
-        if (xp >= 220) rank = "4 - Mestre dos Racionais 🏆";
-        else if (xp >= 130) rank = "3 - Geometra Pro 📐";
-        else if (xp >= 50) rank = "2 - Calculador ⚡";
+        if (xp >= 260) rank = "4 - Mestre dos Racionais 🏆";
+        else if (xp >= 150) rank = "3 - Geometra & Analista 📐";
+        else if (xp >= 60) rank = "2 - Calculador ⚡";
         document.getElementById('levelDisplay').innerText = rank;
     }
 
@@ -830,37 +747,420 @@
         btn.classList.add('active');
     }
 
-    // --- 1. CONTROLE DE HQs ---
-    function showComic(num, btn) {
-        for (let i = 1; i <= 4; i++) {
-            document.getElementById(`comic-${i}`).style.display = (i === num) ? 'grid' : 'none';
+    // --- 1. HISTÓRIA EM QUADRINHOS INTERATIVA ---
+    const hqEpisodes = [
+        {
+            title: "Episódio 1 de 6: O Aniversário da Roberta",
+            speech: "<strong>Roberta:</strong> Ontem fiz aniversário! Estou com 1,35 m de altura e tenho R$ 285,75 guardados. Meu irmão Rafael tomou quase todo o refrigerante de 2,5 L! Como lemos <strong>2,5 L</strong>?",
+            svg: `<svg width="160" height="130" viewBox="0 0 160 130">
+                    <circle cx="55" cy="45" r="24" fill="#fcd34d" stroke="#1e293b" stroke-width="2.5"/>
+                    <circle cx="30" cy="40" r="10" fill="#fde047" stroke="#1e293b" stroke-width="2"/>
+                    <circle cx="80" cy="40" r="10" fill="#fde047" stroke="#1e293b" stroke-width="2"/>
+                    <circle cx="48" cy="42" r="2.5" fill="#1e293b"/><circle cx="62" cy="42" r="2.5" fill="#1e293b"/>
+                    <path d="M48 52 Q55 60 62 52" stroke="#1e293b" stroke-width="2.5" fill="none"/>
+                    <rect x="33" y="70" width="44" height="35" rx="8" fill="#c084fc" stroke="#1e293b" stroke-width="2.5"/>
+                    <rect x="110" y="35" width="26" height="65" rx="6" fill="#991b1b" stroke="#1e293b" stroke-width="2.5"/>
+                    <rect x="110" y="55" width="26" height="16" fill="#38bdf8"/>
+                    <text x="104" y="116" font-size="12" font-weight="bold">2,5 L</text>
+                  </svg>`,
+            choices: [
+                { text: "Dois litros e meio (ou 2 litros e 500 mililitros)", ok: true },
+                { text: "Vinte e cinco litros inteiros", ok: false },
+                { text: "Dois litros e cinco mililitros", ok: false }
+            ],
+            msg: "Isso mesmo! 0,5 L equivale a meio litro (500 mL), então 2,5 L são 2 litros e meio!"
+        },
+        {
+            title: "Episódio 2 de 6: A Pizza do Pedro & Paulo",
+            speech: "<strong>Pedro:</strong> Dividi uma pizza em 4 partes iguais e comi <strong>1/4</strong>. Depois chegaram amigos e dividiram o que sobrou ao meio! Se Paulo comeu metade de um quarto, que fração da pizza inteira Paulo comeu?",
+            svg: `<svg width="140" height="130" viewBox="0 0 140 130">
+                    <circle cx="70" cy="65" r="50" fill="#fde047" stroke="#b45309" stroke-width="4"/>
+                    <line x1="70" y1="15" x2="70" y2="115" stroke="#b45309" stroke-width="2.5"/>
+                    <line x1="20" y1="65" x2="120" y2="65" stroke="#b45309" stroke-width="2.5"/>
+                    <path d="M70,65 L70,15 A50,50 0 0,1 120,65 Z" fill="#ef4444" opacity="0.7"/>
+                    <line x1="70" y1="65" x2="35" y2="30" stroke="#1e293b" stroke-width="2" stroke-dasharray="4"/>
+                  </svg>`,
+            choices: [
+                { text: "1/8 (um oitavo da pizza)", ok: true },
+                { text: "1/2 (metade da pizza)", ok: false },
+                { text: "3/4 (três quartos da pizza)", ok: false }
+            ],
+            msg: "Genial! A metade de 1/4 é 1/8 (como se a pizza tivesse 8 fatias iguais)!"
+        },
+        {
+            title: "Episódio 3 de 6: O Desafio da Lousa da Prof. Gelsa",
+            speech: "<strong>Prof. Gelsa:</strong> Em Ubatuba, 50% dos 2.500 acidentes marinhos foram com ouriços-do-mar (1.250 casos) e <strong>25%</strong> com águas-vivas. Quantos acidentes foram causados por águas-vivas?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <rect x="10" y="10" width="130" height="90" rx="8" fill="#14532d" stroke="#92400e" stroke-width="4"/>
+                    <text x="22" y="38" fill="#fde047" font-size="13" font-weight="bold">Total: 2.500</text>
+                    <text x="22" y="60" fill="#ffffff" font-size="12">50% = 1.250</text>
+                    <text x="22" y="82" fill="#38bdf8" font-size="13" font-weight="bold">25% = ???</text>
+                  </svg>`,
+            choices: [
+                { text: "625 acidentes (a quarta parte de 2.500)", ok: true },
+                { text: "250 acidentes", ok: false },
+                { text: "1.000 acidentes", ok: false }
+            ],
+            msg: "Brilhante! 25% é a metade de 50%, ou seja, 1.250 ÷ 2 = 625!"
+        },
+        {
+            title: "Episódio 4 de 6: O Relógio da Gincana",
+            speech: "<strong>Cauã:</strong> A gincana da Escola Brasil começa às <strong>14h15</strong> e dura exatamente <strong>1 hora e 45 minutos (1,75 h)</strong>. A que horas a gincana vai terminar?",
+            svg: `<svg width="130" height="130" viewBox="0 0 130 130">
+                    <circle cx="65" cy="65" r="48" fill="#ffffff" stroke="#0284c7" stroke-width="5"/>
+                    <line x1="65" y1="65" x2="85" y2="80" stroke="#1e293b" stroke-width="4" stroke-linecap="round"/>
+                    <line x1="65" y1="65" x2="102" y2="65" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="65" cy="65" r="4" fill="#1e293b"/>
+                  </svg>`,
+            choices: [
+                { text: "16h00 (4 horas da tarde)", ok: true },
+                { text: "15h45", ok: false },
+                { text: "16h15", ok: false }
+            ],
+            msg: "Perfeito! 14h15 + 1h = 15h15. Somando mais 45 minutos: 15h15 + 45 min = 16h00!"
+        },
+        {
+            title: "Episódio 5 de 6: O Gráfico da Biblioteca",
+            speech: "<strong>Larissa:</strong> Olhando o gráfico de linhas da Biblioteca Municipal, em janeiro retiramos 100 livros e em fevereiro 200 livros. Em abril chegamos ao pico de 753 livros, mas em maio caiu! Para que serve um gráfico de linhas?",
+            svg: `<svg width="160" height="120" viewBox="0 0 160 120">
+                    <rect x="10" y="10" width="140" height="100" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+                    <polyline points="25,90 55,70 85,25 115,55 140,35" fill="none" stroke="#ea580c" stroke-width="3"/>
+                    <circle cx="25" cy="90" r="4" fill="#0284c7"/><circle cx="55" cy="70" r="4" fill="#0284c7"/>
+                    <circle cx="85" cy="25" r="5" fill="#ef4444"/><circle cx="115" cy="55" r="4" fill="#0284c7"/>
+                    <circle cx="140" cy="35" r="4" fill="#0284c7"/>
+                  </svg>`,
+            choices: [
+                { text: "Mostrar a evolução (aumentos e quedas) de dados ao longo do tempo", ok: true },
+                { text: "Medir o perímetro de figuras circulares", ok: false },
+                { text: "Dividir pizzas em fatias iguais", ok: false }
+            ],
+            msg: "Exato! Os gráficos de linha ligam pontos com segmentos de reta para mostrar mudanças ao longo do tempo!"
+        },
+        {
+            title: "Episódio 6 de 6: Os Canteiros da Horta",
+            speech: "<strong>Jonas:</strong> O jardineiro pediu para plantar couve em um canteiro com <strong>apenas 1 par de lados paralelos</strong> e tomate em um canteiro com <strong>4 lados iguais, mas sem ângulos retos</strong>. Quais são as formas?",
+            svg: `<svg width="170" height="110" viewBox="0 0 170 110">
+                    <polygon points="25,25 65,25 80,80 10,80" fill="#22c55e" stroke="#1e293b" stroke-width="2.5"/>
+                    <polygon points="125,20 155,52 125,85 95,52" fill="#ef4444" stroke="#1e293b" stroke-width="2.5"/>
+                  </svg>`,
+            choices: [
+                { text: "Couve = Trapézio | Tomate = Losango", ok: true },
+                { text: "Couve = Quadrado | Tomate = Retângulo", ok: false },
+                { text: "Couve = Círculo | Tomate = Trapézio", ok: false }
+            ],
+            msg: "🏆 Missão Cumprida! Trapézio tem 1 par de lados paralelos, e Losango tem 4 lados iguais sem precisar ter 90°!"
         }
-        document.querySelectorAll('.comic-tab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        addXP(3, true);
+    ];
+
+    let hqStep = 0, hqLocked = false;
+    function renderHQ() {
+        hqLocked = false;
+        document.getElementById('hqFeedback').innerText = '';
+        const ep = hqEpisodes[hqStep];
+        document.getElementById('hqChapterBadge').innerText = ep.title;
+        document.getElementById('hqProgressText').innerText = `Episódio ${hqStep + 1} de ${hqEpisodes.length}`;
+        document.getElementById('hqArtBox').innerHTML = ep.svg;
+        document.getElementById('hqSpeechBubble').innerHTML = ep.speech;
+
+        const box = document.getElementById('hqChoicesBox');
+        box.innerHTML = '';
+        ep.choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'hq-choice-btn';
+            btn.innerText = c.text;
+            btn.onclick = () => {
+                if (hqLocked) return;
+                hqLocked = true;
+                if (c.ok) {
+                    btn.classList.add('correct');
+                    document.getElementById('hqFeedback').innerText = `🎉 ${ep.msg} (+15 XP)`;
+                    document.getElementById('hqFeedback').style.color = "var(--correct)";
+                    addXP(15, true);
+                    setTimeout(() => {
+                        hqStep = (hqStep + 1) % hqEpisodes.length;
+                        renderHQ();
+                    }, 2500);
+                } else {
+                    btn.classList.add('wrong');
+                    document.getElementById('hqFeedback').innerText = "❌ Tente outra fala para ajudar o personagem!";
+                    document.getElementById('hqFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                    hqLocked = false;
+                }
+            };
+            box.appendChild(btn);
+        });
     }
 
-    // --- 3. SUPER QUIZ (12 Questões) ---
+    // --- 3. JOGO DAS FRAÇÕES & PIZZA ---
+    const fracChallenges = [
+        {
+            q: "1. Júlio pediu uma pizza dividida em 9 fatias iguais (3 sabores com 3 fatias cada) e comeu 1 fatia de cada sabor. Qual fração da pizza ele comeu?",
+            svg: `<svg width="110" height="110" viewBox="0 0 110 110"><circle cx="55" cy="55" r="45" fill="#fde047" stroke="#b45309" stroke-width="3"/><path d="M55,55 L55,10 A45,45 0 0,1 98,70 Z" fill="#ef4444" opacity="0.75"/></svg>`,
+            opts: ["3/9 (ou 1/3 da pizza)", "1/9 da pizza", "9/3 da pizza", "1/2 da pizza"],
+            ans: 0
+        },
+        {
+            q: "2. Quanto dá a soma das frações: 1/3 + 1/3 + 1/3 ?",
+            svg: `<svg width="180" height="60" viewBox="0 0 180 60"><rect x="10" y="10" width="50" height="40" fill="#22c55e" stroke="#1e293b" stroke-width="2"/><rect x="60" y="10" width="50" height="40" fill="#22c55e" stroke="#1e293b" stroke-width="2"/><rect x="110" y="10" width="50" height="40" fill="#22c55e" stroke="#1e293b" stroke-width="2"/></svg>`,
+            opts: ["3/9", "3/3 (que é igual a 1 inteiro)", "1/9", "2/3"],
+            ans: 1
+        },
+        {
+            q: "3. Na cidade de Monte Alto há 600 indústrias. A terça parte (1/3) delas possui equipamentos antipoluentes. Quantas indústrias têm equipamentos?",
+            svg: `<svg width="160" height="60" viewBox="0 0 160 60"><rect x="10" y="10" width="140" height="40" rx="6" fill="#0284c7"/><text x="80" y="35" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">1/3 de 600 = ?</text></svg>`,
+            opts: ["300 indústrias", "200 indústrias", "100 indústrias", "150 indústrias"],
+            ans: 1
+        },
+        {
+            q: "4. Qual das frações abaixo representa o MAIOR valor?",
+            svg: `<svg width="160" height="60" viewBox="0 0 160 60"><rect x="10" y="10" width="140" height="40" rx="6" fill="#7c3aed"/><text x="80" y="35" fill="#fff" font-size="14" font-weight="bold" text-anchor="middle">1/2 ou 1/5 ou 1/10?</text></svg>`,
+            opts: ["1/10 (0,10)", "1/5 (0,20)", "1/2 (0,50)", "Todas são iguais"],
+            ans: 2
+        }
+    ];
+    let fracIdx = 0, fracLocked = false;
+    function loadFrac() {
+        fracLocked = false;
+        document.getElementById('fracFeedback').innerText = '';
+        const item = fracChallenges[fracIdx % fracChallenges.length];
+        document.getElementById('fracVisualBox').innerHTML = item.svg;
+        document.getElementById('fracQuestion').innerText = item.q;
+        const list = document.getElementById('fracOptions');
+        list.innerHTML = '';
+        item.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (fracLocked) return;
+                fracLocked = true;
+                if (i === item.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('fracFeedback').innerText = "🍕 Mandou muito bem! +12 XP!";
+                    document.getElementById('fracFeedback').style.color = "var(--correct)";
+                    addXP(12, true);
+                } else {
+                    b.classList.add('wrong');
+                    list.children[item.ans].classList.add('correct');
+                    document.getElementById('fracFeedback').innerText = "❌ Ops! Veja a resposta certa em verde.";
+                    document.getElementById('fracFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                fracIdx++;
+                setTimeout(loadFrac, 1800);
+            };
+            list.appendChild(b);
+        });
+    }
+
+    // --- 4. GRÁFICOS DE LINHA INTERATIVOS ---
+    const chartChallenges = [
+        {
+            title: "Gráfico 1: Média Final de 5 Alunos (Exercício 11 da Lista)",
+            svg: `<svg width="100%" height="180" viewBox="0 0 460 180">
+                    <rect x="45" y="15" width="380" height="130" fill="#eff6ff" stroke="#94a3b8"/>
+                    <line x1="45" y1="35" x2="425" y2="35" stroke="#cbd5e1"/><text x="35" y="39" font-size="11" text-anchor="end">9</text>
+                    <line x1="45" y1="57" x2="425" y2="57" stroke="#cbd5e1"/><text x="35" y="61" font-size="11" text-anchor="end">8</text>
+                    <line x1="45" y1="79" x2="425" y2="79" stroke="#cbd5e1"/><text x="35" y="83" font-size="11" text-anchor="end">7</text>
+                    <line x1="45" y1="101" x2="425" y2="101" stroke="#ef4444" stroke-dasharray="4"/><text x="35" y="105" font-size="11" fill="#ef4444" font-weight="bold" text-anchor="end">6</text>
+                    <line x1="45" y1="123" x2="425" y2="123" stroke="#cbd5e1"/><text x="35" y="127" font-size="11" text-anchor="end">5</text>
+                    <polyline points="85,35 160,57 235,123 310,101 385,79" fill="none" stroke="#1e293b" stroke-width="2.5"/>
+                    <circle cx="85" cy="35" r="5" fill="#dc2626"/><text x="85" y="162" font-size="11" text-anchor="middle">Aluno 1</text>
+                    <circle cx="160" cy="57" r="5" fill="#dc2626"/><text x="160" y="162" font-size="11" text-anchor="middle">Aluno 2</text>
+                    <circle cx="235" cy="123" r="5" fill="#dc2626"/><text x="235" y="162" font-size="11" text-anchor="middle">Aluno 3</text>
+                    <circle cx="310" cy="101" r="5" fill="#dc2626"/><text x="310" y="162" font-size="11" text-anchor="middle">Aluno 4</text>
+                    <circle cx="385" cy="79" r="5" fill="#dc2626"/><text x="385" y="162" font-size="11" text-anchor="middle">Aluno 5</text>
+                  </svg>`,
+            q: "Considerando que a média para aprovação é 6,0 (linha tracejada vermelha), quantos alunos foram APROVADOS?",
+            opts: ["Apenas 3 alunos", "4 alunos (Alunos 1, 2, 4 e 5)", "Todos os 5 alunos", "Apenas 2 alunos"],
+            ans: 1
+        },
+        {
+            title: "Gráfico 2: Consumo de Água da Escola Brasil — 1º Semestre (em litros)",
+            svg: `<svg width="100%" height="180" viewBox="0 0 480 180">
+                    <rect x="55" y="15" width="400" height="130" fill="#f0fdf4" stroke="#94a3b8"/>
+                    <polyline points="85,115 150,30 215,42 280,50 345,75 410,95" fill="none" stroke="#0284c7" stroke-width="3"/>
+                    <circle cx="85" cy="115" r="5" fill="#0369a1"/><text x="85" y="106" font-size="10" text-anchor="middle">14.500</text><text x="85" y="162" font-size="11" text-anchor="middle">Jan</text>
+                    <circle cx="150" cy="30" r="5" fill="#dc2626"/><text x="150" y="24" font-size="10" text-anchor="middle">26.120</text><text x="150" y="162" font-size="11" text-anchor="middle">Fev</text>
+                    <circle cx="215" cy="42" r="5" fill="#0369a1"/><text x="215" y="34" font-size="10" text-anchor="middle">24.500</text><text x="215" y="162" font-size="11" text-anchor="middle">Mar</text>
+                    <circle cx="280" cy="50" r="5" fill="#0369a1"/><text x="280" y="42" font-size="10" text-anchor="middle">23.900</text><text x="280" y="162" font-size="11" text-anchor="middle">Abr</text>
+                    <circle cx="345" cy="75" r="5" fill="#0369a1"/><text x="345" y="67" font-size="10" text-anchor="middle">21.850</text><text x="345" y="162" font-size="11" text-anchor="middle">Mai</text>
+                    <circle cx="410" cy="95" r="5" fill="#16a34a"/><text x="410" y="87" font-size="10" text-anchor="middle">19.400</text><text x="410" y="162" font-size="11" text-anchor="middle">Jun</text>
+                  </svg>`,
+            q: "A partir de qual mês a campanha de economia começou a dar resultado (redução contínua no consumo de água)?",
+            opts: ["De Janeiro para Fevereiro", "A partir de Março (após o pico de Fevereiro)", "Não houve redução em nenhum mês", "Apenas em Janeiro"],
+            ans: 1
+        }
+    ];
+    let chartIdx = 0, chartLocked = false;
+    function loadChart() {
+        chartLocked = false;
+        document.getElementById('chartFeedback').innerText = '';
+        const item = chartChallenges[chartIdx % chartChallenges.length];
+        document.getElementById('lineChartContainer').innerHTML = `<strong>${item.title}</strong>` + item.svg;
+        document.getElementById('chartQuestion').innerText = item.q;
+        const list = document.getElementById('chartOptions');
+        list.innerHTML = '';
+        item.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (chartLocked) return;
+                chartLocked = true;
+                if (i === item.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('chartFeedback').innerText = "📈 Leitura perfeita do gráfico! +12 XP!";
+                    document.getElementById('chartFeedback').style.color = "var(--correct)";
+                    addXP(12, true);
+                } else {
+                    b.classList.add('wrong');
+                    list.children[item.ans].classList.add('correct');
+                    document.getElementById('chartFeedback').innerText = "❌ Observe os pontos no gráfico e a resposta em verde.";
+                    document.getElementById('chartFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                chartIdx++;
+                setTimeout(loadChart, 2000);
+            };
+            list.appendChild(b);
+        });
+    }
+
+    // --- 5. RETA NUMÉRICA ---
+    const retaChallenges = [
+        { start: 0, end: 3, step: 0.1, target: 2.3, opts: ["0,23", "2,3", "2,03", "2,5"] },
+        { start: 12, end: 15, step: 0.1, target: 13.8, opts: ["13,2", "13,5", "13,8", "14,2"] },
+        { start: 0, end: 3, step: 0.25, target: 1.5, opts: ["1,2", "1,25", "1,50", "1,75"] },
+        { start: 12, end: 15, step: 0.1, target: 14.7, opts: ["14,3", "14,5", "14,7", "14,9"] }
+    ];
+    let retaIdx = 0, retaLocked = false;
+    function loadReta() {
+        retaLocked = false;
+        document.getElementById('retaFeedback').innerText = '';
+        const ch = retaChallenges[retaIdx % retaChallenges.length];
+        const width = 560, height = 110, pad = 40;
+        const usableW = width - 2 * pad;
+        const totalSteps = Math.round((ch.end - ch.start) / ch.step);
+        let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}">`;
+        svg += `<line x1="${pad}" y1="65" x2="${width - pad}" y2="65" stroke="#ffffff" stroke-width="3"/>`;
+        for (let i = 0; i <= totalSteps; i++) {
+            const val = Number((ch.start + i * ch.step).toFixed(2));
+            const x = pad + (i / totalSteps) * usableW;
+            const isInt = Number.isInteger(val);
+            const tickH = isInt ? 14 : 7;
+            svg += `<line x1="${x}" y1="${65 - tickH}" x2="${x}" y2="${65 + tickH}" stroke="#ffffff" stroke-width="${isInt ? 2.5 : 1.5}"/>`;
+            if (isInt) svg += `<text x="${x}" y="98" fill="#fde047" font-size="16" font-weight="bold" text-anchor="middle">${val}</text>`;
+            if (Math.abs(val - ch.target) < 0.001) {
+                svg += `<line x1="${x}" y1="15" x2="${x}" y2="42" stroke="#38bdf8" stroke-width="4"/>`;
+                svg += `<polygon points="${x},48 ${x - 7},36 ${x + 7},36" fill="#38bdf8"/>`;
+            }
+        }
+        svg += `</svg>`;
+        document.getElementById('svgNumberLineContainer').innerHTML = svg;
+
+        const optsDiv = document.getElementById('retaOptions');
+        optsDiv.innerHTML = '';
+        ch.opts.forEach(optStr => {
+            const btn = document.createElement('button');
+            btn.className = 'opt-btn';
+            btn.style.textAlign = 'center';
+            btn.innerText = optStr;
+            btn.onclick = () => {
+                if (retaLocked) return;
+                retaLocked = true;
+                const chosen = parseFloat(optStr.replace(',', '.'));
+                if (Math.abs(chosen - ch.target) < 0.01) {
+                    btn.classList.add('correct');
+                    document.getElementById('retaFeedback').innerText = `🎯 Na mosca! A seta aponta para ${optStr}! +12 XP`;
+                    document.getElementById('retaFeedback').style.color = "var(--correct)";
+                    addXP(12, true);
+                } else {
+                    btn.classList.add('wrong');
+                    document.getElementById('retaFeedback').innerText = `❌ Conte cada intervalo (${ch.step.toString().replace('.', ',')} em ${ch.step.toString().replace('.', ',')}).`;
+                    document.getElementById('retaFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                retaIdx++;
+                setTimeout(loadReta, 1800);
+            };
+            optsDiv.appendChild(btn);
+        });
+    }
+
+    // --- 6. CONSTRUTOR DA HORTA ---
+    const hortaMissions = [
+        { text: "Missão 1 (Cenoura): Pinte um canteiro com Área = 12 m².", targetArea: 12 },
+        { text: "Missão 2 (Alface): Pinte um quadrado com Área = 16 m².", targetArea: 16 },
+        { text: "Missão 3 (Tomate): Pinte 25% da horta de 60 quadrados (Área = 15 m²).", targetArea: 15 },
+        { text: "Missão 4 (Couve): Pinte um canteiro com Área = 18 m².", targetArea: 18 }
+    ];
+    let hortaIdx = 0;
+    function initHorta() {
+        const grid = document.getElementById('hortaGrid');
+        grid.innerHTML = '';
+        for (let i = 0; i < 60; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            cell.onclick = () => {
+                cell.classList.toggle('painted');
+                document.getElementById('currentAreaSpan').innerText = document.querySelectorAll('.grid-cell.painted').length;
+            };
+            grid.appendChild(cell);
+        }
+        loadHortaMission();
+    }
+    function loadHortaMission() {
+        document.getElementById('hortaFeedback').innerText = '';
+        document.getElementById('hortaMission').innerText = hortaMissions[hortaIdx % hortaMissions.length].text;
+        clearHortaGrid();
+    }
+    function clearHortaGrid() {
+        document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('painted'));
+        document.getElementById('currentAreaSpan').innerText = '0';
+    }
+    function checkHortaMission() {
+        const count = document.querySelectorAll('.grid-cell.painted').length;
+        const target = hortaMissions[hortaIdx % hortaMissions.length].targetArea;
+        const fb = document.getElementById('hortaFeedback');
+        if (count === target) {
+            fb.innerText = `🌱 Excelente! Área exata de ${target} m²! +15 XP!`;
+            fb.style.color = "var(--correct)";
+            addXP(15, true);
+            hortaIdx++;
+            setTimeout(loadHortaMission, 1500);
+        } else {
+            fb.innerText = `❌ Você pintou ${count} m², mas a missão pede ${target} m².`;
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+    }
+
+    // --- 7. SUPER QUIZ (15 QUESTÕES COBRINDO TUDO) ---
     const quizData = [
-        { q: "Como se lê o número decimal 30,795 apresentado no quadro do Professor Felipe?", opts: ["Trinta inteiros e setecentos e noventa e cinco centésimos", "Trinta inteiros, setecentos e noventa e cinco milésimos", "Trinta mil setecentos e noventa e cinco", "Trinta inteiros e setenta e nove décimos"], ans: 1 },
-        { q: "Qual opção apresenta os números ordenados corretamente do MENOR para o MAIOR?", opts: ["0,143 < 0,134 < 6 < 7,12", "0,134 < 0,143 < 6 < 7,003 < 7,012 < 7,12", "6 < 7,12 < 7,012 < 0,134", "7,012 < 7,003 < 6 < 0,143"], ans: 1 },
-        { q: "Na reta numérica entre 0 e 1 dividida em 5 partes iguais (0,2 em 0,2), qual número vem logo após 0,6?", opts: ["0,7", "0,62", "0,8", "1,0"], ans: 2 },
+        { q: "Como se lê o número decimal 30,795?", opts: ["Trinta inteiros e setecentos e noventa e cinco centésimos", "Trinta inteiros, setecentos e noventa e cinco milésimos", "Trinta mil setecentos e noventa e cinco", "Trinta inteiros e setenta e nove décimos"], ans: 1 },
+        { q: "Qual opção ordena corretamente do MENOR para o MAIOR?", opts: ["0,143 < 0,134 < 6 < 7,12", "0,134 < 0,143 < 6 < 7,003 < 7,012 < 7,12", "6 < 7,12 < 7,012 < 0,134", "7,012 < 7,003 < 6 < 0,143"], ans: 1 },
         { q: "Qual é o resultado de 123,030 × 10?", opts: ["12,303", "1.230,3", "12.303", "1,2303"], ans: 1 },
-        { q: "Na Horta do Seu Anderson (100 quadradinhos), a cenoura ocupa 20 quadradinhos. Como representamos isso em fração, decimal e porcentagem?", opts: ["20/100 = 0,20 = 20%", "2/100 = 0,02 = 2%", "20/10 = 2,0 = 200%", "1/20 = 0,05 = 5%"], ans: 0 },
-        { q: "A Professora Gelsa viu uma blusa por R$ 58,00 na Loja 1, e por R$ 65,00 com 10% de desconto na Loja 2. Qual loja é mais barata?", opts: ["Loja 2 (fica por R$ 55,00)", "Loja 1 (R$ 58,00), pois na Loja 2 com desconto fica R$ 58,50", "As duas têm exatamente o mesmo preço", "Loja 2 (fica por R$ 50,00)"], ans: 1 },
-        { q: "Em uma pesquisa com 200 alunos sobre creme dental, 40% preferiram 'Refrescante'. Quantos alunos escolheram essa marca?", opts: ["40 alunos", "20 alunos", "80 alunos", "100 alunos"], ans: 2 },
-        { q: "Na Baía de Guanabara, 1/5 da sujeira são objetos jogados diretamente (bolas, pneus) e o restante vem do continente. Que fração vem do continente?", opts: ["1/5", "2/5", "4/5", "5/5"], ans: 2 },
-        { q: "Qual quadrilátero possui APENAS UM par de lados paralelos (como o Canteiro C de couve)?", opts: ["Retângulo", "Losango", "Quadrado", "Trapézio"], ans: 3 },
-        { q: "O Canteiro D (tomate) tem os 4 lados com a mesma medida, mas seus ângulos NÃO são retos (parece um quadrado inclinado). Qual figura é essa?", opts: ["Losango", "Retângulo", "Trapézio Retângulo", "Círculo"], ans: 0 },
-        { q: "Uma costureira tem 15 metros de fita de cetim e vai cortá-la em 6 partes iguais para fazer laços. Quanto medirá cada laço?", opts: ["2,0 m", "2,5 m", "3,0 m", "1,5 m"], ans: 1 },
-        { q: "Se duas figuras desenhadas na malha quadriculada têm o MESMO perímetro, elas terão obrigatoriamente a mesma área?", opts: ["Sim, sempre têm a mesma área", "Não! Formatos diferentes podem ter o mesmo contorno (perímetro), mas áreas diferentes"], ans: 1 }
+        { q: "Na Baía de Guanabara, 1/5 da sujeira são objetos jogados pelas pessoas e o restante vem do continente. Que fração vem do continente?", opts: ["1/5", "2/5", "4/5", "5/5"], ans: 2 },
+        { q: "Das 12 grandes bacias hidrográficas do Brasil, 8 estão contaminadas. Qual fração representa as contaminadas?", opts: ["12/8", "8/12", "4/12", "1/8"], ans: 1 },
+        { q: "Quanto é 3/5 de um saco de farinha de 10 kg?", opts: ["3 kg", "5 kg", "6 kg", "8 kg"], ans: 2 },
+        { q: "Se um filme dura 1 hora e 30 minutos (1,5 h), quantos minutos ele tem?", opts: ["60 minutos", "90 minutos", "130 minutos", "150 minutos"], ans: 1 },
+        { q: "Uma blusa custa R$ 65,00 e tem 10% de desconto. Qual será o valor do desconto?", opts: ["R$ 6,50", "R$ 10,00", "R$ 0,65", "R$ 58,50"], ans: 0 },
+        { q: "Se 10% de um número é 40, quanto é 15% desse mesmo número?", opts: ["45", "50", "60", "80"], ans: 2 },
+        { q: "No salão azul da escola há 15 fileiras com 14 cadeiras em cada uma. Quantas cadeiras há no total?", opts: ["29 cadeiras", "190 cadeiras", "210 cadeiras", "225 cadeiras"], ans: 2 },
+        { q: "Qual é o perímetro de uma quadra de futebol de salão que mede 40 m de comprimento por 20 m de largura?", opts: ["60 m", "80 m", "120 m", "800 m"], ans: 2 },
+        { q: "Se uma lata circular tem diâmetro de 8 cm, qual é o valor aproximado do seu perímetro (um pouco maior que o triplo do diâmetro)?", opts: ["16,0 cm", "25,1 cm", "8,0 cm", "64,0 cm"], ans: 1 },
+        { q: "Qual quadrilátero possui 4 lados iguais e 4 ângulos retos (sendo ao mesmo tempo retângulo e losango)?", opts: ["Trapézio", "Quadrado", "Romboide", "Trapézio Escaleno"], ans: 1 },
+        { q: "Qual quadrilátero possui APENAS 1 par de lados paralelos?", opts: ["Paralelogramo", "Losango", "Trapézio", "Retângulo"], ans: 2 },
+        { q: "Duas figuras com o mesmo perímetro têm obrigatoriamente a mesma área?", opts: ["Sim, sempre", "Não, formatos diferentes podem ter o mesmo contorno e áreas diferentes"], ans: 1 }
     ];
     let qIdx = 0, qLocked = false;
     function loadQuiz() {
         qLocked = false;
         document.getElementById('quizFeedback').innerText = '';
         if (qIdx >= quizData.length) {
-            document.getElementById('quizQuestion').innerText = "🏆 Parabéns! Você completou todo o Super Quiz de Matemática!";
+            document.getElementById('quizQuestion').innerText = "🏆 Parabéns! Você zerou o Super Quiz de 15 questões!";
             document.getElementById('quizOptions').innerHTML = `<button class="action-btn" onclick="qIdx=0; loadQuiz()">Jogar Novamente</button>`;
             return;
         }
@@ -893,138 +1193,14 @@
         });
     }
 
-    // --- 4. JOGO DA RETA NUMÉRICA ---
-    const retaChallenges = [
-        { start: 0, end: 3, step: 0.1, target: 2.3, opts: ["0,23", "2,3", "2,03", "2,5"] },
-        { start: 12, end: 15, step: 0.1, target: 13.8, opts: ["13,2", "13,5", "13,8", "14,2"] },
-        { start: 0, end: 3, step: 0.25, target: 1.5, opts: ["1,2", "1,25", "1,50", "1,75"] },
-        { start: 12, end: 15, step: 0.1, target: 14.7, opts: ["14,3", "14,5", "14,7", "14,9"] }
-    ];
-    let retaIdx = 0, retaLocked = false;
-    function loadReta() {
-        retaLocked = false;
-        document.getElementById('retaFeedback').innerText = '';
-        const ch = retaChallenges[retaIdx % retaChallenges.length];
-        
-        // Desenhar SVG dinâmico da reta numérica
-        const width = 560, height = 110, pad = 40;
-        const usableW = width - 2 * pad;
-        const totalSteps = Math.round((ch.end - ch.start) / ch.step);
-        let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}">`;
-        svg += `<line x1="${pad}" y1="65" x2="${width - pad}" y2="65" stroke="#ffffff" stroke-width="3"/>`;
-        svg += `<polygon points="${width - pad + 8},65 ${width - pad - 4},59 ${width - pad - 4},71" fill="#ffffff"/>`;
-
-        for (let i = 0; i <= totalSteps; i++) {
-            const val = Number((ch.start + i * ch.step).toFixed(2));
-            const x = pad + (i / totalSteps) * usableW;
-            const isInt = Number.isInteger(val);
-            const tickH = isInt ? 14 : 7;
-            svg += `<line x1="${x}" y1="${65 - tickH}" x2="${x}" y2="${65 + tickH}" stroke="#ffffff" stroke-width="${isInt ? 2.5 : 1.5}"/>`;
-            if (isInt) {
-                svg += `<text x="${x}" y="98" fill="#fde047" font-size="16" font-weight="bold" text-anchor="middle">${val}</text>`;
-            }
-            if (Math.abs(val - ch.target) < 0.001) {
-                svg += `<line x1="${x}" y1="15" x2="${x}" y2="42" stroke="#38bdf8" stroke-width="4"/>`;
-                svg += `<polygon points="${x},48 ${x - 7},36 ${x + 7},36" fill="#38bdf8"/>`;
-            }
-        }
-        svg += `</svg>`;
-        document.getElementById('svgNumberLineContainer').innerHTML = svg;
-
-        const optsDiv = document.getElementById('retaOptions');
-        optsDiv.innerHTML = '';
-        ch.opts.forEach(optStr => {
-            const btn = document.createElement('button');
-            btn.className = 'opt-btn';
-            btn.style.textAlign = 'center';
-            btn.innerText = optStr;
-            btn.onclick = () => {
-                if (retaLocked) return;
-                retaLocked = true;
-                const chosen = parseFloat(optStr.replace(',', '.'));
-                if (Math.abs(chosen - ch.target) < 0.01) {
-                    btn.classList.add('correct');
-                    document.getElementById('retaFeedback').innerText = `🎯 Na mosca! A seta aponta para ${optStr}! +12 XP`;
-                    document.getElementById('retaFeedback').style.color = "var(--correct)";
-                    addXP(12, true);
-                } else {
-                    btn.classList.add('wrong');
-                    document.getElementById('retaFeedback').innerText = `❌ Não foi dessa vez! Conte cada tracinho (${ch.step.toString().replace('.', ',')} em ${ch.step.toString().replace('.', ',')}).`;
-                    document.getElementById('retaFeedback').style.color = "var(--wrong)";
-                    addXP(0, false);
-                }
-                retaIdx++;
-                setTimeout(loadReta, 1800);
-            };
-            optsDiv.appendChild(btn);
-        });
-    }
-
-    // --- 5. CONSTRUTOR DA HORTA (ÁREA E PERÍMETRO) ---
-    const hortaMissions = [
-        { text: "Missão 1 (Cenoura): Pinte um canteiro retangular com Área = 12 m² (ex: 4 colunas × 3 linhas).", targetArea: 12 },
-        { text: "Missão 2 (Alface): Pinte um canteiro quadrado com Área = 16 m² (4 colunas × 4 linhas).", targetArea: 16 },
-        { text: "Missão 3 (Tomate): Pinte um canteiro que ocupe 20% da horta de 60 quadrados (Área = 12 m²).", targetArea: 12 },
-        { text: "Missão 4 (Couve): Pinte um canteiro com Área = 15 m² (5 colunas × 3 linhas).", targetArea: 15 }
-    ];
-    let hortaIdx = 0;
-
-    function initHorta() {
-        const grid = document.getElementById('hortaGrid');
-        grid.innerHTML = '';
-        for (let i = 0; i < 60; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'grid-cell';
-            cell.onclick = () => {
-                cell.classList.toggle('painted');
-                updateHortaCount();
-            };
-            grid.appendChild(cell);
-        }
-        loadHortaMission();
-    }
-
-    function loadHortaMission() {
-        document.getElementById('hortaFeedback').innerText = '';
-        document.getElementById('hortaMission').innerText = hortaMissions[hortaIdx % hortaMissions.length].text;
-        clearHortaGrid();
-    }
-
-    function clearHortaGrid() {
-        document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('painted'));
-        updateHortaCount();
-    }
-
-    function updateHortaCount() {
-        const count = document.querySelectorAll('.grid-cell.painted').length;
-        document.getElementById('currentAreaSpan').innerText = count;
-    }
-
-    function checkHortaMission() {
-        const count = document.querySelectorAll('.grid-cell.painted').length;
-        const target = hortaMissions[hortaIdx % hortaMissions.length].targetArea;
-        const fb = document.getElementById('hortaFeedback');
-        if (count === target) {
-            fb.innerText = `🌱 Excelente! Você plantou exatamente ${target} m²! +15 XP!`;
-            fb.style.color = "var(--correct)";
-            addXP(15, true);
-            hortaIdx++;
-            setTimeout(loadHortaMission, 1600);
-        } else {
-            fb.innerText = `❌ Você pintou ${count} m², mas a missão pede ${target} m². Ajuste os quadradinhos!`;
-            fb.style.color = "var(--wrong)";
-            addXP(0, false);
-        }
-    }
-
-    // --- 6. JOGO DA MEMÓRIA (FRAÇÃO = DECIMAL = %) ---
+    // --- 8. MEMÓRIA ---
     const memPairs = [
         { id: 1, t: "1/2" }, { id: 1, t: "50%" },
         { id: 2, t: "1/4" }, { id: 2, t: "25%" },
         { id: 3, t: "3/4" }, { id: 3, t: "0,75" },
-        { id: 4, t: "1/10" }, { id: 4, t: "0,10 (10%)" },
-        { id: 5, t: "1/100" }, { id: 5, t: "0,01 (1%)" },
-        { id: 6, t: "20%" }, { id: 6, t: "2 × 10%" }
+        { id: 4, t: "0,5 hora" }, { id: 4, t: "30 minutos" },
+        { id: 5, t: "1/10" }, { id: 5, t: "10% (0,10)" },
+        { id: 6, t: "Quadrado" }, { id: 6, t: "Retângulo e Losango" }
     ];
     let flipped = [], matched = 0;
     function initMemory() {
@@ -1045,7 +1221,6 @@
                 c.classList.add('revealed');
                 c.innerText = item.t;
                 flipped.push(c);
-
                 if (flipped.length === 2) {
                     const [a, b] = flipped;
                     if (a.dataset.id === b.dataset.id) {
@@ -1055,7 +1230,7 @@
                         matched++;
                         addXP(8, true);
                         if (matched === memPairs.length / 2) {
-                            document.getElementById('memoryFeedback').innerText = "🎉 Parabéns! Você dominou as representações equivalentes! +20 XP Bônus!";
+                            document.getElementById('memoryFeedback').innerText = "🎉 Parabéns! Todos os pares combinados! +20 XP Bônus!";
                             document.getElementById('memoryFeedback').style.color = "var(--correct)";
                             addXP(20, true);
                         }
@@ -1072,7 +1247,7 @@
         });
     }
 
-    // --- 7. CADERNO DE EXERCÍCIOS ---
+    // --- 9. EXERCÍCIOS ---
     function checkEx(inputId, validAnswers, fbId, successMsg) {
         const val = document.getElementById(inputId).value.trim().replace(/\s+/g, ' ');
         const fb = document.getElementById(fbId);
@@ -1081,16 +1256,19 @@
             fb.style.color = "var(--correct)";
             addXP(15, true);
         } else {
-            fb.innerText = "❌ Ops! Revise seus cálculos e tente novamente.";
+            fb.innerText = "❌ Revise seus cálculos e tente novamente!";
             fb.style.color = "var(--wrong)";
             addXP(0, false);
         }
     }
 
-    // Inicializar
-    loadQuiz();
+    // Inicialização
+    renderHQ();
+    loadFrac();
+    loadChart();
     loadReta();
     initHorta();
+    loadQuiz();
     initMemory();
 </script>
 </body>
