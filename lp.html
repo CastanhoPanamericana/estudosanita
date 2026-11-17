@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Completa de Língua Portuguesa: 5º Ano (100% Edital)</title>
+    <style>
+        :root {
+            --paper-bg: #fffdf7;
+            --line-color: #cbd5e1;
+            --margin-red: #fca5a5;
+            --chalkboard: #14532d;
+            --chalkboard-border: #92400e;
+            --primary: #7c3aed;
+            --primary-dark: #5b21b6;
+            --secondary: #0284c7;
+            --accent: #f59e0b;
+            --text: #1e293b;
+            --correct: #16a34a;
+            --wrong: #dc2626;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', Tahoma, sans-serif;
+            background-color: #e2e8f0;
+            background-image: radial-gradient(#94a3b8 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1050px;
+            width: 100%;
+        }
+
+        /* Cabeçalho Caderno */
+        .notebook-header {
+            background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 50%, #0284c7 100%);
+            color: white;
+            padding: 22px 25px;
+            border-radius: 18px;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .notebook-header h1 {
+            margin: 0 0 6px 0;
+            font-size: 1.75rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+
+        .notebook-header p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #fef08a;
+            font-weight: bold;
+        }
+
+        /* HUD Gamificado */
+        .hud {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: var(--paper-bg);
+            padding: 12px 15px;
+            border-radius: 14px;
+            border: 3px solid #c4b5fd;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .hud { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .hud-item span { display: block; font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: bold; }
+        .hud-item strong { font-size: 1.15rem; color: var(--primary-dark); }
+
+        /* Abas de Navegação */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 18px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            color: #334155;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.84rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1 1 auto;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover { background: #f5f3ff; border-color: #c4b5fd; }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Folha Pautada */
+        .panel {
+            display: none;
+            background-color: var(--paper-bg);
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 32px;
+            padding: 25px 25px 25px 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border: 2px solid #e2e8f0;
+            border-left: 6px solid var(--margin-red);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2.panel-title {
+            margin-top: 0;
+            background: #ede9fe;
+            color: #5b21b6;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 2px dashed #7c3aed;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+
+        /* HISTÓRIA EM QUADRINHOS INTERATIVA */
+        .hq-stage {
+            background: white;
+            border: 4px solid #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 6px 6px 0px #1e293b;
+            margin-top: 10px;
+        }
+
+        .hq-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fef08a;
+            border: 2px solid #1e293b;
+            padding: 8px 14px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hq-scene-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 700px) {
+            .hq-scene-layout { grid-template-columns: 1fr; }
+        }
+
+        .hq-illustration {
+            background: #f0f9ff;
+            border: 3px solid #1e293b;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            min-height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .speech-bubble {
+            background: #ffffff;
+            border: 3px solid #1e293b;
+            border-radius: 18px;
+            padding: 14px 16px;
+            font-size: 0.98rem;
+            line-height: 1.4;
+            margin-bottom: 14px;
+            position: relative;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+        }
+
+        .hq-choices {
+            display: grid;
+            gap: 10px;
+        }
+
+        .hq-choice-btn {
+            background: #f5f3ff;
+            border: 2.5px solid #7c3aed;
+            color: #5b21b6;
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .hq-choice-btn:hover { background: #7c3aed; color: white; }
+        .hq-choice-btn.correct { background: var(--correct) !important; color: white !important; border-color: #15803d !important; }
+        .hq-choice-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: #b91c1c !important; }
+
+        /* LOUSA VERDE */
+        .chalkboard {
+            background-color: var(--chalkboard);
+            border: 8px solid var(--chalkboard-border);
+            border-radius: 14px;
+            color: #f8fafc;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+        }
+
+        .chalkboard h3 {
+            color: #fde047;
+            margin-top: 0;
+            border-bottom: 2px dashed rgba(255,255,255,0.3);
+            padding-bottom: 6px;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .visual-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: left;
+        }
+
+        /* JOGOS & QUIZ */
+        .question-box {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-bottom: 14px;
+        }
+
+        .options-list { display: grid; gap: 10px; }
+        .opt-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 12px 15px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.96rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .opt-btn:hover { background: #f5f3ff; border-color: var(--primary); }
+        .opt-btn.correct { background: var(--correct) !important; color: white !important; border-color: #15803d !important; }
+        .opt-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: #b91c1c !important; }
+
+        /* JOGO DOS SUFIXOS (ISSE/ICE & ANÇA/ANSA) */
+        .suffix-card {
+            background: white;
+            border: 3px solid #f59e0b;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .word-stem {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin: 10px 0;
+        }
+        .suffix-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .sfx-btn {
+            background: #fef3c7;
+            border: 3px solid #d97706;
+            color: #92400e;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .sfx-btn:hover { background: #d97706; color: white; }
+
+        /* CLASSIFICADOR GRAMATICAL (SUBSTANTIVO, ADJETIVO, ADVÉRBIO, VERBO) */
+        .word-banner {
+            background: #e0f2fe;
+            border: 3px solid #0284c7;
+            padding: 18px;
+            border-radius: 14px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .word-banner .big-word {
+            font-size: 1.7rem;
+            color: #0369a1;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .word-banner .context-quote {
+            font-size: 0.95rem;
+            color: #334155;
+            font-style: italic;
+        }
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        @media (max-width: 600px) { .class-grid { grid-template-columns: 1fr; } }
+
+        /* CRÔNICA "A ESPADA" & ORDENAÇÃO */
+        .chronicle-box {
+            background: white;
+            border: 2px solid #94a3b8;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            line-height: 1.5;
+            font-size: 0.96rem;
+        }
+
+        /* MEMÓRIA */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 600px) { .memory-grid { grid-template-columns: repeat(3, 1fr); } }
+        .mem-card {
+            height: 85px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 0.88rem;
+            cursor: pointer;
+        }
+        .mem-card.hidden-text { font-size: 1.5rem; }
+        .mem-card.revealed { background: #e0f2fe; color: #0369a1; border: 2px solid #0284c7; }
+        .mem-card.matched { background: var(--correct); color: white; border: 2px solid #15803d; }
+
+        /* CADERNO DE EXERCÍCIOS */
+        .exercise-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 14px;
+        }
+        .badge-topic {
+            display: inline-block;
+            background: #ede9fe;
+            color: #5b21b6;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        .input-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+        .lp-input {
+            padding: 10px 12px;
+            font-size: 1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            width: 210px;
+            font-family: inherit;
+            font-weight: bold;
+        }
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .action-btn:hover { background: var(--primary-dark); }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.96rem;
+            min-height: 22px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="notebook-header">
+        <h1>📚 Super Plataforma de Língua Portuguesa — 5º Ano ✏️</h1>
+        <p>Escola Projeto Vida • Verbos, Advérbios, Substantivos, Adjetivos, ISSE/ICE, ANÇA/ANSA e Crônica "A Espada"</p>
+    </div>
+
+    <!-- HUD Gamificado -->
+    <div class="hud">
+        <div class="hud-item"><span>⭐ Pontos XP</span><strong id="xpDisplay">0</strong></div>
+        <div class="hud-item"><span>🔥 Sequência</span><strong id="streakDisplay">0</strong></div>
+        <div class="hud-item"><span>🎖️ Patente</span><strong id="levelDisplay">1 - Leitor</strong></div>
+        <div class="hud-item"><span>✅ Acertos</span><strong id="doneCountDisplay">0</strong></div>
+    </div>
+
+    <!-- Abas -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('tab-hq', this)">🎬 1. HQ Interativa (A Espada)</button>
+        <button class="tab-btn" onclick="openTab('tab-visual', this)">🧑‍🏫 2. Lousa & Regras</button>
+        <button class="tab-btn" onclick="openTab('tab-sufixos', this)">🔤 3. Duelo ISSE/ICE & ANÇA/ANSA</button>
+        <button class="tab-btn" onclick="openTab('tab-classes', this)">🏷️ 4. Caça às Classes (Tabela P. 36)</button>
+        <button class="tab-btn" onclick="openTab('tab-adverbios', this)">🧭 5. Detetive de Advérbios</button>
+        <button class="tab-btn" onclick="openTab('tab-cronica', this)">⚔️ 6. Crônica "A Espada"</button>
+        <button class="tab-btn" onclick="openTab('tab-quiz', this)">❓ 7. Super Quiz (15)</button>
+        <button class="tab-btn" onclick="openTab('tab-memory', this)">🧠 8. Memória</button>
+        <button class="tab-btn" onclick="openTab('tab-exercicios', this)">✍️ 9. Caderno (10 Exercícios)</button>
+    </div>
+
+    <!-- 1. HISTÓRIA EM QUADRINHOS INTERATIVA -->
+    <div id="tab-hq" class="panel active">
+        <h2 class="panel-title">🎬 HQ Interativa: "Thunder Boy, Armandinho e os Vikings"</h2>
+        <p style="font-weight:bold; color:#475569;">Avance pelos 6 episódios interativos inspirados nas tirinhas e na crônica "A Espada" da apostila!</p>
+
+        <div class="hq-stage">
+            <div class="hq-header-bar">
+                <span id="hqChapterBadge">Episódio 1 de 6</span>
+                <span id="hqProgressText">Progresso: 1/6</span>
+            </div>
+
+            <div class="hq-scene-layout">
+                <div class="hq-illustration" id="hqArtBox"></div>
+                <div>
+                    <div class="speech-bubble" id="hqSpeechBubble"></div>
+                    <div class="hq-choices" id="hqChoicesBox"></div>
+                    <div class="feedback" id="hqFeedback"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. LOUSA E REGRAS -->
+    <div id="tab-visual" class="panel">
+        <h2 class="panel-title">🧑‍🏫 Lousa Completa de Língua Portuguesa</h2>
+
+        <div class="chalkboard">
+            <h3>1. Regras de Ortografia: ISSE / ICE e ANÇA / ANSA</h3>
+            <div class="visual-grid">
+                <div class="visual-card">
+                    <strong style="color:#fde047;">⚡ ISSE vs ICE (Como não errar nunca!):</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li><strong>ISSE (com SS):</strong> Usado em <strong>VERBOS</strong> no pretérito imperfeito do subjuntivo (ações passadas hipotéticas).<br>Ex: <em>servir → serv<strong>isse</strong></em> | <em>dormir → dorm<strong>isse</strong></em> | <em>proibir → proib<strong>isse</strong></em>.</li>
+                        <li><strong>ICE (com C):</strong> Usado em <strong>SUBSTANTIVOS</strong> derivados de adjetivos ou outros substantivos.<br>Ex: <em>maluco → maluqu<strong>ice</strong></em> | <em>criança → crianc<strong>ice</strong></em> | <em>meigo → meigu<strong>ice</strong></em>.</li>
+                    </ul>
+                </div>
+                <div class="visual-card">
+                    <strong style="color:#fde047;">⚡ ANÇA vs ANSA (Cruzadinha da Pág. 7-8):</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li><strong>ANÇA (com Ç):</strong> Substantivos derivados de <strong>VERBOS</strong> (ação/resultado) ou palavras primitivas.<br>Ex: <em>dançar → dan<strong>ça</strong></em> | <em>andar → andan<strong>ça</strong></em> | <em>alcançar → alcan<strong>ça</strong></em> | <em>esperar → esperan<strong>ça</strong></em> | <em>segurança, poupança, balança, liderança, herança</em>.</li>
+                        <li><strong>ANSA (com S):</strong> Quando a palavra original (radical) já tem <strong>S</strong>!<br>Ex: <em>cansar → can<strong>sa</strong></em> | <em>descansar → descan<strong>sa</strong></em> | <em>manso → aman<strong>sa</strong></em>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="chalkboard">
+            <h3>2. Classes Gramaticais & Crônicas</h3>
+            <div class="visual-grid">
+                <div class="visual-card">
+                    <strong style="color:#fde047;">🏷️ Substantivo, Adjetivo, Verbo e Advérbio:</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li><strong>Substantivo:</strong> Dá nome aos seres, objetos, lugares e sentimentos (<em>espada, família, São João, balãozinho, justiça</em>).</li>
+                        <li><strong>Adjetivo:</strong> Dá característica ou qualidade ao substantivo (<em>casa <u>grande</u>, navio <u>imenso</u>, balão <u>luminoso</u>, menino <u>quieto</u></em>).</li>
+                        <li><strong>Verbo:</strong> Indica ação, estado ou fenômeno e muda de tempo (Presente: <em>chama</em> | Passado: <em>chamou/chamava</em> | Futuro: <em>chamará</em>).</li>
+                        <li><strong>Advérbio:</strong> Modifica o verbo indicando circunstância:<br>• <em>Tempo:</em> ontem, hoje, agora, amanhã.<br>• <em>Lugar:</em> lá fora, aqui, lá em casa.<br>• <em>Modo:</em> apressadamente, vagarosamente, sutilmente.<br>• <em>Intensidade:</em> muito, tão | <em>Negação:</em> não, nunca.</li>
+                    </ul>
+                </div>
+                <div class="visual-card">
+                    <strong style="color:#fde047;">📖 O que é uma Crônica?</strong>
+                    <ul style="padding-left:18px; font-size:0.86rem; margin-top:6px;">
+                        <li>Texto narrativo curto inspirado em situações do <strong>cotidiano</strong> (como uma festa de aniversário ou acabar a luz em casa).</li>
+                        <li>Usa linguagem simples, diálogos e muitas vezes traz <strong>humor</strong>, reflexão ou mistura o real com o <strong>fantástico</strong> (como em <em>"A Espada"</em>, de Luiz Fernando Veríssimo).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. DUELO DE SUFIXOS (ISSE/ICE & ANÇA/ANSA) -->
+    <div id="tab-sufixos" class="panel">
+        <h2 class="panel-title">🔤 Duelo de Ortografia: ISSE ou ICE? ANÇA ou ANSA?</h2>
+        <p style="font-weight:bold; color:#475569;">Observe a palavra primitiva e clique na terminação correta!</p>
+        
+        <div class="suffix-card">
+            <div id="sfxHint" style="color:#0284c7; font-weight:bold; font-size:0.95rem;"></div>
+            <div class="word-stem" id="sfxWordDisplay"></div>
+            <div class="suffix-btns" id="sfxButtons"></div>
+            <div class="feedback" id="sfxFeedback"></div>
+        </div>
+    </div>
+
+    <!-- 4. CAÇA ÀS CLASSES GRAMATICAIS (TABELA DA PÁGINA 36) -->
+    <div id="tab-classes" class="panel">
+        <h2 class="panel-title">🏷️ Caça às Classes Gramaticais (Palavras da Crônica "A Espada")</h2>
+        <p style="font-weight:bold; color:#475569;">Classifique cada palavra abaixo considerando o sentido que ela apresenta no texto (como na tabela da página 36):</p>
+
+        <div class="word-banner">
+            <span class="big-word" id="clsWord">FAMÍLIA</span>
+            <span class="context-quote" id="clsContext">"Uma família de classe média alta."</span>
+        </div>
+
+        <div class="class-grid">
+            <button class="opt-btn" style="text-align:center;" onclick="checkClass('Substantivo')">📦 SUBSTANTIVO (Nomeia algo)</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkClass('Adjetivo')">🎨 ADJETIVO (Característica)</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkClass('Advérbio')">🧭 ADVÉRBIO (Tempo / Modo / Lugar)</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkClass('Verbo')">⚡ VERBO (Ação / Estado)</button>
+        </div>
+        <div class="feedback" id="clsFeedback"></div>
+    </div>
+
+    <!-- 5. DETETIVE DE ADVÉRBIOS -->
+    <div id="tab-adverbios" class="panel">
+        <h2 class="panel-title">🧭 Detetive de Advérbios (Tirinha do Armandinho & Crônica da Pipa)</h2>
+        <div class="question-box" id="advQuestion"></div>
+        <div class="options-list" id="advOptions"></div>
+        <div class="feedback" id="advFeedback"></div>
+    </div>
+
+    <!-- 6. CRÔNICA "A ESPADA" -->
+    <div id="tab-cronica" class="panel">
+        <h2 class="panel-title">⚔️ Interpretação da Crônica: "A Espada" (Luiz Fernando Veríssimo)</h2>
+        
+        <div class="chronicle-box">
+            <strong>Resumo da Crônica:</strong> Na noite do seu aniversário de 7 anos, o menino está quieto e sério. O pai acha que é cansaço da festa, mas o garoto segura uma espada de metal e afirma solenemente ser <strong>Thunder Boy (Garoto Trovão)</strong>, sucessor de Ramil, dizendo que precisará sair de casa para cumprir seu destino. O pai se controla para não rir e "entra no jogo do filho" para levá-lo à cama. Porém, o menino vai até a janela, ergue a espada e grita: <em>"Ramil!"</em>. Um trovão estremece a casa, a espada e o menino ficam azuis e ele desaparece! Quando a mãe entra na sala e comenta sobre a trovoada (<em>"Viu só? Trovoada. Vá entender este tempo"</em>), o pai percebe que tudo era real!
+        </div>
+
+        <div class="question-box" id="croQuestion"></div>
+        <div class="options-list" id="croOptions"></div>
+        <div class="feedback" id="croFeedback"></div>
+    </div>
+
+    <!-- 7. SUPER QUIZ -->
+    <div id="tab-quiz" class="panel">
+        <h2 class="panel-title">❓ Super Quiz Geral — Língua Portuguesa (15 Questões)</h2>
+        <div class="question-box" id="quizQuestion"></div>
+        <div class="options-list" id="quizOptions"></div>
+        <div class="feedback" id="quizFeedback"></div>
+    </div>
+
+    <!-- 8. JOGO DA MEMÓRIA -->
+    <div id="tab-memory" class="panel">
+        <h2 class="panel-title">🧠 Jogo da Memória: Classes, Tempos Verbais e Sufixos</h2>
+        <div class="memory-grid" id="memoryGrid"></div>
+        <div class="feedback" id="memoryFeedback"></div>
+        <div style="text-align:center; margin-top:12px;">
+            <button class="action-btn" onclick="initMemory()">🔄 Embaralhar Cartas</button>
+        </div>
+    </div>
+
+    <!-- 9. CADERNO DE EXERCÍCIOS -->
+    <div id="tab-exercicios" class="panel">
+        <h2 class="panel-title">✍️ Caderno de Exercícios (10 Questões para Escrever)</h2>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Tempo Verbal (Futuro)</span><br>
+            <strong>1. Complete no Futuro:</strong> "No próximo sábado, as crianças _______________ quadrilhas." (Verbo: <strong>DANÇAR</strong>)
+            <div class="input-row">
+                <input type="text" id="ex1" class="lp-input" placeholder="Ex: dançarão">
+                <button class="action-btn" onclick="checkEx('ex1', ['dançarão', 'dancarao'], 'fb1', 'Exato! No futuro escrevemos dançarão (com -ÃO)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb1"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Tempo Verbal (Passado)</span><br>
+            <strong>2. Complete no Passado:</strong> "Ontem, os meninos _______________ a competição." (Verbo: <strong>VENCER</strong>)
+            <div class="input-row">
+                <input type="text" id="ex2" class="lp-input" placeholder="Ex: venceram">
+                <button class="action-btn" onclick="checkEx('ex2', ['venceram'], 'fb2', 'Perfeito! No passado escrevemos venceram (com -AM)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb2"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Sufixo ISSE ou ICE</span><br>
+            <strong>3. Substantivo derivado de "maluco":</strong> Escreva a palavra formada acrescentando o sufixo correto a <strong>maluco</strong>:
+            <div class="input-row">
+                <input type="text" id="ex3" class="lp-input" placeholder="Ex: maluquice">
+                <button class="action-btn" onclick="checkEx('ex3', ['maluquice'], 'fb3', 'Isso mesmo! Maluquice é substantivo, então usa-se ICE!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb3"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Sufixo ISSE ou ICE</span><br>
+            <strong>4. Verbo "dormir" no passado:</strong> "Se ele _______________ mais cedo, não teria sono." (Complete com <strong>dormir</strong> + sufixo):
+            <div class="input-row">
+                <input type="text" id="ex4" class="lp-input" placeholder="Ex: dormisse">
+                <button class="action-btn" onclick="checkEx('ex4', ['dormisse'], 'fb4', 'Acertou! Como é verbo, escrevemos dormisse (com ISSE)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb4"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Sufixo ANÇA ou ANSA</span><br>
+            <strong>5. Cruzadinha (Item 10):</strong> Palavra derivada de "manso" que indica quem acalma um animal ("Ele _______________ o cavalo"):
+            <div class="input-row">
+                <input type="text" id="ex5" class="lp-input" placeholder="Ex: amansa">
+                <button class="action-btn" onclick="checkEx('ex5', ['amansa'], 'fb5', 'Correto! Amansa vem de manso (que já tem S), por isso usa ANSA!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb5"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Sufixo ANÇA ou ANSA</span><br>
+            <strong>6. Cruzadinha (Item 6):</strong> Nome do anel usado no casamento (terminado em ANÇA/ANSA):
+            <div class="input-row">
+                <input type="text" id="ex6" class="lp-input" placeholder="Ex: aliança">
+                <button class="action-btn" onclick="checkEx('ex6', ['aliança', 'alianca'], 'fb6', 'Muito bem! Aliança escreve-se com Ç (ANÇA)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb6"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Substantivos (O Menino Maluquinho)</span><br>
+            <strong>7. Substantivo Próprio:</strong> No poema de Ziraldo (<em>"E quando vinha São João / o mais luminoso balão..."</em>), qual é o <strong>substantivo próprio</strong> que aparece?
+            <div class="input-row">
+                <input type="text" id="ex7" class="lp-input" placeholder="Ex: São João">
+                <button class="action-btn" onclick="checkEx('ex7', ['são joão', 'sao joao'], 'fb7', 'Exato! São João é substantivo próprio (nome de festa/santo, escrito com inicial maiúscula)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb7"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Substantivos (Flexão de Gênero)</span><br>
+            <strong>8. Feminino:</strong> Qual é o substantivo feminino correspondente a <strong>papai</strong> no texto de Ziraldo?
+            <div class="input-row">
+                <input type="text" id="ex8" class="lp-input" placeholder="Ex: mamãe">
+                <button class="action-btn" onclick="checkEx('ex8', ['mamãe', 'mamae'], 'fb8', 'Perfeito! Mamãe é o feminino de papai!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb8"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Advérbios</span><br>
+            <strong>9. Identifique o Advérbio de Modo:</strong> Na frase <em>"O menino correu apressadamente pelo parque"</em>, qual palavra é o <strong>advérbio de modo</strong>?
+            <div class="input-row">
+                <input type="text" id="ex9" class="lp-input" placeholder="Ex: apressadamente">
+                <button class="action-btn" onclick="checkEx('ex9', ['apressadamente'], 'fb9', 'Isso mesmo! Apressadamente indica o modo como o menino correu!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb9"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Crônica "A Espada"</span><br>
+            <strong>10. Personagem:</strong> Qual é o nome de super-herói que o menino de 7 anos diz ser na crônica "A Espada"?
+            <div class="input-row">
+                <input type="text" id="ex10" class="lp-input" placeholder="Ex: Thunder Boy">
+                <button class="action-btn" onclick="checkEx('ex10', ['thunder boy', 'garoto trovão', 'garoto trovao'], 'fb10', 'Sensacional! Thunder Boy (ou Garoto Trovão)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb10"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- SOM ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(freq, type, duration) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+    function soundWin() { playTone(523.25, 'sine', 0.12); setTimeout(() => playTone(659.25, 'sine', 0.2), 100); }
+    function soundFail() { playTone(190, 'sawtooth', 0.25); }
+
+    // --- HUD ---
+    let xp = 0, streak = 0, doneCount = 0;
+    function addXP(pts, ok = true) {
+        if (ok) { xp += pts; streak++; doneCount++; soundWin(); }
+        else { streak = 0; soundFail(); }
+        document.getElementById('xpDisplay').innerText = xp;
+        document.getElementById('streakDisplay').innerText = streak;
+        document.getElementById('doneCountDisplay').innerText = doneCount;
+
+        let rank = "1 - Leitor";
+        if (xp >= 260) rank = "4 - Mestre das Crônicas 🏆";
+        else if (xp >= 150) rank = "3 - Gramático Pro 📚";
+        else if (xp >= 60) rank = "2 - Escritor ⚡";
+        document.getElementById('levelDisplay').innerText = rank;
+    }
+
+    function openTab(tabId, btn) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // --- 1. HQ INTERATIVA ---
+    const hqEpisodes = [
+        {
+            title: "Episódio 1 de 6: Armandinho no Escuro!",
+            speech: "<strong>Armandinho:</strong> <em>'Ontem acabou a luz lá em casa! E agora?! Estamos ralados!!'</em><br>Na frase 'Ontem acabou a luz lá em casa!', as palavras <strong>Ontem</strong> e <strong>lá em casa</strong> são advérbios de quê?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <rect x="10" y="10" width="130" height="110" rx="10" fill="#1e293b"/>
+                    <circle cx="65" cy="65" r="20" fill="#fed7aa"/>
+                    <path d="M45 55 Q65 35 85 55" fill="#0284c7"/>
+                    <rect x="105" y="65" width="10" height="28" fill="#fef08a"/>
+                    <polygon points="110,48 105,63 115,63" fill="#f59e0b"/>
+                  </svg>`,
+            choices: [
+                { text: "Tempo (ontem) e Lugar (lá em casa)", ok: true },
+                { text: "Modo e Intensidade", ok: false },
+                { text: "Negação e Dúvida", ok: false }
+            ],
+            msg: "Isso mesmo! 'Ontem' indica tempo e 'lá em casa' indica lugar!"
+        },
+        {
+            title: "Episódio 2 de 6: O Viking Hagar e os Adjetivos",
+            speech: "<strong>Hagar, o Horrível:</strong> <em>'Vikings não precisam de uma casa grande ou um navio imenso pra serem felizes... Descobrimos nossa felicidade em pequenas coisas...'</em><br>A quais substantivos se referem os adjetivos <strong>grande</strong>, <strong>imenso</strong> e <strong>pequenas</strong>?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <circle cx="75" cy="65" r="32" fill="#fed7aa" stroke="#1e293b" stroke-width="2.5"/>
+                    <path d="M45 52 Q75 30 105 52" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                    <polygon points="45,52 32,28 52,44" fill="#fef08a" stroke="#1e293b" stroke-width="2"/>
+                    <polygon points="105,52 118,28 98,44" fill="#fef08a" stroke="#1e293b" stroke-width="2"/>
+                    <path d="M52 72 Q75 102 98 72 Z" fill="#d97706" stroke="#1e293b" stroke-width="2"/>
+                  </svg>`,
+            choices: [
+                { text: "Casa (grande), Navio (imenso) e Coisas (pequenas)", ok: true },
+                { text: "Vikings, Ouro e Prata", ok: false },
+                { text: "Vinho, Caneca e Cem", ok: false }
+            ],
+            msg: "Brilhante! Os adjetivos sempre caracterizam os substantivos!"
+        },
+        {
+            title: "Episódio 3 de 6: Duelo ISSE ou ICE",
+            speech: "<strong>Prof. de Português:</strong> Atenção turma! Quando a palavra é um <strong>VERBO</strong> (ex: servir, dormir, proibir), usamos <strong>ISSE</strong>. Quando é um <strong>SUBSTANTIVO</strong> (ex: criança, careta, esquisito), usamos <strong>ICE</strong>! Qual dupla está escrita corretamente?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <rect x="10" y="15" width="130" height="95" rx="8" fill="#14532d" stroke="#92400e" stroke-width="4"/>
+                    <text x="75" y="50" fill="#fde047" font-size="15" font-weight="bold" text-anchor="middle">VERBO = ISSE</text>
+                    <text x="75" y="80" fill="#38bdf8" font-size="15" font-weight="bold" text-anchor="middle">SUBST. = ICE</text>
+                  </svg>`,
+            choices: [
+                { text: "repartisse (verbo) e esquisitice (substantivo)", ok: true },
+                { text: "repartice e esquisitisse", ok: false },
+                { text: "dormice e criancisse", ok: false }
+            ],
+            msg: "Perfeito! Repartisse vem do verbo repartir (ISSE), e esquisitice é substantivo (ICE)!"
+        },
+        {
+            title: "Episódio 4 de 6: Crônica 'Deixa a luz acesa, pai'",
+            speech: "<strong>Moacyr Scliar (Crônica):</strong> No presente: <em>'Teu filho te chama à noite: quer água. Você se levanta, vai lá e dá água para ele.'</em><br>Como fica esse trecho passado para o <strong>tempo passado</strong>?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <rect x="35" y="25" width="80" height="80" rx="12" fill="#fef08a" stroke="#1e293b" stroke-width="2.5"/>
+                    <circle cx="75" cy="58" r="16" fill="#f59e0b"/>
+                    <rect x="67" y="74" width="16" height="12" fill="#64748b"/>
+                  </svg>`,
+            choices: [
+                { text: "Teu filho te chamou à noite: queria água. Você se levantou, foi lá e deu água...", ok: true },
+                { text: "Teu filho te chamará à noite: quereria água. Você se levantará...", ok: false },
+                { text: "Teu filho te chamando à noite: querendo água...", ok: false }
+            ],
+            msg: "Excelente! Chamou, queria, levantou, foi e deu estão no tempo passado (pretérito)!"
+        },
+        {
+            title: "Episódio 5 de 6: A Espada de Thunder Boy!",
+            speech: "<strong>Menino de 7 anos:</strong> <em>'Pai, eu sou Thunder Boy (Garoto Trovão). Esta espada caiu do céu há sete mil anos. Vou ter que sair de casa.'</em><br>Por que o pai respondeu <em>'Muito bem, meu filho. Agora vamos pra cama'</em>?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <rect x="70" y="15" width="10" height="75" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                    <rect x="52" y="85" width="46" height="8" fill="#f59e0b" stroke="#1e293b" stroke-width="2"/>
+                    <rect x="71" y="93" width="8" height="20" fill="#78350f"/>
+                  </svg>`,
+            choices: [
+                { text: "Porque ele achou que o filho estava brincando / imaginando história em quadrinhos", ok: true },
+                { text: "Porque ele ficou com muito medo dos poderes do filho", ok: false },
+                { text: "Porque ele já conhecia o guerreiro Ramil", ok: false }
+            ],
+            msg: "Exato! No começo o pai até se controlou para não rir, achando que era brincadeira!"
+        },
+        {
+            title: "Episódio 6 de 6: O Final Surpreendente da Crônica!",
+            speech: "<strong>Mãe (após o trovão):</strong> <em>'Viu só? Trovoada. Vá entender este tempo.'</em><br>Por que essa fala da mãe é engraçada para o leitor no final de 'A Espada'?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <rect x="10" y="10" width="130" height="110" rx="10" fill="#0284c7"/>
+                    <polygon points="80,20 55,65 75,65 60,110 100,55 80,55" fill="#fde047" stroke="#1e293b" stroke-width="2"/>
+                  </svg>`,
+            choices: [
+                { text: "Porque ela acha que foi só uma chuva comum, sem saber que a espada ficou azul e o filho desapareceu!", ok: true },
+                { text: "Porque ela gosta muito de dias nublados", ok: false },
+                { text: "Porque ela mesma comprou a espada na loja", ok: false }
+            ],
+            msg: "🏆 Parabéns! Você completou toda a HQ Interativa de Língua Portuguesa!"
+        }
+    ];
+
+    let hqStep = 0, hqLocked = false;
+    function renderHQ() {
+        hqLocked = false;
+        document.getElementById('hqFeedback').innerText = '';
+        const ep = hqEpisodes[hqStep];
+        document.getElementById('hqChapterBadge').innerText = ep.title;
+        document.getElementById('hqProgressText').innerText = `Episódio ${hqStep + 1} de ${hqEpisodes.length}`;
+        document.getElementById('hqArtBox').innerHTML = ep.svg;
+        document.getElementById('hqSpeechBubble').innerHTML = ep.speech;
+
+        const box = document.getElementById('hqChoicesBox');
+        box.innerHTML = '';
+        ep.choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'hq-choice-btn';
+            btn.innerText = c.text;
+            btn.onclick = () => {
+                if (hqLocked) return;
+                hqLocked = true;
+                if (c.ok) {
+                    btn.classList.add('correct');
+                    document.getElementById('hqFeedback').innerText = `🎉 ${ep.msg} (+15 XP)`;
+                    document.getElementById('hqFeedback').style.color = "var(--correct)";
+                    addXP(15, true);
+                    setTimeout(() => {
+                        hqStep = (hqStep + 1) % hqEpisodes.length;
+                        renderHQ();
+                    }, 2600);
+                } else {
+                    btn.classList.add('wrong');
+                    document.getElementById('hqFeedback').innerText = "❌ Ops! Tente outra opção!";
+                    document.getElementById('hqFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                    hqLocked = false;
+                }
+            };
+            box.appendChild(btn);
+        });
+    }
+
+    // --- 3. DUELO DE SUFIXOS (ISSE/ICE & ANÇA/ANSA) ---
+    const suffixDeck = [
+        { stem: "caduco → caduqu___", hint: "Dica: É um substantivo (jeito de pessoa caduca).", opts: ["ICE", "ISSE"], ans: "ICE", full: "caduquice" },
+        { stem: "servir → serv___", hint: "Dica: É uma forma do verbo servir.", opts: ["ICE", "ISSE"], ans: "ISSE", full: "servisse" },
+        { stem: "proibir → proib___", hint: "Dica: É uma forma do verbo proibir.", opts: ["ICE", "ISSE"], ans: "ISSE", full: "proibisse" },
+        { stem: "meigo → meigu___", hint: "Dica: É um substantivo derivado do adjetivo meigo.", opts: ["ICE", "ISSE"], ans: "ICE", full: "meiguice" },
+        { stem: "cansar → can___", hint: "Dica: Vem do verbo cansar (que já tem S).", opts: ["ANÇA", "ANSA"], ans: "ANSA", full: "cansa" },
+        { stem: "andar → and___", hint: "Dica: Substantivo derivado do verbo andar.", opts: ["ANÇA", "ANSA"], ans: "ANÇA", full: "andança" },
+        { stem: "descansar → descan___", hint: "Dica: Vem do verbo descansar (já tem S).", opts: ["ANÇA", "ANSA"], ans: "ANSA", full: "descansa" },
+        { stem: "poupar → poup___", hint: "Dica: Local/ato de guardar dinheiro (substantivo).", opts: ["ANÇA", "ANSA"], ans: "ANÇA", full: "poupança" },
+        { stem: "digerir → diger___", hint: "Dica: Forma do verbo digerir.", opts: ["ICE", "ISSE"], ans: "ISSE", full: "digerisse" },
+        { stem: "líder → lider___", hint: "Dica: Substantivo derivado de líder.", opts: ["ANÇA", "ANSA"], ans: "ANÇA", full: "liderança" }
+    ];
+    let sfxIdx = 0, sfxLocked = false;
+    function loadSuffix() {
+        sfxLocked = false;
+        document.getElementById('sfxFeedback').innerText = '';
+        const item = suffixDeck[sfxIdx % suffixDeck.length];
+        document.getElementById('sfxHint').innerText = item.hint;
+        document.getElementById('sfxWordDisplay').innerText = item.stem;
+        const btnsDiv = document.getElementById('sfxButtons');
+        btnsDiv.innerHTML = '';
+        item.opts.forEach(opt => {
+            const b = document.createElement('button');
+            b.className = 'sfx-btn';
+            b.innerText = opt;
+            b.onclick = () => {
+                if (sfxLocked) return;
+                sfxLocked = true;
+                const fb = document.getElementById('sfxFeedback');
+                if (opt === item.ans) {
+                    b.style.background = "var(--correct)";
+                    b.style.color = "white";
+                    fb.innerText = `✅ Perfeito! Escreve-se "${item.full}"! (+10 XP)`;
+                    fb.style.color = "var(--correct)";
+                    addXP(10, true);
+                } else {
+                    b.style.background = "var(--wrong)";
+                    b.style.color = "white";
+                    fb.innerText = `❌ Quase! O correto é "${item.full}" (termina com ${item.ans}).`;
+                    fb.style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                sfxIdx++;
+                setTimeout(loadSuffix, 1600);
+            };
+            btnsDiv.appendChild(b);
+        });
+    }
+
+    // --- 4. CAÇA ÀS CLASSES GRAMATICAIS (TABELA DA PÁGINA 36) ---
+    const classWords = [
+        { word: "FAMÍLIA", ctx: '"Uma família de classe média alta."', ans: "Substantivo" },
+        { word: "QUIETO", ctx: '"Nota que o filho está quieto e sério..."', ans: "Adjetivo" },
+        { word: "SUTILMENTE", ctx: '"...enquanto o encaminha, sutilmente, para a cama."', ans: "Advérbio" },
+        { word: "ESPADA", ctx: '"E esta espada? Mas que beleza!"', ans: "Substantivo" },
+        { word: "HOJE", ctx: '"Hoje ela veio. É um sinal."', ans: "Advérbio" },
+        { word: "SAGRADO", ctx: '"...no vale sagrado de Bem Tael..."', ans: "Adjetivo" },
+        { word: "AZUL", ctx: '"E vê a espada iluminar-se e ficar azul."', ans: "Adjetivo" },
+        { word: "JUSTIÇA", ctx: '"...está a serviço do bem e da justiça."', ans: "Substantivo" },
+        { word: "ESTRANHO", ctx: '"Coisa estranha..."', ans: "Adjetivo" },
+        { word: "DESTINO", ctx: '"Devo assumir meu destino."', ans: "Substantivo" },
+        { word: "ESTREMECER", ctx: '"E ouve um trovão que faz estremecer a casa."', ans: "Verbo" },
+        { word: "SÉRIO", ctx: '"Nunca viu nenhum garoto de sete anos sério assim."', ans: "Adjetivo" }
+    ];
+    let clsIdx = 0, clsLocked = false;
+    function loadClassWord() {
+        clsLocked = false;
+        document.getElementById('clsFeedback').innerText = '';
+        const item = classWords[clsIdx % classWords.length];
+        document.getElementById('clsWord').innerText = item.word;
+        document.getElementById('clsContext').innerText = item.ctx;
+    }
+    function checkClass(choice) {
+        if (clsLocked) return;
+        clsLocked = true;
+        const item = classWords[clsIdx % classWords.length];
+        const fb = document.getElementById('clsFeedback');
+        if (choice === item.ans) {
+            fb.innerText = `🎯 Exato! "${item.word}" funciona como ${item.ans} nesta frase! (+10 XP)`;
+            fb.style.color = "var(--correct)";
+            addXP(10, true);
+        } else {
+            fb.innerText = `❌ Não foi dessa vez! Nesta frase, "${item.word}" é um ${item.ans}.`;
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+        clsIdx++;
+        setTimeout(loadClassWord, 1600);
+    }
+
+    // --- 5. DETETIVE DE ADVÉRBIOS ---
+    const advQuestions = [
+        { q: "1. Na tirinha de Armandinho: 'E agora?! Estamos ralados!!', a palavra AGORA indica um advérbio de:", opts: ["Intensidade", "Tempo", "Modo", "Dúvida"], ans: 1 },
+        { q: "2. Na expressão popular 'Estamos ralados!!', o que Armandinho quis dizer?", opts: ["Que eles estão numa situação difícil", "Que eles estão feridos e deprimidos", "Que eles estão presos para fora de casa", "Que eles estão sossegados"], ans: 0 },
+        { q: "3. Na frase da crônica: 'O menino correu apressadamente pelo parque, lá fora', as palavras APRESSADAMENTE e LÁ FORA são advérbios de:", opts: ["Tempo e Negação", "Modo e Lugar", "Intensidade e Tempo", "Lugar e Modo"], ans: 1 },
+        { q: "4. Na frase: '...a pipa que havia alçado voo muito alto', a palavra MUITO é um advérbio de:", opts: ["Intensidade", "Lugar", "Negação", "Tempo"], ans: 0 },
+        { q: "5. Na frase: 'Nunca havia se sentido tão pequeno e perdido', as palavras NUNCA e TÃO são, respectivamente, advérbios de:", opts: ["Modo e Lugar", "Negação (ou tempo) e Intensidade", "Lugar e Intensidade", "Dúvida e Modo"], ans: 1 }
+    ];
+    let advIdx = 0, advLocked = false;
+    function loadAdv() {
+        advLocked = false;
+        document.getElementById('advFeedback').innerText = '';
+        const item = advQuestions[advIdx % advQuestions.length];
+        document.getElementById('advQuestion').innerText = item.q;
+        const list = document.getElementById('advOptions');
+        list.innerHTML = '';
+        item.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (advLocked) return;
+                advLocked = true;
+                if (i === item.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('advFeedback').innerText = "🧭 Detetive nota 10! +12 XP!";
+                    document.getElementById('advFeedback').style.color = "var(--correct)";
+                    addXP(12, true);
+                } else {
+                    b.classList.add('wrong');
+                    list.children[item.ans].classList.add('correct');
+                    document.getElementById('advFeedback').innerText = "❌ Veja a classificação correta destacada em verde.";
+                    document.getElementById('advFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                advIdx++;
+                setTimeout(loadAdv, 1800);
+            };
+            list.appendChild(b);
+        });
+    }
+
+    // --- 6. CRÔNICA "A ESPADA" ---
+    const croQuestions = [
+        { q: "1. Qual foi a primeira explicação que o pai encontrou para o filho estar quieto e sério após a festa?", opts: ["Achou que o menino estava doente", "Achou que era cansaço por ter corrido e brincado o dia todo", "Achou que ele não tinha gostado do bolo", "Achou que ele estava bravo com a mãe"], ans: 1 },
+        { q: "2. O que o pai pensa quando o filho usa a frase 'Eu a receberia quando fizesse sete anos'?", opts: ["Ele se controla para não rir e pensa que ler histórias em quadrinhos está ajudando a gramática do menino", "Ele fica assustado com o vocabulário", "Ele chama a polícia imediatamente", "Ele corre para guardar a espada"], ans: 0 },
+        { q: "3. O que significa dizer que o pai resolveu 'entrar no jogo do filho'?", opts: ["Que ele pegou um videogame para jogar", "Que ele fingiu acreditar na história de super-herói para levar o menino calmamente para a cama", "Que ele também tinha uma espada escondida", "Que ele queria brigar com o filho"], ans: 1 },
+        { q: "4. Qual acontecimento transforma a situação cotidiana da crônica em algo fantástico e inesperado?", opts: ["A mãe recolher os detritos da festa", "O menino erguer a espada na janela, gritar 'Ramil!', ouvir-se um trovão e a espada e o garoto ficarem azuis", "O pai perguntar quem deu o presente", "O menino comer cachorro-quente e sorvete"], ans: 1 },
+        { q: "5. Por que o título 'A Espada' se torna mais significativo ao terminarmos a leitura?", opts: ["Porque no início parecia apenas um brinquedo de aniversário, mas no final descobrimos que era uma espada mágica real", "Porque o pai colecionava espadas antigas", "Porque a espada quebrou durante a festa", "Porque ninguém mencionou a espada no texto"], ans: 0 }
+    ];
+    let croIdx = 0, croLocked = false;
+    function loadCro() {
+        croLocked = false;
+        document.getElementById('croFeedback').innerText = '';
+        const item = croQuestions[croIdx % croQuestions.length];
+        document.getElementById('croQuestion').innerText = item.q;
+        const list = document.getElementById('croOptions');
+        list.innerHTML = '';
+        item.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (croLocked) return;
+                croLocked = true;
+                if (i === item.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('croFeedback').innerText = "⚔️ Interpretação impecável! +12 XP!";
+                    document.getElementById('croFeedback').style.color = "var(--correct)";
+                    addXP(12, true);
+                } else {
+                    b.classList.add('wrong');
+                    list.children[item.ans].classList.add('correct');
+                    document.getElementById('croFeedback').innerText = "❌ Releia o resumo da crônica acima e veja a resposta em verde.";
+                    document.getElementById('croFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                croIdx++;
+                setTimeout(loadCro, 1900);
+            };
+            list.appendChild(b);
+        });
+    }
+
+    // --- 7. SUPER QUIZ GERAL (15 QUESTÕES) ---
+    const quizData = [
+        { q: "1. Complete corretamente: 'Amanhã minhas irmãs ________ no parquinho.' (Verbo: BRINCAR)", opts: ["brincaram", "brincarão", "brincavam", "brincam"], ans: 1 },
+        { q: "2. Complete corretamente: 'Domingo passado, Rodrigo e Diego ________ na quadra.' (Verbo: CORRER)", opts: ["correrão", "correram", "correriam", "correm"], ans: 1 },
+        { q: "3. Qual das palavras abaixo deve ser escrita com ISSE (por ser verbo)?", opts: ["criancisse", "caretisse", "digerisse", "maluquisse"], ans: 2 },
+        { q: "4. Qual das palavras abaixo deve ser escrita com ICE (por ser substantivo)?", opts: ["serviçe", "dormice", "meiguice", "proibice"], ans: 2 },
+        { q: "5. Na cruzadinha de ANÇA / ANSA, qual palavra é escrita com ANSA?", opts: ["Aliança", "Segurança", "Descansa", "Esperança"], ans: 2 },
+        { q: "6. Por que a palavra 'DANÇA' é escrita com Ç (ANÇA)?", opts: ["Porque é um substantivo derivado do verbo dançar", "Porque é um advérbio de lugar", "Porque dançar tem S no meio", "Porque é um número decimal"], ans: 0 },
+        { q: "7. Na tirinha dos Vikings: 'Vikings não precisam de uma casa grande... pra serem felizes'. A palavra FELIZES é um adjetivo de qual substantivo?", opts: ["Casa", "Navio", "Vikings", "Precisam"], ans: 2 },
+        { q: "8. No poema 'O menino maluquinho', de Ziraldo, quais são os dois substantivos no diminutivo?", opts: ["balão e menino", "balãozinho e maluquinho", "luminoso e gordo", "tesoura e moldes"], ans: 1 },
+        { q: "9. Ainda no poema de Ziraldo, qual é o substantivo que está no plural?", opts: ["semana", "trabalho", "moldes", "tesoura"], ans: 2 },
+        { q: "10. Na frase 'Ele se sentou no banco de madeira e observou as nuvens que passavam vagarosamente', a palavra VAGAROSAMENTE é:", opts: ["Substantivo", "Adjetivo", "Advérbio de modo", "Advérbio de negação"], ans: 2 },
+        { q: "11. Na crônica 'A Espada', quem foi o primeiro Garoto Trovão que empunhou a espada há sete mil anos?", opts: ["Armandinho", "Ramil", "Ziraldo", "Moacyr"], ans: 1 },
+        { q: "12. Na crônica 'A Espada', qual é a sequência correta dos primeiros acontecimentos?", opts: ["1º O pai ajuda a guardar os presentes -> 2º O menino diz que é Thunder Boy -> 3º Diz que precisa sair de casa", "1º A espada fica azul -> 2º A mãe arruma a festa -> 3º O pai ri", "1º O pai pergunta à mulher -> 2º O menino ganha a espada -> 3º Ele vai dormir", "1º O trovão cai -> 2º O menino faz 7 anos -> 3º Ele come sorvete"], ans: 0 },
+        { q: "13. Qual característica define o gênero textual CRÔNICA?", opts: ["Texto longo dividido em capítulos sobre guerras antigas", "Narrativa curta inspirada em fatos do cotidiano, com linguagem simples e toque de humor ou reflexão", "Lista de instruções para montar um brinquedo", "Poema com rimas obrigatórias sobre animais"], ans: 1 },
+        { q: "14. Na frase 'Após o cinema, meus pais ________ um lanche' (passado de TOMAR), a forma correta é:", opts: ["tomarão", "tomaram", "tomariam", "toma"], ans: 1 },
+        { q: "15. Qual palavra da tabela da página 36 é um ADVÉRBIO de tempo?", opts: ["FAMÍLIA", "HOJE", "ESPADA", "AZUL"], ans: 1 }
+    ];
+    let qIdx = 0, qLocked = false;
+    function loadQuiz() {
+        qLocked = false;
+        document.getElementById('quizFeedback').innerText = '';
+        if (qIdx >= quizData.length) {
+            document.getElementById('quizQuestion').innerText = "🏆 Parabéns! Você completou todas as 15 questões do Super Quiz!";
+            document.getElementById('quizOptions').innerHTML = `<button class="action-btn" onclick="qIdx=0; loadQuiz()">Jogar Novamente</button>`;
+            return;
+        }
+        const curr = quizData[qIdx];
+        document.getElementById('quizQuestion').innerText = `${qIdx + 1}/${quizData.length}. ${curr.q}`;
+        const list = document.getElementById('quizOptions');
+        list.innerHTML = '';
+        curr.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (qLocked) return;
+                qLocked = true;
+                if (i === curr.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('quizFeedback').innerText = "🎉 Acertou! +10 XP!";
+                    document.getElementById('quizFeedback').style.color = "var(--correct)";
+                    addXP(10, true);
+                } else {
+                    b.classList.add('wrong');
+                    list.children[curr.ans].classList.add('correct');
+                    document.getElementById('quizFeedback').innerText = "❌ Ops! Veja a resposta correta destacada em verde.";
+                    document.getElementById('quizFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                setTimeout(() => { qIdx++; loadQuiz(); }, 1800);
+            };
+            list.appendChild(b);
+        });
+    }
+
+    // --- 8. MEMÓRIA ---
+    const memPairs = [
+        { id: 1, t: "ISSE (com SS)" }, { id: 1, t: "Verbos (ex: dormisse)" },
+        { id: 2, t: "ICE (com C)" }, { id: 2, t: "Substantivos (ex: criancice)" },
+        { id: 3, t: "ANSA (com S)" }, { id: 3, t: "Cansa / Descansa / Amansa" },
+        { id: 4, t: "Apressadamente" }, { id: 4, t: "Advérbio de Modo" },
+        { id: 5, t: "Ontem / Hoje" }, { id: 5, t: "Advérbio de Tempo" },
+        { id: 6, t: "Luminoso / Gordo" }, { id: 6, t: "Adjetivos" }
+    ];
+    let flipped = [], matched = 0;
+    function initMemory() {
+        const grid = document.getElementById('memoryGrid');
+        grid.innerHTML = '';
+        document.getElementById('memoryFeedback').innerText = '';
+        flipped = []; matched = 0;
+        const deck = [...memPairs].sort(() => Math.random() - 0.5);
+        deck.forEach(item => {
+            const c = document.createElement('div');
+            c.className = 'mem-card hidden-text';
+            c.innerText = '?';
+            c.dataset.id = item.id;
+            c.dataset.t = item.t;
+            c.onclick = () => {
+                if (c.classList.contains('revealed') || c.classList.contains('matched') || flipped.length === 2) return;
+                c.classList.remove('hidden-text');
+                c.classList.add('revealed');
+                c.innerText = item.t;
+                flipped.push(c);
+                if (flipped.length === 2) {
+                    const [a, b] = flipped;
+                    if (a.dataset.id === b.dataset.id) {
+                        a.classList.replace('revealed', 'matched');
+                        b.classList.replace('revealed', 'matched');
+                        flipped = [];
+                        matched++;
+                        addXP(8, true);
+                        if (matched === memPairs.length / 2) {
+                            document.getElementById('memoryFeedback').innerText = "🎉 Parabéns! Todos os pares combinados! +20 XP Bônus!";
+                            document.getElementById('memoryFeedback').style.color = "var(--correct)";
+                            addXP(20, true);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            a.classList.replace('revealed', 'hidden-text'); a.innerText = '?';
+                            b.classList.replace('revealed', 'hidden-text'); b.innerText = '?';
+                            flipped = [];
+                        }, 850);
+                    }
+                }
+            };
+            grid.appendChild(c);
+        });
+    }
+
+    // --- 9. EXERCÍCIOS ---
+    function checkEx(inputId, validAnswers, fbId, successMsg) {
+        const val = document.getElementById(inputId).value.trim().replace(/\s+/g, ' ');
+        const fb = document.getElementById(fbId);
+        if (validAnswers.some(ans => val.toLowerCase() === ans.toLowerCase())) {
+            fb.innerText = `✅ ${successMsg} (+15 XP)`;
+            fb.style.color = "var(--correct)";
+            addXP(15, true);
+        } else {
+            fb.innerText = "❌ Revise a ortografia ou o tempo verbal e tente novamente!";
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+    }
+
+    // Inicializar tudo
+    renderHQ();
+    loadSuffix();
+    loadClassWord();
+    loadAdv();
+    loadCro();
+    loadQuiz();
+    initMemory();
+</script>
+</body>
+</html>
