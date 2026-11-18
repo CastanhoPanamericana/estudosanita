@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Completa de Ciências Naturais: Corpo Humano & Sistemas (5º Ano)</title>
+    <style>
+        :root {
+            --paper-bg: #fffdf7;
+            --line-color: #cbd5e1;
+            --margin-red: #fca5a5;
+            --chalkboard: #14532d;
+            --chalkboard-border: #92400e;
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --secondary: #0284c7;
+            --accent: #f59e0b;
+            --text: #1e293b;
+            --correct: #16a34a;
+            --wrong: #dc2626;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', Tahoma, sans-serif;
+            background-color: #e2e8f0;
+            background-image: radial-gradient(#94a3b8 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1050px;
+            width: 100%;
+        }
+
+        /* Cabeçalho Caderno */
+        .notebook-header {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 50%, #0284c7 100%);
+            color: white;
+            padding: 22px 25px;
+            border-radius: 18px;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 20px rgba(13, 148, 136, 0.25);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .notebook-header h1 {
+            margin: 0 0 6px 0;
+            font-size: 1.75rem;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+
+        .notebook-header p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #fef08a;
+            font-weight: bold;
+        }
+
+        /* HUD Gamificado */
+        .hud {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: var(--paper-bg);
+            padding: 12px 15px;
+            border-radius: 14px;
+            border: 3px solid #5eead4;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .hud { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .hud-item span { display: block; font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: bold; }
+        .hud-item strong { font-size: 1.15rem; color: var(--primary-dark); }
+
+        /* Abas de Navegação */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 18px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            color: #334155;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.84rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1 1 auto;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover { background: #f0fdfa; border-color: #5eead4; }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Folha Pautada */
+        .panel {
+            display: none;
+            background-color: var(--paper-bg);
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 32px;
+            padding: 25px 25px 25px 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border: 2px solid #e2e8f0;
+            border-left: 6px solid var(--margin-red);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2.panel-title {
+            margin-top: 0;
+            background: #ccfbf1;
+            color: #0f766e;
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 2px dashed #0d9488;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+
+        /* HQ INTERATIVA */
+        .hq-stage {
+            background: white;
+            border: 4px solid #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 6px 6px 0px #1e293b;
+            margin-top: 10px;
+        }
+
+        .hq-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fef08a;
+            border: 2px solid #1e293b;
+            padding: 8px 14px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hq-scene-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 700px) {
+            .hq-scene-layout { grid-template-columns: 1fr; }
+        }
+
+        .hq-illustration {
+            background: #f0fdfa;
+            border: 3px solid #1e293b;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            min-height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .speech-bubble {
+            background: #ffffff;
+            border: 3px solid #1e293b;
+            border-radius: 18px;
+            padding: 14px 16px;
+            font-size: 0.98rem;
+            line-height: 1.4;
+            margin-bottom: 14px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+        }
+
+        .hq-choices {
+            display: grid;
+            gap: 10px;
+        }
+
+        .hq-choice-btn {
+            background: #f0fdfa;
+            border: 2.5px solid #0d9488;
+            color: #0f766e;
+            padding: 11px 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .hq-choice-btn:hover { background: #0d9488; color: white; }
+        .hq-choice-btn.correct { background: var(--correct) !important; color: white !important; border-color: #15803d !important; }
+        .hq-choice-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: #b91c1c !important; }
+
+        /* LOUSA VERDE */
+        .chalkboard {
+            background-color: var(--chalkboard);
+            border: 8px solid var(--chalkboard-border);
+            border-radius: 14px;
+            color: #f8fafc;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+        }
+
+        .chalkboard h3 {
+            color: #fde047;
+            margin-top: 0;
+            border-bottom: 2px dashed rgba(255,255,255,0.3);
+            padding-bottom: 6px;
+        }
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .visual-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .hierarchy-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .h-step {
+            background: #fef08a;
+            color: #1e293b;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* JOGO 3: NÍVEIS DE ORGANIZAÇÃO */
+        .order-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+            min-height: 55px;
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px dashed #94a3b8;
+        }
+        .level-chip {
+            background: #0284c7;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            transition: 0.2s;
+        }
+        .level-chip:hover { transform: scale(1.05); background: #0369a1; }
+        .level-chip.placed { background: #16a34a; cursor: default; }
+
+        /* JOGO 4: IDENTIFICADOR DE ÓRGÃOS */
+        .organ-stage {
+            background: white;
+            border: 3px solid #0d9488;
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        /* JOGO 5: LABORATÓRIO DOS SISTEMAS */
+        .sys-card {
+            background: #e0f2fe;
+            border: 3px solid #0284c7;
+            padding: 18px;
+            border-radius: 14px;
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0369a1;
+        }
+        .sys-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 650px) { .sys-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        /* JOGO 6: COMPLETAR TEXTO REPRODUTOR */
+        .cloze-box {
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            line-height: 2.1;
+            font-size: 1rem;
+        }
+        .cloze-select {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 2px solid #0d9488;
+            font-family: inherit;
+            font-weight: bold;
+            color: #0f766e;
+            background: #f0fdfa;
+            font-size: 0.95rem;
+        }
+
+        /* QUIZ & OPÇÕES */
+        .question-box {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin-bottom: 14px;
+        }
+
+        .options-list { display: grid; gap: 10px; }
+        .opt-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 12px 15px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 0.96rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .opt-btn:hover { background: #f0fdfa; border-color: var(--primary); }
+        .opt-btn.correct { background: var(--correct) !important; color: white !important; border-color: #15803d !important; }
+        .opt-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: #b91c1c !important; }
+
+        /* MEMÓRIA */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 600px) { .memory-grid { grid-template-columns: repeat(3, 1fr); } }
+        .mem-card {
+            height: 88px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .mem-card.hidden-text { font-size: 1.5rem; }
+        .mem-card.revealed { background: #e0f2fe; color: #0369a1; border: 2px solid #0284c7; }
+        .mem-card.matched { background: var(--correct); color: white; border: 2px solid #15803d; }
+
+        /* CADERNO DE EXERCÍCIOS */
+        .exercise-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 14px;
+        }
+        .badge-topic {
+            display: inline-block;
+            background: #ccfbf1;
+            color: #0f766e;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        .input-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+        .sci-input {
+            padding: 10px 12px;
+            font-size: 1rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            width: 220px;
+            font-family: inherit;
+            font-weight: bold;
+        }
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .action-btn:hover { background: var(--primary-dark); }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.96rem;
+            min-height: 22px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="notebook-header">
+        <h1>🔬 Super Plataforma de Ciências Naturais — 5º Ano 🧬</h1>
+        <p>Escola Projeto Vida • Organização do Corpo Humano e Todos os Sistemas (Digestório, Respiratório, Circulatório, Urinário, Endócrino e Reprodutor)</p>
+    </div>
+
+    <!-- HUD Gamificado -->
+    <div class="hud">
+        <div class="hud-item"><span>⭐ Pontos XP</span><strong id="xpDisplay">0</strong></div>
+        <div class="hud-item"><span>🔥 Sequência</span><strong id="streakDisplay">0</strong></div>
+        <div class="hud-item"><span>🎖️ Patente</span><strong id="levelDisplay">1 - Cientista Jr.</strong></div>
+        <div class="hud-item"><span>✅ Acertos</span><strong id="doneCountDisplay">0</strong></div>
+    </div>
+
+    <!-- Abas -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('tab-hq', this)">🎬 1. HQ Interativa (Viagem no Corpo)</button>
+        <button class="tab-btn" onclick="openTab('tab-visual', this)">🧑‍🏫 2. Lousa & Sistemas</button>
+        <button class="tab-btn" onclick="openTab('tab-niveis', this)">🧬 3. Níveis de Organização</button>
+        <button class="tab-btn" onclick="openTab('tab-orgaos', this)">🫀 4. Identifique o Órgão</button>
+        <button class="tab-btn" onclick="openTab('tab-sistemas', this)">⚙️ 5. Qual é o Sistema?</button>
+        <button class="tab-btn" onclick="openTab('tab-reprodutor', this)">👶 6. Sistemas Reprodutores</button>
+        <button class="tab-btn" onclick="openTab('tab-quiz', this)">❓ 7. Super Quiz (15)</button>
+        <button class="tab-btn" onclick="openTab('tab-memory', this)">🧠 8. Memória</button>
+        <button class="tab-btn" onclick="openTab('tab-exercicios', this)">✍️ 9. Caderno & Cruzadinha</button>
+    </div>
+
+    <!-- 1. HQ INTERATIVA -->
+    <div id="tab-hq" class="panel active">
+        <h2 class="panel-title">🎬 HQ Interativa: "A Incrível Viagem pelo Corpo Humano"</h2>
+        <p style="font-weight:bold; color:#475569;">Explore os 6 episódios interativos desvendando como as células, órgãos e sistemas funcionam em harmonia!</p>
+
+        <div class="hq-stage">
+            <div class="hq-header-bar">
+                <span id="hqChapterBadge">Episódio 1 de 6</span>
+                <span id="hqProgressText">Progresso: 1/6</span>
+            </div>
+
+            <div class="hq-scene-layout">
+                <div class="hq-illustration" id="hqArtBox"></div>
+                <div>
+                    <div class="speech-bubble" id="hqSpeechBubble"></div>
+                    <div class="hq-choices" id="hqChoicesBox"></div>
+                    <div class="feedback" id="hqFeedback"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. LOUSA & SISTEMAS -->
+    <div id="tab-visual" class="panel">
+        <h2 class="panel-title">🧑‍🏫 Lousa Completa de Ciências Naturais (Fichas 1 a 5)</h2>
+
+        <div class="chalkboard">
+            <h3>1. Níveis de Organização do Corpo Humano (Ficha 1)</h3>
+            <p style="font-size:0.9rem;">O corpo humano é estruturado em uma sequência perfeita, do menor componente até o ser vivo completo:</p>
+            <div class="hierarchy-bar">
+                <div class="h-step">1. CÉLULAS<br><small>(ex: neurônios)</small></div>
+                <span>➡️</span>
+                <div class="h-step">2. TECIDOS<br><small>(conjunto de células)</small></div>
+                <span>➡️</span>
+                <div class="h-step">3. ÓRGÃOS<br><small>(ex: coração, pulmão)</small></div>
+                <span>➡️</span>
+                <div class="h-step">4. SISTEMAS<br><small>(órgãos em conjunto)</small></div>
+                <span>➡️</span>
+                <div class="h-step">5. ORGANISMO<br><small>(o corpo humano todo)</small></div>
+            </div>
+        </div>
+
+        <div class="chalkboard">
+            <h3>2. Os Sistemas do Corpo Humano e Seus Órgãos</h3>
+            <div class="visual-grid">
+                <div class="visual-card">
+                    <strong style="color:#fde047;">🍎 Sistema Digestório:</strong>
+                    <p style="font-size:0.85rem; margin:5px 0;">"Trabalha" e quebra os alimentos para que o sangue absorva os nutrientes e elimine os resíduos.<br>
+                    <strong>Caminho:</strong> Boca (quebra) → Faringe → Esôfago → Estômago (suco gástrico) → Intestinos (absorvem nutrientes e água) → Ânus (elimina fezes).</p>
+                </div>
+                <div class="visual-card">
+                    <strong style="color:#fde047;">🌬️ Sistema Respiratório:</strong>
+                    <p style="font-size:0.85rem; margin:5px 0;">Leva <strong>oxigênio ($O_2$)</strong> ao organismo (para transformar alimentos em energia) e expira <strong>dióxido de carbono ($CO_2$)</strong> e água.<br>
+                    <strong>Caminho do ar:</strong> Nariz (filtra) → Faringe → Laringe → Traqueia → Pulmões (trocas gasosas).</p>
+                </div>
+                <div class="visual-card">
+                    <strong style="color:#fde047;">❤️ Sistema Circulatório (Cardiovascular):</strong>
+                    <p style="font-size:0.85rem; margin:5px 0;">Transporta nutrientes e oxigênio pelo sangue para todas as células.<br>
+                    <strong>Órgãos:</strong> Coração (bomba muscular) e Vasos Sanguíneos (artérias e veias).</p>
+                </div>
+                <div class="visual-card">
+                    <strong style="color:#fde047;">💧 Sistema Urinário:</strong>
+                    <p style="font-size:0.85rem; margin:5px 0;">Filtra o sangue e elimina resíduos líquidos através da urina.<br>
+                    <strong>Órgãos:</strong> Rins (formato de grão de feijão, filtram o sangue), Ureteres, Bexiga (armazena a urina) e Uretra.</p>
+                </div>
+                <div class="visual-card">
+                    <strong style="color:#fde047;">🧪 Sistema Endócrino (Fichas 2 e 3):</strong>
+                    <p style="font-size:0.85rem; margin:5px 0;">Formado por glândulas (como hipófise, tireoide, pâncreas, suprarrenais, ovários e testículos) que produzem <strong>hormônios</strong> — mensageiros químicos que regulam o crescimento, metabolismo e as mudanças da puberdade.</p>
+                </div>
+                <div class="visual-card">
+                    <strong style="color:#fde047;">👶 Sistemas Reprodutores (Fichas 4 e 5):</strong>
+                    <p style="font-size:0.85rem; margin:5px 0;">Garantem a <strong>reprodução</strong> da espécie pela união das células sexuais (<strong>fertilização</strong>):<br>
+                    • <em>Masculino:</em> Testículos produzem <strong>espermatozoides</strong>.<br>
+                    • <em>Feminino:</em> Ovários produzem <strong>óvulos</strong>; o útero nutre e abriga o feto até o nascimento.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. JOGO DOS NÍVEIS DE ORGANIZAÇÃO -->
+    <div id="tab-niveis" class="panel">
+        <h2 class="panel-title">🧬 Monte a Sequência: Níveis de Organização do Corpo Humano</h2>
+        <p style="font-weight:bold; color:#475569;">Clique nos blocos abaixo na ordem correta, do <strong>menor (1º)</strong> para o <strong>maior (5º)</strong>:</p>
+
+        <div class="order-slots" id="placedSlots">
+            <span style="color:#64748b; align-self:center;">Clique nos botões abaixo para montar a sequência aqui...</span>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:15px 0;" id="poolButtons"></div>
+
+        <div style="text-align:center;">
+            <button class="action-btn" style="background:#64748b;" onclick="initNiveis()">🔄 Reiniciar Sequência</button>
+        </div>
+        <div class="feedback" id="niveisFeedback"></div>
+    </div>
+
+    <!-- 4. IDENTIFIQUE O ÓRGÃO (BASEADO NA FIGURA DA PÁGINA 4) -->
+    <div id="tab-orgaos" class="panel">
+        <h2 class="panel-title">🫀 Desafio Visual: Identifique o Órgão e Sua Função</h2>
+        <div class="organ-stage" id="organVisualBox"></div>
+        <div class="question-box" id="organQuestion"></div>
+        <div class="options-list" id="organOptions"></div>
+        <div class="feedback" id="organFeedback"></div>
+    </div>
+
+    <!-- 5. QUAL É O SISTEMA? -->
+    <div id="tab-sistemas" class="panel">
+        <h2 class="panel-title">⚙️ Laboratório dos Sistemas: Qual Sistema Faz Isso?</h2>
+        <p style="font-weight:bold; color:#475569;">Leia a função ou o conjunto de órgãos e clique no sistema correspondente:</p>
+
+        <div class="sys-card" id="sysPrompt"></div>
+
+        <div class="sys-grid">
+            <button class="opt-btn" style="text-align:center;" onclick="checkSystem('Digestório')">🍎 Sistema Digestório</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkSystem('Respiratório')">🌬️ Sistema Respiratório</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkSystem('Circulatório')">❤️ Sistema Circulatório</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkSystem('Urinário')">💧 Sistema Urinário</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkSystem('Endócrino')">🧪 Sistema Endócrino</button>
+            <button class="opt-btn" style="text-align:center;" onclick="checkSystem('Reprodutor')">👶 Sistema Reprodutor</button>
+        </div>
+        <div class="feedback" id="sysFeedback"></div>
+    </div>
+
+    <!-- 6. SISTEMAS REPRODUTORES (QUESTÃO 11 DA PÁGINA 8) -->
+    <div id="tab-reprodutor" class="panel">
+        <h2 class="panel-title">👶 Complete o Texto: Sistemas Reprodutores Masculino e Feminino</h2>
+        <p style="font-weight:bold; color:#475569;">Selecione as palavras corretas do quadro para completar o texto da Questão 11 da lista de estudos:</p>
+
+        <div class="cloze-box">
+            "A função dos sistemas reprodutores masculino e feminino é a 
+            <select id="cl1" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="reprodução">reprodução</option>
+                <option value="digestão">digestão</option>
+                <option value="respiração">respiração</option>
+            </select> 
+            da espécie, que ocorre pela produção de 
+            <select id="cl2" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="tecidos">tecidos</option>
+                <option value="células">células</option>
+                <option value="glândulas">glândulas</option>
+            </select> 
+            sexuais e sua 
+            <select id="cl3" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="união">união</option>
+                <option value="divisão">divisão</option>
+                <option value="expiração">expiração</option>
+            </select> 
+            para formar um novo 
+            <select id="cl4" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="órgão">órgão</option>
+                <option value="ser">ser</option>
+                <option value="osso">osso</option>
+            </select>. 
+            O sistema masculino produz os 
+            <select id="cl5" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="óvulos">óvulos</option>
+                <option value="neurônios">neurônios</option>
+                <option value="espermatozoides">espermatozoides</option>
+            </select> 
+            e os deposita no sistema feminino, enquanto o sistema feminino produz os 
+            <select id="cl6" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="óvulos">óvulos</option>
+                <option value="espermatozoides">espermatozoides</option>
+                <option value="hormônios">hormônios</option>
+            </select>, 
+            recebe os espermatozoides para a 
+            <select id="cl7" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="fertilização">fertilização</option>
+                <option value="circulação">circulação</option>
+                <option value="filtração">filtração</option>
+            </select>, 
+            nutre e abriga o feto em desenvolvimento até o 
+            <select id="cl8" class="cloze-select">
+                <option value="">--- escolha ---</option>
+                <option value="nascimento">nascimento</option>
+                <option value="crescimento">crescimento</option>
+                <option value="envelhecimento">envelhecimento</option>
+            </select>."
+        </div>
+
+        <div style="margin-top:15px;">
+            <button class="action-btn" onclick="checkCloze()">✅ Verificar Texto Completo</button>
+        </div>
+        <div class="feedback" id="clozeFeedback"></div>
+    </div>
+
+    <!-- 7. SUPER QUIZ (15 QUESTÕES) -->
+    <div id="tab-quiz" class="panel">
+        <h2 class="panel-title">❓ Super Quiz de Ciências Naturais (15 Questões)</h2>
+        <div class="question-box" id="quizQuestion"></div>
+        <div class="options-list" id="quizOptions"></div>
+        <div class="feedback" id="quizFeedback"></div>
+    </div>
+
+    <!-- 8. JOGO DA MEMÓRIA -->
+    <div id="tab-memory" class="panel">
+        <h2 class="panel-title">🧠 Jogo da Memória: Órgãos, Sistemas e Funções</h2>
+        <div class="memory-grid" id="memoryGrid"></div>
+        <div class="feedback" id="memoryFeedback"></div>
+        <div style="text-align:center; margin-top:12px;">
+            <button class="action-btn" onclick="initMemory()">🔄 Embaralhar Cartas</button>
+        </div>
+    </div>
+
+    <!-- 9. CADERNO DE EXERCÍCIOS & CRUZADINHA -->
+    <div id="tab-exercicios" class="panel">
+        <h2 class="panel-title">✍️ Caderno de Exercícios & Cruzadinha dos Órgãos</h2>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Cruzadinha — Item 1 (Pág. 5 e 6)</span><br>
+            <strong>1. Sentidos:</strong> Quais são os órgãos responsáveis pela <strong>visão</strong>?
+            <div class="input-row">
+                <input type="text" id="ex1" class="sci-input" placeholder="Ex: olhos">
+                <button class="action-btn" onclick="checkEx('ex1', ['olhos', 'os olhos'], 'fb1', 'Exato! Os OLHOS são os órgãos da visão!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb1"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Cruzadinha — Item 2 (Pág. 5 e 6)</span><br>
+            <strong>2. Sentidos & Respiração:</strong> Qual é o órgão responsável por <strong>sentir cheiros</strong> (e por onde o ar entra e é filtrado)?
+            <div class="input-row">
+                <input type="text" id="ex2" class="sci-input" placeholder="Ex: nariz">
+                <button class="action-btn" onclick="checkEx('ex2', ['nariz', 'o nariz'], 'fb2', 'Perfeito! O NARIZ sente os cheiros e filtra o ar!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb2"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Cruzadinha — Item 3 (Pág. 5 e 6)</span><br>
+            <strong>3. Sistema Respiratório:</strong> Quais são os principais órgãos responsáveis pela <strong>respiração</strong> (têm consistência esponjosa e ficam na caixa torácica)?
+            <div class="input-row">
+                <input type="text" id="ex3" class="sci-input" placeholder="Ex: pulmões">
+                <button class="action-btn" onclick="checkEx('ex3', ['pulmões', 'pulmoes', 'os pulmões'], 'fb3', 'Isso mesmo! Os PULMÕES realizam as trocas gasosas!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb3"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Cruzadinha — Item 4 (Pág. 5 e 6)</span><br>
+            <strong>4. Sistema Circulatório:</strong> Qual é o órgão que funciona como uma bomba muscular para <strong>bombear sangue</strong> para o corpo todo?
+            <div class="input-row">
+                <input type="text" id="ex4" class="sci-input" placeholder="Ex: coração">
+                <button class="action-btn" onclick="checkEx('ex4', ['coração', 'coracao', 'o coração'], 'fb4', 'Acertou! O CORAÇÃO bombeia o sangue por todo o organismo!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb4"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Cruzadinha — Item 5 (Pág. 5 e 6)</span><br>
+            <strong>5. Sistema Digestório:</strong> Qual é o órgão muscular oco, em formato de "J", onde os alimentos se misturam ao suco gástrico durante a digestão?
+            <div class="input-row">
+                <input type="text" id="ex5" class="sci-input" placeholder="Ex: estômago">
+                <button class="action-btn" onclick="checkEx('ex5', ['estômago', 'estomago', 'o estômago'], 'fb5', 'Correto! O ESTÔMAGO é o reservatório e misturador dos alimentos!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb5"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Sistema Urinário (Pág. 4 e 5)</span><br>
+            <strong>6. Filtração do Sangue:</strong> Quais são os dois órgãos vitais do sistema urinário, com formato semelhante a um grão de feijão, que filtram o sangue?
+            <div class="input-row">
+                <input type="text" id="ex6" class="sci-input" placeholder="Ex: rins">
+                <button class="action-btn" onclick="checkEx('ex6', ['rins', 'os rins'], 'fb6', 'Muito bem! Os RINS filtram o sangue e produzem a urina (que fica guardada na bexiga)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb6"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Sistema Endócrino (Fichas 2 e 3)</span><br>
+            <strong>7. Mensageiros Químicos:</strong> Como se chamam as substâncias produzidas pelas glândulas do sistema endócrino que regulam o crescimento e o funcionamento do corpo?
+            <div class="input-row">
+                <input type="text" id="ex7" class="sci-input" placeholder="Ex: hormônios">
+                <button class="action-btn" onclick="checkEx('ex7', ['hormônios', 'hormonios', 'os hormônios'], 'fb7', 'Exato! Os HORMÔNIOS são os mensageiros químicos do sistema endócrino!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb7"></div>
+        </div>
+
+        <div class="exercise-card">
+            <span class="badge-topic">Células & Sistema Nervoso (Pág. 3 e 5)</span><br>
+            <strong>8. Comando do Corpo:</strong> Qual é o órgão mais complexo do corpo humano e centro de comando do sistema nervoso central?
+            <div class="input-row">
+                <input type="text" id="ex8" class="sci-input" placeholder="Ex: cérebro">
+                <button class="action-btn" onclick="checkEx('ex8', ['cérebro', 'cerebro', 'o cérebro'], 'fb8', 'Perfeito! O CÉREBRO comanda todo o nosso corpo (e é formado por bilhões de neurônios)!')">Conferir</button>
+            </div>
+            <div class="feedback" id="fb8"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- SOM ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playTone(freq, type, duration) {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+    function soundWin() { playTone(523.25, 'sine', 0.12); setTimeout(() => playTone(659.25, 'sine', 0.2), 100); }
+    function soundFail() { playTone(190, 'sawtooth', 0.25); }
+
+    // --- HUD ---
+    let xp = 0, streak = 0, doneCount = 0;
+    function addXP(pts, ok = true) {
+        if (ok) { xp += pts; streak++; doneCount++; soundWin(); }
+        else { streak = 0; soundFail(); }
+        document.getElementById('xpDisplay').innerText = xp;
+        document.getElementById('streakDisplay').innerText = streak;
+        document.getElementById('doneCountDisplay').innerText = doneCount;
+
+        let rank = "1 - Cientista Jr.";
+        if (xp >= 260) rank = "4 - Mestre da Biologia 🏆";
+        else if (xp >= 150) rank = "3 - Especialista Médico 🩺";
+        else if (xp >= 60) rank = "2 - Pesquisador 🔬";
+        document.getElementById('levelDisplay').innerText = rank;
+    }
+
+    function openTab(tabId, btn) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // --- 1. HQ INTERATIVA ---
+    const hqEpisodes = [
+        {
+            title: "Episódio 1 de 6: O Tijolo do Corpo Humano",
+            speech: "<strong>Cientista Anita:</strong> Olhando no microscópio, descobrimos que o corpo humano é formado por pequenas estruturas vivas chamadas <strong>células</strong> (como os neurônios!). Quando várias células semelhantes se juntam para fazer uma função, o que elas formam?",
+            svg: `<svg width="140" height="130" viewBox="0 0 140 130">
+                    <circle cx="70" cy="65" r="45" fill="#ccfbf1" stroke="#0d9488" stroke-width="4"/>
+                    <circle cx="70" cy="65" r="16" fill="#0284c7"/>
+                    <circle cx="48" cy="45" r="5" fill="#f59e0b"/><circle cx="92" cy="80" r="6" fill="#f59e0b"/>
+                    <text x="70" y="124" font-size="11" font-weight="bold" text-anchor="middle">Célula & Núcleo</text>
+                  </svg>`,
+            choices: [
+                { text: "Formam os TECIDOS (que depois formam os órgãos e sistemas)", ok: true },
+                { text: "Formam diretamente o esqueleto inteiro", ok: false },
+                { text: "Transformam-se em oxigênio", ok: false }
+            ],
+            msg: "Isso mesmo! Células → Tecidos → Órgãos → Sistemas → Organismo!"
+        },
+        {
+            title: "Episódio 2 de 6: O Caminho da Respiração",
+            speech: "<strong>Guia Respiratório:</strong> Inspiramos o ar pelo nariz (onde é filtrado), ele passa pela faringe, laringe, desce pela traqueia e chega aos <strong>pulmões</strong>! Qual gás vital os pulmões levam para o organismo e qual gás eles expiram?",
+            svg: `<svg width="140" height="130" viewBox="0 0 140 130">
+                    <rect x="65" y="15" width="10" height="35" fill="#94a3b8"/>
+                    <path d="M65,45 Q30,45 28,85 Q28,110 62,105 L65,50 Z" fill="#f43f5e" stroke="#1e293b" stroke-width="2"/>
+                    <path d="M75,45 Q110,45 112,85 Q112,110 78,105 L75,50 Z" fill="#f43f5e" stroke="#1e293b" stroke-width="2"/>
+                  </svg>`,
+            choices: [
+                { text: "Levam OXIGÊNIO (O₂) e expiram DIÓXIDO DE CARBONO (CO₂) e água", ok: true },
+                { text: "Levam dióxido de carbono e expiram oxigênio", ok: false },
+                { text: "Levam suco gástrico e expiram sangue", ok: false }
+            ],
+            msg: "Brilhante! Sem oxigênio, as células não conseguem transformar alimentos em energia!"
+        },
+        {
+            title: "Episódio 3 de 6: A Viagem do Alimento (Digestão)",
+            speech: "<strong>Guia Digestório:</strong> Os alimentos entram pela boca (onde são quebrados pelos dentes e saliva), passam pela faringe, descem pelo esôfago e chegam ao <strong>estômago</strong>! O que acontece depois nos <strong>intestinos</strong>?",
+            svg: `<svg width="140" height="130" viewBox="0 0 140 130">
+                    <path d="M60,20 C95,20 105,65 80,85 C60,100 40,80 50,60 C55,48 60,40 60,20 Z" fill="#f59e0b" stroke="#1e293b" stroke-width="2.5"/>
+                    <text x="70" y="118" font-size="11" font-weight="bold" text-anchor="middle">Estômago (Formato J)</text>
+                  </svg>`,
+            choices: [
+                { text: "Absorvem os nutrientes e a água para o sangue, e os resíduos são eliminados pelo ânus", ok: true },
+                { text: "Bombeiam o sangue para o cérebro", ok: false },
+                { text: "Produzem os glóbulos vermelhos", ok: false }
+            ],
+            msg: "Perfeito! O sangue absorve os nutrientes nos intestinos e leva energia para todas as células!"
+        },
+        {
+            title: "Episódio 4 de 6: A Bomba Incansável & Os Filtros",
+            speech: "<strong>Dr. Coração & Rins:</strong> Enquanto o <strong>coração</strong> funciona como uma bomba muscular fazendo o sangue circular, dois órgãos em formato de grão de feijão filtram esse sangue para formar a urina. Quem são eles?",
+            svg: `<svg width="150" height="130" viewBox="0 0 150 130">
+                    <path d="M45,45 C25,45 25,85 45,85 C55,85 52,70 48,65 C52,60 55,45 45,45 Z" fill="#991b1b" stroke="#1e293b" stroke-width="2"/>
+                    <path d="M105,45 C125,45 125,85 105,85 C95,85 98,70 102,65 C98,60 95,45 105,45 Z" fill="#991b1b" stroke="#1e293b" stroke-width="2"/>
+                    <text x="75" y="112" font-size="11" font-weight="bold" text-anchor="middle">Formato de Feijão</text>
+                  </svg>`,
+            choices: [
+                { text: "Os RINS (que enviam a urina para ser armazenada na bexiga)", ok: true },
+                { text: "Os pulmões e a traqueia", ok: false },
+                { text: "O esôfago e a laringe", ok: false }
+            ],
+            msg: "Exato! Os rins filtram o sangue e a bexiga armazena a urina até sua eliminação!"
+        },
+        {
+            title: "Episódio 5 de 6: Os Mensageiros do Sistema Endócrino",
+            speech: "<strong>Detetive Endócrino:</strong> Glândulas como a hipófise, a tireoide e o pâncreas trabalham silenciosamente produzindo substâncias químicas lançadas no sangue que controlam nosso crescimento e desenvolvimento. Que substâncias são essas?",
+            svg: `<svg width="140" height="130" viewBox="0 0 140 130">
+                    <rect x="20" y="20" width="100" height="85" rx="12" fill="#fef08a" stroke="#d97706" stroke-width="3"/>
+                    <text x="70" y="55" font-size="13" font-weight="bold" text-anchor="middle" fill="#92400e">GLÂNDULAS</text>
+                    <text x="70" y="80" font-size="12" font-weight="bold" text-anchor="middle" fill="#0f766e">Mensageiros!</text>
+                  </svg>`,
+            choices: [
+                { text: "Os HORMÔNIOS", ok: true },
+                { text: "O suco gástrico", ok: false },
+                { text: "O dióxido de carbono", ok: false }
+            ],
+            msg: "Excelente! Os hormônios regulam várias funções do organismo, inclusive a puberdade!"
+        },
+        {
+            title: "Episódio 6 de 6: A Continuidade da Vida",
+            speech: "<strong>Missão Reprodução:</strong> Para formar um novo ser humano, ocorre a união das duas células sexuais (gametas): o <strong>espermatozoide</strong> (produzido nos testículos) e o <strong>óvulo</strong> (produzido nos ovários). Como se chama essa união?",
+            svg: `<svg width="140" height="130" viewBox="0 0 140 130">
+                    <circle cx="80" cy="65" r="28" fill="#fbcfe8" stroke="#db2777" stroke-width="3"/>
+                    <circle cx="35" cy="65" r="8" fill="#0284c7"/>
+                    <path d="M27,65 Q15,58 10,65" stroke="#0284c7" stroke-width="2.5" fill="none"/>
+                  </svg>`,
+            choices: [
+                { text: "FERTILIZAÇÃO (ou fecundação)", ok: true },
+                { text: "Inspiração", ok: false },
+                { text: "Digestão química", ok: false }
+            ],
+            msg: "🏆 Parabéns! Você completou toda a HQ Interativa de Ciências Naturais!"
+        }
+    ];
+
+    let hqStep = 0, hqLocked = false;
+    function renderHQ() {
+        hqLocked = false;
+        document.getElementById('hqFeedback').innerText = '';
+        const ep = hqEpisodes[hqStep];
+        document.getElementById('hqChapterBadge').innerText = ep.title;
+        document.getElementById('hqProgressText').innerText = `Episódio ${hqStep + 1} de ${hqEpisodes.length}`;
+        document.getElementById('hqArtBox').innerHTML = ep.svg;
+        document.getElementById('hqSpeechBubble').innerHTML = ep.speech;
+
+        const box = document.getElementById('hqChoicesBox');
+        box.innerHTML = '';
+        ep.choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'hq-choice-btn';
+            btn.innerText = c.text;
+            btn.onclick = () => {
+                if (hqLocked) return;
+                hqLocked = true;
+                if (c.ok) {
+                    btn.classList.add('correct');
+                    document.getElementById('hqFeedback').innerText = `🎉 ${ep.msg} (+15 XP)`;
+                    document.getElementById('hqFeedback').style.color = "var(--correct)";
+                    addXP(15, true);
+                    setTimeout(() => {
+                        hqStep = (hqStep + 1) % hqEpisodes.length;
+                        renderHQ();
+                    }, 2600);
+                } else {
+                    btn.classList.add('wrong');
+                    document.getElementById('hqFeedback').innerText = "❌ Ops! Tente outra resposta!";
+                    document.getElementById('hqFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                    hqLocked = false;
+                }
+            };
+            box.appendChild(btn);
+        });
+    }
+
+    // --- 3. NÍVEIS DE ORGANIZAÇÃO ---
+    const correctOrder = ["Células", "Tecidos", "Órgãos", "Sistemas", "Organismo"];
+    let userOrder = [];
+    function initNiveis() {
+        userOrder = [];
+        document.getElementById('niveisFeedback').innerText = '';
+        document.getElementById('placedSlots').innerHTML = '<span style="color:#64748b; align-self:center;">Clique nos botões abaixo na ordem crescente...</span>';
+        const pool = document.getElementById('poolButtons');
+        pool.innerHTML = '';
+        const shuffled = [...correctOrder].sort(() => Math.random() - 0.5);
+        shuffled.forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = 'level-chip';
+            btn.innerText = item;
+            btn.onclick = () => {
+                if (btn.classList.contains('placed')) return;
+                const expected = correctOrder[userOrder.length];
+                const fb = document.getElementById('niveisFeedback');
+                if (item === expected) {
+                    btn.classList.add('placed');
+                    userOrder.push(item);
+                    updateSlots();
+                    addXP(5, true);
+                    if (userOrder.length === correctOrder.length) {
+                        fb.innerText = "🧬 Sequência perfeita! Células → Tecidos → Órgãos → Sistemas → Organismo! (+15 XP Bônus)";
+                        fb.style.color = "var(--correct)";
+                        addXP(15, true);
+                    } else {
+                        fb.innerText = `✅ Muito bem! Qual é o próximo nível depois de ${item}?`;
+                        fb.style.color = "var(--correct)";
+                    }
+                } else {
+                    fb.innerText = `❌ Não é "${item}" agora! Pense: o que vem logo antes ou depois?`;
+                    fb.style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+            };
+            pool.appendChild(btn);
+        });
+    }
+    function updateSlots() {
+        const slots = document.getElementById('placedSlots');
+        slots.innerHTML = userOrder.map((u, idx) => `<span class="h-step">${idx + 1}. ${u}</span>`).join(' <span>➡️</span> ');
+    }
+
+    // --- 4. IDENTIFIQUE O ÓRGÃO (BASEADO NA PÁGINA 4) ---
+    const organCards = [
+        {
+            svg: `<svg width="110" height="100" viewBox="0 0 110 100"><path d="M25,65 C15,40 35,20 60,25 C85,20 98,45 85,68 C75,82 40,80 25,65 Z" fill="#f472b6" stroke="#1e293b" stroke-width="2.5"/><path d="M35,45 Q55,35 75,50 M40,58 Q60,52 72,62" stroke="#9d174d" stroke-width="2" fill="none"/></svg>`,
+            q: "Qual é este órgão mais complexo do corpo humano, centro de comando do Sistema Nervoso Central?",
+            opts: ["Estômago", "Cérebro", "Bexiga", "Pulmões"],
+            ans: 1
+        },
+        {
+            svg: `<svg width="110" height="100" viewBox="0 0 110 100"><path d="M55,85 C25,65 18,40 35,25 C45,18 55,28 55,35 C55,28 65,18 75,25 C92,40 85,65 55,85 Z" fill="#dc2626" stroke="#1e293b" stroke-width="2.5"/></svg>`,
+            q: "Qual é este órgão principal do sistema cardiovascular que funciona como uma bomba muscular?",
+            opts: ["Coração", "Rins", "Cérebro", "Intestinos"],
+            ans: 0
+        },
+        {
+            svg: `<svg width="110" height="100" viewBox="0 0 110 100"><ellipse cx="55" cy="52" rx="22" ry="26" fill="#fef08a" stroke="#1e293b" stroke-width="2.5"/><rect x="51" y="78" width="8" height="15" fill="#fef08a" stroke="#1e293b" stroke-width="2"/></svg>`,
+            q: "Qual é este órgão muscular oco do sistema urinário que armazena a urina produzida pelos rins?",
+            opts: ["Estômago", "Pulmões", "Bexiga", "Coração"],
+            ans: 2
+        },
+        {
+            svg: `<svg width="110" height="100" viewBox="0 0 110 100"><rect x="25" y="25" width="60" height="50" rx="12" fill="none" stroke="#d97706" stroke-width="10"/><path d="M38,45 Q55,38 72,48 Q45,55 68,62" stroke="#f59e0b" stroke-width="8" fill="none" stroke-linecap="round"/></svg>`,
+            q: "Quais são estes tubos musculares que vão do estômago até o ânus e absorvem nutrientes e água?",
+            opts: ["Intestinos", "Pulmões", "Rins", "Cérebro"],
+            ans: 0
+        }
+    ];
+    let orgIdx = 0, orgLocked = false;
+    function loadOrgan() {
+        orgLocked = false;
+        document.getElementById('organFeedback').innerText = '';
+        const item = organCards[orgIdx % organCards.length];
+        document.getElementById('organVisualBox').innerHTML = item.svg;
+        document.getElementById('organQuestion').innerText = item.q;
+        const list = document.getElementById('organOptions');
+        list.innerHTML = '';
+        item.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (orgLocked) return;
+                orgLocked = true;
+                if (i === item.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('organFeedback').innerText = "🫀 Perfeito! Órgão identificado corretamente! +10 XP!";
+                    document.getElementById('organFeedback').style.color = "var(--correct)";
+                    addXP(10, true);
+                } else {
+                    b.classList.add('wrong');
+                    list.children[item.ans].classList.add('correct');
+                    document.getElementById('organFeedback').innerText = "❌ Veja o órgão correto destacado em verde.";
+                    document.getElementById('organFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                orgIdx++;
+                setTimeout(loadOrgan, 1700);
+            };
+            list.appendChild(b);
+        });
+    }
+
+    // --- 5. QUAL É O SISTEMA? ---
+    const sysPrompts = [
+        { text: "Conjunto formado por laringe, traqueia e pulmões; realiza as trocas gasosas (O₂ e CO₂).", sys: "Respiratório" },
+        { text: "Quebra os alimentos em partículas menores para que o sangue absorva os nutrientes.", sys: "Digestório" },
+        { text: "Formado pelo coração e vasos sanguíneos (artérias e veias); faz o sangue circular.", sys: "Circulatório" },
+        { text: "Filtra o sangue nos rins e elimina substâncias tóxicas através da urina armazenada na bexiga.", sys: "Urinário" },
+        { text: "Produz hormônios nas glândulas (como hipófise, tireoide e pâncreas) para regular o corpo.", sys: "Endócrino" },
+        { text: "Garante a continuidade da espécie através da união de óvulos e espermatozoides.", sys: "Reprodutor" }
+    ];
+    let sysIdx = 0;
+    function loadSys() {
+        document.getElementById('sysFeedback').innerText = '';
+        document.getElementById('sysPrompt').innerText = sysPrompts[sysIdx % sysPrompts.length].text;
+    }
+    function checkSystem(chosen) {
+        const target = sysPrompts[sysIdx % sysPrompts.length].sys;
+        const fb = document.getElementById('sysFeedback');
+        if (chosen === target) {
+            fb.innerText = `⚙️ Exato! Esse é o Sistema ${target}! +10 XP!`;
+            fb.style.color = "var(--correct)";
+            addXP(10, true);
+            sysIdx++;
+            setTimeout(loadSys, 1200);
+        } else {
+            fb.innerText = `❌ Não é o Sistema ${chosen}. Leia os órgãos e a função novamente!`;
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+    }
+
+    // --- 6. COMPLETAR TEXTO REPRODUTOR ---
+    function checkCloze() {
+        const expected = {
+            cl1: "reprodução",
+            cl2: "células",
+            cl3: "união",
+            cl4: "ser",
+            cl5: "espermatozoides",
+            cl6: "óvulos",
+            cl7: "fertilização",
+            cl8: "nascimento"
+        };
+        let correctCount = 0;
+        for (let key in expected) {
+            const el = document.getElementById(key);
+            if (el.value === expected[key]) {
+                el.style.borderColor = "#16a34a";
+                el.style.background = "#dcfce7";
+                correctCount++;
+            } else {
+                el.style.borderColor = "#dc2626";
+                el.style.background = "#fee2e2";
+            }
+        }
+        const fb = document.getElementById('clozeFeedback');
+        if (correctCount === 8) {
+            fb.innerText = "🏆 Sensacional! Você acertou todas as 8 lacunas do texto sobre os Sistemas Reprodutores! (+30 XP)";
+            fb.style.color = "var(--correct)";
+            addXP(30, true);
+        } else {
+            fb.innerText = `⚠️ Você acertou ${correctCount} de 8 palavras. Corrija as caixinhas em vermelho e tente de novo!`;
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+    }
+
+    // --- 7. SUPER QUIZ (15 QUESTÕES) ---
+    const quizData = [
+        { q: "1. Quais são os 5 níveis de organização do corpo humano, do mais simples ao mais complexo?", opts: ["Órgãos → Células → Tecidos → Organismo → Sistemas", "Células → Tecidos → Órgãos → Sistemas → Organismo", "Sistemas → Órgãos → Tecidos → Células → Organismo", "Tecidos → Células → Sistemas → Órgãos → Organismo"], ans: 1 },
+        { q: "2. O que é um SISTEMA no corpo humano?", opts: ["Uma única célula isolada", "Um grupo de órgãos que trabalham juntos e harmonicamente para desempenhar uma função", "Apenas o esqueleto", "Um tipo de alimento energético"], ans: 1 },
+        { q: "3. Os sistemas urinário e digestório são exemplos de:", opts: ["Células", "Tecidos", "Sistemas interrelacionados do corpo humano", "Órgãos isolados"], ans: 2 },
+        { q: "4. Sobre as células do corpo humano, assinale a afirmação correta:", opts: ["São grandes estruturas; o coração é um exemplo de célula", "São pequenas estruturas vivas que formam o corpo humano; os neurônios são exemplos de células", "O esôfago é uma célula única", "Apenas os pulmões possuem células"], ans: 1 },
+        { q: "5. Qual alternativa apresenta uma relação CORRETA entre o conjunto de órgãos e seu sistema?", opts: ["Laringe, traqueia, pulmões — Sistema Respiratório", "Uretra, bexiga, coração — Sistema Circulatório", "Veias, artérias, estômago — Sistema Nervoso", "Cérebro, cerebelo, medula espinhal — Sistema Reprodutor"], ans: 0 },
+        { q: "6. Qual é o caminho percorrido pelo ar durante a inspiração até chegar aos pulmões?", opts: ["Boca → Esôfago → Estômago → Intestinos", "Nariz (onde é filtrado) → Faringe → Laringe → Traqueia → Pulmões", "Rins → Ureteres → Bexiga → Uretra", "Coração → Artérias → Veias"], ans: 1 },
+        { q: "7. Por que as células do nosso corpo precisam do oxigênio trazido pelos pulmões?", opts: ["Para produzir urina nos rins", "Para transformar os alimentos em energia (gerando dióxido de carbono e água como resíduos)", "Para digerir proteínas no estômago", "Para bombear sangue no coração"], ans: 1 },
+        { q: "8. Qual é a sequência correta do caminho dos alimentos no Sistema Digestório?", opts: ["Boca → Faringe → Esôfago → Estômago → Intestinos → Ânus", "Nariz → Traqueia → Pulmões → Estômago", "Estômago → Boca → Esôfago → Rins", "Boca → Coração → Intestinos → Bexiga"], ans: 0 },
+        { q: "9. Qual órgão funciona como o principal reservatório e misturador de alimentos com o suco gástrico?", opts: ["Pulmões", "Estômago", "Bexiga", "Cérebro"], ans: 1 },
+        { q: "10. Qual é a função dos intestinos no sistema digestório?", opts: ["Filtrar o sangue para fazer urina", "Digerir alimentos, absorver nutrientes e água para o sangue e proteger contra infecções", "Bombear sangue para as artérias", "Produzir hormônios do crescimento"], ans: 1 },
+        { q: "11. Quais órgãos pertencem ao Sistema Urinário e filtram o sangue para produzir urina?", opts: ["Pulmões", "Rins (que têm formato semelhante a um grão de feijão)", "Estômago e esôfago", "Ovários e testículos"], ans: 1 },
+        { q: "12. Qual é a principal função do Sistema Endócrino?", opts: ["Realizar trocas gasosas", "Produzir hormônios através das glândulas para regular o crescimento, metabolismo e funções do corpo", "Triturar os alimentos com os dentes", "Filtrar a urina"], ans: 1 },
+        { q: "13. Onde são produzidas as células sexuais masculinas (espermatozoides) e femininas (óvulos)?", opts: ["No coração e nos pulmões", "Nos testículos (masculino) e nos ovários (feminino)", "Nos rins e na bexiga", "No estômago e no esôfago"], ans: 1 },
+        { q: "14. No sistema reprodutor feminino, qual órgão nutre e abriga o feto em desenvolvimento até o nascimento?", opts: ["O útero", "Os rins", "O estômago", "A traqueia"], ans: 0 },
+        { q: "15. Como os sistemas digestório, respiratório e circulatório trabalham juntos para dar energia ao corpo?", opts: ["O digestório absorve nutrientes, o respiratório capta oxigênio e o circulatório transporta ambos pelo sangue até as células", "Eles trabalham totalmente separados sem nenhuma ligação", "Apenas o sistema urinário leva oxigênio", "O coração digere os alimentos"], ans: 0 }
+    ];
+    let qIdx = 0, qLocked = false;
+    function loadQuiz() {
+        qLocked = false;
+        document.getElementById('quizFeedback').innerText = '';
+        if (qIdx >= quizData.length) {
+            document.getElementById('quizQuestion').innerText = "🏆 Parabéns! Você completou todas as 15 questões do Super Quiz de Ciências!";
+            document.getElementById('quizOptions').innerHTML = `<button class="action-btn" onclick="qIdx=0; loadQuiz()">Jogar Novamente</button>`;
+            return;
+        }
+        const curr = quizData[qIdx];
+        document.getElementById('quizQuestion').innerText = `${qIdx + 1}/${quizData.length}. ${curr.q}`;
+        const list = document.getElementById('quizOptions');
+        list.innerHTML = '';
+        curr.opts.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'opt-btn';
+            b.innerText = o;
+            b.onclick = () => {
+                if (qLocked) return;
+                qLocked = true;
+                if (i === curr.ans) {
+                    b.classList.add('correct');
+                    document.getElementById('quizFeedback').innerText = "🎉 Acertou! +10 XP!";
+                    document.getElementById('quizFeedback').style.color = "var(--correct)";
+                    addXP(10, true);
+                } else {
+                    b.classList.add('wrong');
+                    list.children[curr.ans].classList.add('correct');
+                    document.getElementById('quizFeedback').innerText = "❌ Ops! Veja a resposta correta destacada em verde.";
+                    document.getElementById('quizFeedback').style.color = "var(--wrong)";
+                    addXP(0, false);
+                }
+                setTimeout(() => { qIdx++; loadQuiz(); }, 1800);
+            };
+            list.appendChild(b);
+        });
+    }
+
+    // --- 8. MEMÓRIA ---
+    const memPairs = [
+        { id: 1, t: "Neurônio" }, { id: 1, t: "Exemplo de Célula" },
+        { id: 2, t: "Pulmões" }, { id: 2, t: "Trocas gasosas (O₂ e CO₂)" },
+        { id: 3, t: "Coração" }, { id: 3, t: "Bombeia o sangue" },
+        { id: 4, t: "Rins" }, { id: 4, t: "Filtram o sangue (Urina)" },
+        { id: 5, t: "Sistema Endócrino" }, { id: 5, t: "Glândulas e Hormônios" },
+        { id: 6, t: "Fertilização" }, { id: 6, t: "União de óvulo e espermatozoide" }
+    ];
+    let flipped = [], matched = 0;
+    function initMemory() {
+        const grid = document.getElementById('memoryGrid');
+        grid.innerHTML = '';
+        document.getElementById('memoryFeedback').innerText = '';
+        flipped = []; matched = 0;
+        const deck = [...memPairs].sort(() => Math.random() - 0.5);
+        deck.forEach(item => {
+            const c = document.createElement('div');
+            c.className = 'mem-card hidden-text';
+            c.innerText = '?';
+            c.dataset.id = item.id;
+            c.dataset.t = item.t;
+            c.onclick = () => {
+                if (c.classList.contains('revealed') || c.classList.contains('matched') || flipped.length === 2) return;
+                c.classList.remove('hidden-text');
+                c.classList.add('revealed');
+                c.innerText = item.t;
+                flipped.push(c);
+                if (flipped.length === 2) {
+                    const [a, b] = flipped;
+                    if (a.dataset.id === b.dataset.id) {
+                        a.classList.replace('revealed', 'matched');
+                        b.classList.replace('revealed', 'matched');
+                        flipped = [];
+                        matched++;
+                        addXP(8, true);
+                        if (matched === memPairs.length / 2) {
+                            document.getElementById('memoryFeedback').innerText = "🎉 Parabéns! Todos os pares combinados! +20 XP Bônus!";
+                            document.getElementById('memoryFeedback').style.color = "var(--correct)";
+                            addXP(20, true);
+                        }
+                    } else {
+                        setTimeout(() => {
+                            a.classList.replace('revealed', 'hidden-text'); a.innerText = '?';
+                            b.classList.replace('revealed', 'hidden-text'); b.innerText = '?';
+                            flipped = [];
+                        }, 850);
+                    }
+                }
+            };
+            grid.appendChild(c);
+        });
+    }
+
+    // --- 9. EXERCÍCIOS ---
+    function checkEx(inputId, validAnswers, fbId, successMsg) {
+        const val = document.getElementById(inputId).value.trim().replace(/\s+/g, ' ');
+        const fb = document.getElementById(fbId);
+        if (validAnswers.some(ans => val.toLowerCase() === ans.toLowerCase())) {
+            fb.innerText = `✅ ${successMsg} (+15 XP)`;
+            fb.style.color = "var(--correct)";
+            addXP(15, true);
+        } else {
+            fb.innerText = "❌ Revise o nome do órgão ou conceito e tente novamente!";
+            fb.style.color = "var(--wrong)";
+            addXP(0, false);
+        }
+    }
+
+    // Inicializar tudo
+    renderHQ();
+    initNiveis();
+    loadOrgan();
+    loadSys();
+    loadQuiz();
+    initMemory();
+</script>
+</body>
+</html>
